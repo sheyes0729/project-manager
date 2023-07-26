@@ -5,6 +5,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
 
+import 'virtual:svg-icons-register'
+
 import 'view-ui-plus/dist/styles/viewuiplus.css'
 import '@renderer/assets/css/styles.scss'
 

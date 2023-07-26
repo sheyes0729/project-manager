@@ -5,6 +5,7 @@ import autoImport from 'unplugin-auto-import/vite'
 import vueComponents from 'unplugin-vue-components/vite'
 import pages from 'vite-plugin-pages'
 import layouts from 'vite-plugin-vue-layouts'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 export default defineConfig({
   main: {
@@ -51,6 +52,10 @@ export default defineConfig({
         vueComponents({
           dts: resolve(__dirname, 'src/typings/vue-components.d.ts'),
           dirs: [resolve(__dirname, 'src/components/common')]
+        }),
+        createSvgIconsPlugin({
+          iconDirs: [resolve(__dirname, 'src/assets/svg')],
+          symbolId: 'icon-[dir]-[name]'
         })
       ],
       esbuild: {
