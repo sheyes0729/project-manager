@@ -3,6 +3,8 @@ import { defineConfig, defineViteConfig, externalizeDepsPlugin } from 'electron-
 import vue from '@vitejs/plugin-vue'
 import autoImport from 'unplugin-auto-import/vite'
 import vueComponents from 'unplugin-vue-components/vite'
+import pages from 'vite-plugin-pages'
+import layouts from 'vite-plugin-vue-layouts'
 
 export default defineConfig({
   main: {
@@ -24,6 +26,7 @@ export default defineConfig({
   renderer: defineViteConfig(({ mode }) => {
     const isProd = mode === 'production'
     return {
+      root: '.',
       resolve: {
         alias: {
           '@renderer': resolve('src')
@@ -31,6 +34,13 @@ export default defineConfig({
       },
       plugins: [
         vue(),
+        pages({
+          dirs: resolve(__dirname, 'src/views'),
+          routeBlockLang: 'json5'
+        }),
+        layouts({
+          importMode: () => 'async'
+        }),
         autoImport({
           imports: ['vue', '@vueuse/core', 'pinia', 'vue-router'],
           dts: resolve(__dirname, 'src/typings/auto-import.d.ts'),
@@ -47,7 +57,6 @@ export default defineConfig({
         drop: ['console', 'debugger']
       },
       build: {
-        root: '.',
         assetsInlineLimit: 8196,
         minify: isProd ? 'esbuild' : false,
         sourcemap: !isProd,

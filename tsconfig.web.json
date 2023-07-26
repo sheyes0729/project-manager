@@ -1,17 +1,25 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "include": [
-    "src/renderer/src/env.d.ts",
-    "src/renderer/src/**/*",
-    "src/renderer/src/**/*.vue",
-    "src/preload/*.d.ts"
+    "src/typings/env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "src/*.vue",
+    "electron/preload/*.d.ts"
+  ],
+  "files": [
+    "src/App.vue"
   ],
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
+    "types": [
+      "vite-plugin-vue-layouts/client",
+      "vite-plugin-pages/client"
+    ],
     "paths": {
       "@renderer/*": [
-        "src/renderer/src/*"
+        "src/*"
       ]
     }
   }
