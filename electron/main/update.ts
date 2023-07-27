@@ -23,9 +23,10 @@ export function installUpdater(win: BrowserWindow): void {
   autoUpdater.autoDownload = false
   autoUpdater.autoInstallOnAppQuit = false
 
-  if (!app.isPackaged) {
-    autoUpdater.forceDevUpdateConfig = true
-  }
+  // 开发配置自动更新
+  // if (!app.isPackaged) {
+  //   autoUpdater.forceDevUpdateConfig = true
+  // }
 
   const sendMsgToRender = (msg: UpdateMessageWithStatus): void => {
     win.webContents.send('update-message', msg)

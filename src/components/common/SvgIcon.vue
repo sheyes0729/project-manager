@@ -3,36 +3,26 @@
     <use :xlink:href="prefix + '-' + name" :fill="color"></use>
   </svg>
 </template>
-<script setup>
+<script lang="ts" setup>
 defineOptions({
   name: 'SvgIcon'
 })
 
-defineProps({
-  prefix: {
-    type: String,
-    default: '#icon'
-  },
-  name: {
-    type: String,
-    required: true
-  },
-  color: {
-    type: String,
-    default: '#333'
-  },
-  width: {
-    type: String,
-    default: '24px'
-  },
-  height: {
-    type: String,
-    default: '24px'
-  },
-  cursor: {
-    type: Boolean,
-    default: true
-  }
+interface PropsType {
+  prefix?: string
+  name: string
+  color?: string
+  width?: string
+  height?: string
+  cursor?: boolean
+}
+
+withDefaults(defineProps<PropsType>(), {
+  prefix: '#icon',
+  color: '#333333',
+  width: '24px',
+  height: '24px',
+  cursor: true
 })
 </script>
 

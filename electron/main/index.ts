@@ -26,8 +26,6 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
-    minWidth: 900,
-    minHeight: 670,
     show: false,
     resizable: true,
     fullscreenable: true,
