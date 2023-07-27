@@ -2,7 +2,7 @@ import { autoUpdater, ProgressInfo } from 'electron-updater'
 import { app, BrowserWindow } from 'electron'
 import { ipcMain } from 'electron'
 
-enum UpdateMessage {
+export enum UpdateMessage {
   error = 'updateError',
   checking = 'updateChecking',
   available = 'updateAvailable',
@@ -12,7 +12,7 @@ enum UpdateMessage {
   updating = 'updateUpdating'
 }
 
-interface UpdateMessageWithStatus {
+export interface UpdateMessageWithStatus {
   status: string
   message?: string
   progress?: ProgressInfo

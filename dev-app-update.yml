@@ -1,3 +1,3 @@
 provider: generic
-url: https://example.com/auto-updates
+url: http://localhost:3000/static
 updaterCacheDirName: electron-app-updater
