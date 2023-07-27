@@ -11,7 +11,7 @@ import { installUpdater } from './update'
 
 initLogger()
 
-log.debug('Starting App...')
+log.info('Starting App...')
 
 let mainWindow: null | BrowserWindow
 
@@ -22,7 +22,7 @@ const url = process.env['ELECTRON_RENDERER_URL']
 // 创建窗口
 function createWindow(): void {
   // Create the browser window.
-  log.debug('Create window')
+  log.info('Create window')
   mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -57,7 +57,7 @@ function createWindow(): void {
 
 // 添加事件监听
 function installEvents(): void {
-  log.debug('Install events')
+  log.info('Install events')
   installFile()
   installUpdater(mainWindow!)
   const iconFromPath = nativeImage.createFromPath(icon)
@@ -117,7 +117,7 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  log.debug('App quiting...')
+  log.info('App quiting...')
   mainWindow = null
   if (process.platform !== 'darwin') {
     app.quit()

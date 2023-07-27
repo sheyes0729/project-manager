@@ -31,6 +31,7 @@ const status = ref('')
 const progress = ref(0)
 
 onMounted(async () => {
+  window.electron.ipcRenderer.send('logger', 'Check Version')
   window.electron.ipcRenderer.send('check-update')
   window.electron.ipcRenderer.on('update-message', (_, data) => {
     console.log('update message: ', data)

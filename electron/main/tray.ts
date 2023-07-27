@@ -28,6 +28,14 @@ export const installTray = (icon: Electron.NativeImage, win: BrowserWindow): voi
       type: 'separator'
     },
     {
+      label: '重启应用',
+      type: 'normal',
+      click: (): void => {
+        app.relaunch()
+        app.exit(0)
+      }
+    },
+    {
       label: '开机启动',
       type: 'normal',
       click: (): void => {
