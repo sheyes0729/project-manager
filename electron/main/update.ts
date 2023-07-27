@@ -19,12 +19,17 @@ interface UpdateMessageWithStatus {
 }
 
 export function installUpdater(win: BrowserWindow): void {
+  // 禁用自动更新
+  autoUpdater.autoDownload = false
+  autoUpdater.autoInstallOnAppQuit = false
+
+  if (!app.isPackaged) {
+    autoUpdater.forceDevUpdateConfig = true
+  }
+
   const sendMsgToRender = (msg: UpdateMessageWithStatus): void => {
     win.webContents.send('update-message', msg)
   }
-
-  // 禁用自动更新
-  autoUpdater.autoDownload = false
 
   // 检查更新出错
   autoUpdater.on('error', (err) => {
@@ -72,12 +77,21 @@ export function installUpdater(win: BrowserWindow): void {
 
   // 检测更新
   ipcMain.on('check-update', () => {
-    console.log('Checking')
     autoUpdater.checkForUpdates()
   })
 
   // 检测版本
   ipcMain.handle('check-version', () => {
     return app.getVersion()
+  })
+
+  // 开始更新
+  ipcMain.on('update-download', () => {
+    autoUpdater.downloadUpdate()
+  })
+
+  // 安装更新
+  ipcMain.on('install-update', () => {
+    autoUpdater.quitAndInstall()
   })
 }

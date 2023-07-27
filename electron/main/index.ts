@@ -7,6 +7,7 @@ import { installFile } from './file'
 import { installTray } from './tray'
 import { installWindow } from './window'
 import { initLogger } from './log'
+import { installUpdater } from './update'
 
 initLogger()
 
@@ -60,6 +61,7 @@ function createWindow(): void {
 function installEvents(): void {
   log.debug('Install events')
   installFile()
+  installUpdater(mainWindow!)
   const iconFromPath = nativeImage.createFromPath(icon)
   installTray(iconFromPath, mainWindow!)
   installWindow(mainWindow!)

@@ -17,8 +17,13 @@ defineOptions({
   name: 'AppIndex'
 })
 
-onMounted(() => {
-  console.log('App index')
+onMounted(async () => {
+  window.electron.ipcRenderer.send('check-update')
+  window.electron.ipcRenderer.on('update-message', (data) => {
+    console.log(data)
+  })
+  const data = await window.electron.ipcRenderer.invoke('check-version')
+  console.log(data)
 })
 </script>
 <style lang="scss" scoped></style>
