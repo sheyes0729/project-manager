@@ -4,7 +4,7 @@ import path from 'path'
 import os from 'os'
 import log from 'electron-log'
 import type { FileData } from '../../../typings/file'
-import { app } from 'electron'
+import { normalizePath } from '../path'
 
 const numThreads = os.cpus().length // 线程数
 export async function scanfile(root: string): Promise<FileData[]> {
@@ -26,8 +26,7 @@ export async function scanfile(root: string): Promise<FileData[]> {
     })
 
     const workers: Worker[] = []
-
-    const workerPath = path.join(process.cwd(), app.isPackaged ? 'resources/app.asar.unpacked' : '','resources/js/workers/scanfile.mjs')
+    const workerPath = normalizePath('resources/js/scanfile.mjs')
 
     // 创建并启动多个线程
     for (let i = 0; i < numThreads; i++) {

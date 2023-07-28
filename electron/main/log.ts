@@ -1,18 +1,18 @@
 import log from 'electron-log'
 import { app, ipcMain } from 'electron'
-import path from 'path'
 import fs from 'fs'
+import { normalizePath } from './path'
 
 export function initLogger(): void {
   // 设置系统日志目录
-  const systemLogPath = path.join(process.cwd(), 'logs/system')
+  const systemLogPath = normalizePath('logs/system')
   if (!fs.existsSync(systemLogPath)) {
     fs.mkdirSync(systemLogPath, { recursive: true })
   }
   app.setAppLogsPath(systemLogPath)
 
   // 设置运行日志目录
-  const runtimeLogPath = path.join(process.cwd(), 'logs/main.log')
+  const runtimeLogPath = normalizePath('logs/main.log')
   if (!fs.existsSync(runtimeLogPath)) {
     fs.writeFileSync(runtimeLogPath, '', 'utf-8')
   }

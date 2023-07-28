@@ -4,13 +4,14 @@ import path from 'path'
 import lodash from 'lodash'
 import log from 'electron-log'
 import fs from 'fs'
+import { normalizePath } from './path'
 
 export function initDB() {
   log.info('Init DB...')
 
   const fileName = 'db.json'
 
-  const fileDirectory = path.join(app.getPath('userData'), 'lowdb')
+  const fileDirectory = normalizePath('data')
 
   const filePath = path.join(fileDirectory, fileName)
 
@@ -35,9 +36,9 @@ export function initDB() {
 
   log.debug('db data: ', db.data)
 
-  update('system', { theme: 'light' })
+  // update('system', { theme: 'light' })
 
-  log.debug('theme: ', result('system.theme'))
+  // log.debug('theme: ', result('system.theme'))
 
   function update(key: string, value: any) {
     db.read()
