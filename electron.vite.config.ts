@@ -30,14 +30,39 @@ export default defineConfig({
       root: '.',
       resolve: {
         alias: {
-          '@renderer': resolve('src')
+          '@': resolve(__dirname, 'src'),
+          '~': resolve(__dirname, 'src')
+        }
+      },
+      css: {
+        preprocessorOptions: {
+          scss: {
+            additionalData: `
+              @use "~/assets/css/theme/_themeify.scss" as *;
+              @use "~/assets/css/theme/_variables.scss" as *;
+            `
+          }
         }
       },
       plugins: [
         vue(),
         pages({
-          dirs: resolve(__dirname, 'src/views'),
-          routeBlockLang: 'json5'
+          dirs: [
+            {
+              dir: resolve(__dirname, 'src/views'),
+              baseRoute: '/'
+            }
+          ],
+          routeBlockLang: 'json5',
+          extendRoute(route) {
+            if (route.path === '/') {
+              return {
+                ...route,
+                redirect: '/dashboard'
+              }
+            }
+            return route
+          }
         }),
         layouts({
           importMode: () => 'async'

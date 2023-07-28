@@ -52,8 +52,8 @@ onMounted(async () => {
     }
   })
 
-  const data = await window.electron.ipcRenderer.invoke('check-version')
-  console.log(data)
+  const version = await window.electron.ipcRenderer.invoke('check-version')
+  console.log('version: ', version)
 })
 
 function update(): void {

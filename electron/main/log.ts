@@ -7,21 +7,21 @@ export function initLogger(): void {
   // 设置系统日志目录
   app.setAppLogsPath(path.join(app.getAppPath(), 'logs/system'))
 
-  // 修改数据位置，C盘装不下了你个不良应用
-  const userDataPath = path.join(app.getAppPath(), 'data/userData')
-  const sessionDataPath = path.join(app.getAppPath(), 'data/sessionData')
+  // 修改数据位置，C盘装不下了你个不良应用，开发环境会不断刷新
+  // const userDataPath = path.join(app.getAppPath(), 'data/userData')
+  // const sessionDataPath = path.join(app.getAppPath(), 'data/sessionData')
 
-  if (!fs.existsSync(userDataPath)) {
-    fs.mkdirSync(userDataPath, { recursive: true })
-  }
+  // if (!fs.existsSync(userDataPath)) {
+  //   fs.mkdirSync(userDataPath, { recursive: true })
+  // }
 
-  app.setPath('userData', userDataPath)
+  // app.setPath('userData', userDataPath)
 
-  if (!fs.existsSync(sessionDataPath)) {
-    fs.mkdirSync(sessionDataPath, { recursive: true})
-  }
+  // if (!fs.existsSync(sessionDataPath)) {
+  //   fs.mkdirSync(sessionDataPath, { recursive: true})
+  // }
 
-  app.setPath('sessionData', sessionDataPath)
+  // app.setPath('sessionData', sessionDataPath)
 
   // 设置运行日志目录
   log.transports.file.resolvePath = (): string => {

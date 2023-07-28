@@ -24,11 +24,12 @@ function createWindow(): void {
   // Create the browser window.
   log.info('Create window')
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1096,
+    height: 720,
     show: false,
     resizable: true,
     fullscreenable: true,
+    frame: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

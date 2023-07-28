@@ -7,6 +7,25 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    display: none;
+  }
+
+  &:hover::-webkit-scrollbar {
+    display: block;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    background-color: #ddd;
+    &:hover {
+      background-color: #ccc;
+    }
+  }
 }
 
 ul {
@@ -18,6 +37,5 @@ body,
 #app {
   width: 100vw;
   height: 100vh;
-  background-color: #ffffff;
   font-size: 16px;
 }

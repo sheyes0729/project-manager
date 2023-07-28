@@ -1,0 +1,64 @@
+<template>
+  <img :class="class" :src="imageSrc" alt="" :style="imageStyle" />
+</template>
+
+<script lang="ts" setup>
+import { getAssetsFile } from '@/utils/getAssetsFile'
+import { StyleValue } from 'vue'
+defineOptions({
+  name: 'ImageIcon'
+})
+
+interface PropType {
+  link: string
+  remote?: boolean
+  type?: 'png' | 'jpg' | 'svg'
+  width?: string
+  height?: string
+  cursor?: boolean
+  alt?: string
+  title?: string
+  class?: string
+}
+
+const props = withDefaults(defineProps<PropType>(), {
+  remote: false,
+  width: '24px',
+  height: '24px',
+  cursor: false,
+  type: 'png',
+  alt: '',
+  title: '',
+  class: ''
+})
+
+const imageStyle = computed(() => {
+  if (props.class) {
+    return {}
+  }
+  return <StyleValue>{
+    display: 'block',
+    objectFit: 'fill',
+    cursor: props.cursor ? 'pointer' : 'auto',
+    width: props.width,
+    height: props.height
+  }
+})
+
+const imageSrc = computed(() => {
+  let src = ''
+  if (props.remote) {
+    src = props.link
+  } else {
+    const arr = props.link.split('-')
+    let prefix = 'images'
+    arr.forEach((path) => {
+      prefix += '/' + path
+    })
+    src = getAssetsFile(prefix + '.' + props.type)
+  }
+  return src
+})
+</script>
+
+<style lang="scss" scoped></style>
