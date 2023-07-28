@@ -2,9 +2,13 @@ $themes: (
   light: (
     color-bg: #efefef,
     color-bg-aside: #fff,
-    color-bg-content: #fff,
+    color-text: #282828,
+    img-filter: none,
   ),
   dark: (
     color-bg: #222222,
+    color-bg-aside: #363636,
+    color-text: #f5f5f5,
+    img-filter: invert(100%),
   )
 );

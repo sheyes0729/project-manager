@@ -1,21 +1,29 @@
 <template>
-  <section ref="menu" class="layout-menu">
-    <div ref="menuItemBg" class="menu-item menu-active-bg" />
-    <div
-      class="menu-item"
-      v-for="menu in menuList"
-      @click="onMenuSelected(menu)"
-      :ref="menuItemRef"
-    >
-      <image-icon class="icon" :link="menu.icon"></image-icon>
-      <div class="title">{{ menu.label }}</div>
+  <section :class="['layout-aside', { toggled: toggle }]">
+    <div class="logo">
+      <svg-icon name="logo" :cursor="false" width="40px" height="40px"> </svg-icon>
+      <div class="title">PM</div>
+    </div>
+    <div ref="menu" class="menu">
+      <div ref="menuItemBg" class="menu-item menu-active-bg" />
+      <div
+        class="menu-item"
+        v-for="menu in menuList"
+        :ref="menuItemRef"
+        @click="onMenuSelected(menu)"
+      >
+        <image-icon class="icon" :link="menu.icon"></image-icon>
+        <div class="label">{{ menu.label }}</div>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import bus from 'vue3-eventbus'
+
 defineOptions({
-  name: 'LayoutMenu'
+  name: 'LayoutAside'
 })
 
 interface MenuItem {
@@ -33,6 +41,11 @@ const menuList: Array<MenuItem> = [
     path: 'dashboard'
   },
   {
+    label: 'File',
+    icon: 'menu-home',
+    path: 'file'
+  },
+  {
     label: 'Settings',
     icon: 'menu-settings',
     path: 'settings'
@@ -43,6 +56,24 @@ const menuList: Array<MenuItem> = [
     path: 'about'
   }
 ]
+
+const toggle = ref(false)
+function toggleHandler() {
+  console.log('toggle')
+  toggle.value = !toggle.value
+  const index = menuList.findIndex((menu: MenuItem) => menu.path === active.value)
+  handleBgMove(index)
+}
+
+onMounted(() => {
+  watchEffect((onInvalid) => {
+    bus.on('toggle-menu', toggleHandler)
+
+    onInvalid(() => {
+      bus.off('toggle-menu', toggleHandler)
+    })
+  })
+})
 
 const router = useRouter()
 function onMenuSelected(menu: MenuItem) {
@@ -70,8 +101,9 @@ function handleBgMove(index: number) {
   nextTick(() => {
     const item = menuItem.value[index]
     const top = item.offsetTop
-    const padding = getComputedStyle(item).paddingTop.replace('px', '')
-    menuItemBg.value!.style.top = top + Number(padding) / 4 + 'px'
+    const height = item.clientHeight
+    menuItemBg.value!.style.height = height + 'px'
+    menuItemBg.value!.style.top = top + 'px'
   })
 }
 
@@ -88,7 +120,34 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.layout-menu {
+.layout-aside {
+  height: 100%;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: $padding-mini;
+  transition: width 0.3s ease;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    padding: 0 $padding-large;
+    gap: $padding-base;
+    .title {
+      font-size: $font-extra-large;
+      font-weight: $font-weight-bolder;
+      letter-spacing: $padding-mini;
+    }
+  }
+}
+
+.menu {
+  -webkit-app-region: no-drag;
+  flex: 1;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   position: relative;
   padding-top: $padding-base;
   padding-left: $padding-base;
@@ -112,7 +171,6 @@ watch(
 
   .menu-active-bg {
     position: absolute;
-    height: calc((100% - 2 * $padding-base) / v-bind('menuList.length'));
     width: calc(100% - $padding-base);
     transition: top 0.3s ease;
     @include themeify {
@@ -148,6 +206,20 @@ watch(
           themed('color-bg') $padding-base
         );
       }
+    }
+  }
+}
+
+.layout-aside.toggled {
+  width: 80px;
+  .logo {
+    .title {
+      display: none;
+    }
+  }
+  .menu-item {
+    .label {
+      display: none;
     }
   }
 }

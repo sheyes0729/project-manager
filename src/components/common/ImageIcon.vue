@@ -1,5 +1,5 @@
 <template>
-  <img :class="class" :src="imageSrc" alt="" :style="imageStyle" />
+  <img :class="class" :src="imageSrc" :style="imageStyle" :title="title" :alt="alt" />
 </template>
 
 <script lang="ts" setup>
@@ -61,4 +61,10 @@ const imageSrc = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+img {
+  @include themeify {
+    filter: themed('img-filter');
+  }
+}
+</style>

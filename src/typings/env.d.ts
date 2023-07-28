@@ -6,3 +6,13 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+
+declare module 'vue3-eventbus' {
+  type EventType = (name: string, handler?: (...args) => void) => void
+  const on: EventType
+  const emit: (name: string, data?: any) => void
+  const off: EventType
+  const once: EventType
+
+  export { on, emit, off, once }
+}

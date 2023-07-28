@@ -21,7 +21,7 @@ export const installWindow = (win: BrowserWindow): void => {
       win.hide()
     } else if (type === 'toggleTop') {
       // 窗口置顶
-      const isAlwaysOnTop = win.isAlwaysOnTop
+      const isAlwaysOnTop = win.isAlwaysOnTop()
       win.setAlwaysOnTop(!isAlwaysOnTop)
     }
   })

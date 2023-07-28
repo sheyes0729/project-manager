@@ -8,8 +8,8 @@ body {
   margin: 0;
   box-sizing: border-box;
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     display: none;
   }
 
@@ -18,9 +18,9 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    width: 6px;
-    height: 6px;
-    border-radius: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
     background-color: #ddd;
     &:hover {
       background-color: #ccc;
