@@ -70,7 +70,8 @@ function handleBgMove(index: number) {
   nextTick(() => {
     const item = menuItem.value[index]
     const top = item.offsetTop
-    menuItemBg.value!.style.top = top + 2 + 'px'
+    const padding = getComputedStyle(item).paddingTop.replace('px', '')
+    menuItemBg.value!.style.top = top + Number(padding) / 4 + 'px'
   })
 }
 
@@ -95,7 +96,7 @@ watch(
     position: relative;
     display: flex;
     align-items: center;
-    padding: $padding-mini;
+    padding: $padding-small;
     border-radius: $radius-extra-large 0 0 $radius-extra-large;
     cursor: pointer;
     .icon {
@@ -107,49 +108,11 @@ watch(
     .label {
       vertical-align: middle;
     }
-
-    &.active {
-      &::before {
-        position: absolute;
-        top: -1 * $padding-base;
-        right: 0;
-        content: '';
-        width: $padding-base;
-        height: $padding-base;
-        @include themeify {
-          background: radial-gradient(
-            circle at 0 0,
-            transparent $padding-base,
-            themed('color-bg') $padding-base
-          );
-        }
-      }
-
-      &::after {
-        position: absolute;
-        bottom: -1 * $padding-base;
-        right: 0;
-        content: '';
-        width: $padding-base;
-        height: $padding-base;
-        @include themeify {
-          background: radial-gradient(
-            circle at 0 $padding-base,
-            transparent $padding-base,
-            themed('color-bg') $padding-base
-          );
-        }
-      }
-      @include themeify {
-        background-color: themed('color-bg');
-      }
-    }
   }
 
   .menu-active-bg {
     position: absolute;
     height: calc((100% - 2 * $padding-base) / v-bind('menuList.length'));
-    // top: $padding-base;
     width: calc(100% - $padding-base);
     transition: top 0.3s ease;
     @include themeify {
