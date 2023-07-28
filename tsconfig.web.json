@@ -5,7 +5,9 @@
     "src/**/*",
     "src/**/*.vue",
     "src/*.vue",
-    "electron/preload/*.d.ts"
+    "electron/preload/*.d.ts",
+    "typings/*",
+    "config/*"
   ],
   "files": [
     "src/App.vue"
@@ -20,6 +22,12 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@typings/*": [
+        "typings/*"
       ]
     }
   }

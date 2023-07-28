@@ -8,6 +8,15 @@ import { installTray } from './tray'
 import { installWindow } from './window'
 import { initLogger } from './log'
 import { installUpdater } from './update'
+import { initDB } from './db'
+
+Object.defineProperty(is, 'dev', {
+  value: {
+    get() {
+      return true
+    }
+  }
+})
 
 initLogger()
 
@@ -104,6 +113,8 @@ app.whenReady().then(() => {
   setSingleInstance()
 
   installEvents()
+
+  initDB()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

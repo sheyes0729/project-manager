@@ -5,27 +5,19 @@ import fs from 'fs'
 
 export function initLogger(): void {
   // 设置系统日志目录
-  app.setAppLogsPath(path.join(app.getAppPath(), 'logs/system'))
-
-  // 修改数据位置，C盘装不下了你个不良应用，开发环境会不断刷新
-  // const userDataPath = path.join(app.getAppPath(), 'data/userData')
-  // const sessionDataPath = path.join(app.getAppPath(), 'data/sessionData')
-
-  // if (!fs.existsSync(userDataPath)) {
-  //   fs.mkdirSync(userDataPath, { recursive: true })
-  // }
-
-  // app.setPath('userData', userDataPath)
-
-  // if (!fs.existsSync(sessionDataPath)) {
-  //   fs.mkdirSync(sessionDataPath, { recursive: true})
-  // }
-
-  // app.setPath('sessionData', sessionDataPath)
+  const systemLogPath = path.join(process.cwd(), 'logs/system')
+  if (!fs.existsSync(systemLogPath)) {
+    fs.mkdirSync(systemLogPath, { recursive: true })
+  }
+  app.setAppLogsPath(systemLogPath)
 
   // 设置运行日志目录
+  const runtimeLogPath = path.join(process.cwd(), 'logs/main.log')
+  if (!fs.existsSync(runtimeLogPath)) {
+    fs.writeFileSync(runtimeLogPath, '', 'utf-8')
+  }
   log.transports.file.resolvePath = (): string => {
-    return path.join(app.getAppPath(), 'logs/main.log')
+    return runtimeLogPath
   }
 
   log.transports.file.getFile()

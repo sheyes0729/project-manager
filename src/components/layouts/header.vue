@@ -49,6 +49,7 @@ function toggleTheme() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-right: $padding-small;
 
   .menu-icon {
     -webkit-app-region: no-drag;

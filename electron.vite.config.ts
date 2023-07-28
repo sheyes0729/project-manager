@@ -10,8 +10,12 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()],
+    optimizeDeps: {
+      include: ['worker_threads']
+    },
     build: {
       rollupOptions: {
+        preserveEntrySignatures: 'allow-extension',
         input: resolve(__dirname, 'electron/main/index.ts')
       }
     }
@@ -31,7 +35,9 @@ export default defineConfig({
       resolve: {
         alias: {
           '@': resolve(__dirname, 'src'),
-          '~': resolve(__dirname, 'src')
+          '~': resolve(__dirname, 'src'),
+          '@config': resolve(__dirname, 'config'),
+          '@typings': resolve(__dirname, 'typings')
         }
       },
       css: {

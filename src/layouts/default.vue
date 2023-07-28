@@ -31,6 +31,7 @@ import LayoutAside from '@/components/layouts/aside.vue'
   height: 100vh;
   display: flex;
   padding: $padding-small;
+  padding-right: 0;
   @include themeify {
     background-color: themed('color-bg');
     color: themed('color-text');
@@ -56,7 +57,9 @@ import LayoutAside from '@/components/layouts/aside.vue'
 
   .content {
     -webkit-app-region: no-drag;
-    flex: 1;
+    height: calc(100% - 24px - 2 * $padding-small);
+    padding-right: $padding-small;
+    overflow: auto;
   }
 }
 </style>
