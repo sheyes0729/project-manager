@@ -1,5 +1,5 @@
 import { LowSync, JSONFileSync } from '@commonify/lowdb'
-import { app, ipcMain } from 'electron'
+import { ipcMain } from 'electron'
 import path from 'path'
 import lodash from 'lodash'
 import log from 'electron-log'
@@ -24,7 +24,7 @@ export function installDB() {
     file: {}
   }
 
-  if (!app.isPackaged || !fs.existsSync(filePath)) {
+  if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify(defaultData), 'utf-8')
   }
 
@@ -55,7 +55,7 @@ export function installDB() {
     update(key, value)
   })
 
-  ipcMain.handle('get-db', (_, key: string) => {
-    return result(key)
+  ipcMain.handle('get-db', (_, key: string, fallback?: any) => {
+    return result(key) ?? fallback
   })
 }

@@ -10,23 +10,59 @@
       <image-icon link="zoom" title="缩放" class="icon" @click="operateWindow('toggleMaxize')" />
       <image-icon link="close" title="关闭" class="icon" @click="operateWindow('inquire')" />
     </div>
+
+    <Modal v-model="modal" title="关闭提示" @on-ok="confirm">
+      <Space direction="vertical" size="large">
+        <p>即将退出App？</p>
+        <RadioGroup v-model="operation">
+          <Radio label="minify">
+            <span>最小化</span>
+          </Radio>
+          <Radio label="close">
+            <span>直接退出</span>
+          </Radio>
+        </RadioGroup>
+
+        <Checkbox v-model="remember">记住选择</Checkbox>
+      </Space>
+    </Modal>
   </header>
 </template>
 
 <script lang="ts" setup>
 import { ipcRenderer } from '@/utils/ipc'
-import { IPCWindowEvents } from '@shared/config/constant'
+import { IPCWindowEvents, IpcDBEvents } from '@shared/config/constant'
 import bus from 'vue3-eventbus'
 defineOptions({
   name: 'LayoutHeader'
 })
 
+const modal = ref(false)
+
+const operation = ref('minify')
+const remember = ref(false)
+
+function confirm() {
+  ipcRenderer.send(IPCWindowEvents.WINDOW_OPERATION, operation.value)
+  if (remember.value) {
+    ipcRenderer.send(IpcDBEvents.SET_DB, 'system.closeBehavior', operation.value)
+  }
+}
+
 function toggleAsideMenu() {
   bus.emit('toggle-menu')
 }
 
-function operateWindow(type: string) {
+async function operateWindow(type: string) {
   if (type === 'inquire') {
+    const behavior = await ipcRenderer.invoke(IpcDBEvents.GET_DB, 'system.closeBehavior', 'inquire')
+    if (behavior === 'inquire') {
+      modal.value = true
+      operation.value = 'minify'
+      remember.value = false
+    } else {
+      ipcRenderer.send(IPCWindowEvents.WINDOW_OPERATION, behavior)
+    }
   } else {
     ipcRenderer.send(IPCWindowEvents.WINDOW_OPERATION, type)
   }
@@ -35,11 +71,9 @@ function operateWindow(type: string) {
 function toggleTheme() {
   const body = document.body
   const theme = body.getAttribute('data-theme')
-  if (theme === 'light') {
-    body.setAttribute('data-theme', 'dark')
-  } else {
-    body.setAttribute('data-theme', 'light')
-  }
+  const newTheme = theme === 'light' ? 'dark' : 'light'
+  body.setAttribute('data-theme', newTheme)
+  ipcRenderer.send(IpcDBEvents.SET_DB, 'system.theme', newTheme)
 }
 </script>
 

@@ -34,13 +34,19 @@ const { proxy } = getCurrentInstance()!
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
   console.log('data: ', data)
-  proxy?.$Message?.success('扫描完成！')
-  files.value = data
   text.value = `扫描完成，共扫描到文件${data.length}个`
+  proxy?.$Notice.success({
+    title: '扫描完成！',
+    desc: text.value
+  })
+  files.value = data
 })
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_CANCELED, (_) => {
-  proxy?.$Message?.info('已取消扫描！')
+  proxy?.$Notice?.info({
+    title: '提示',
+    desc: '取消扫描！'
+  })
 })
 
 function scanfile() {
