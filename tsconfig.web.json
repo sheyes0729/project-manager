@@ -6,8 +6,7 @@
     "src/**/*.vue",
     "src/*.vue",
     "electron/preload/*.d.ts",
-    "typings/*",
-    "config/*"
+    "shared/**/*",
   ],
   "files": [
     "src/App.vue"
@@ -23,12 +22,9 @@
       "@/*": [
         "src/*"
       ],
-      "@config/*": [
-        "config/*"
+      "@shared/*": [
+        "shared/*"
       ],
-      "@typings/*": [
-        "typings/*"
-      ]
     }
   }
 }

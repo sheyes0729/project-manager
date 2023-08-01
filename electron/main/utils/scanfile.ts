@@ -3,7 +3,7 @@ import { Worker } from 'worker_threads'
 import path from 'path'
 import os from 'os'
 import log from 'electron-log'
-import type { FileData } from '../../../typings/file'
+import type { FileData } from '../../../shared/typings/file'
 import { normalizePath } from '../path'
 
 const numThreads = os.cpus().length // 线程数

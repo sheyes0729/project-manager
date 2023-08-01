@@ -14,12 +14,12 @@
 </template>
 
 <script lang="ts" setup>
+import { ipcRenderer } from '@/utils/ipc'
+import { IPCWindowEvents } from '@shared/config/constant'
 import bus from 'vue3-eventbus'
 defineOptions({
   name: 'LayoutHeader'
 })
-
-const ipcRenderer = window.electron.ipcRenderer
 
 function toggleAsideMenu() {
   bus.emit('toggle-menu')
@@ -28,7 +28,7 @@ function toggleAsideMenu() {
 function operateWindow(type: string) {
   if (type === 'inquire') {
   } else {
-    ipcRenderer.send('window-operation', type)
+    ipcRenderer.send(IPCWindowEvents.WINDOW_OPERATION, type)
   }
 }
 

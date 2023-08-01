@@ -1,15 +1,16 @@
 import { dialog, ipcMain } from 'electron'
 import { scanfile } from './utils/scanfile'
+import { IPCFileEvents } from '../../shared/config/constant'
 export function installFile(): void {
-  ipcMain.handle('open-file-in-ide', (_, ...args): string => {
-    console.log('opan-file-in-ide: ', ...args)
+  ipcMain.handle(IPCFileEvents.OPEN_FILE_IN_IDE, (_, ...args): string => {
+    console.log(IPCFileEvents.OPEN_FILE_IN_IDE, ':', ...args)
     return 'success'
   })
 
-  ipcMain.on('scan-files-in-directory', async (_, dir: string): Promise<void> => {
+  ipcMain.on(IPCFileEvents.SCAN_FILES_IN_DIRECTORY, async (_, dir: string): Promise<void> => {
     if (dir) {
       const result = await scanfile(dir)
-      _.reply('scan-files-completed', result)
+      _.reply(IPCFileEvents.SCAN_FILES_COMPLETED, result)
     } else {
       const { canceled, filePaths } = await dialog.showOpenDialog({
         properties: ['openDirectory']
@@ -17,8 +18,8 @@ export function installFile(): void {
       if (!canceled) {
         const directory = filePaths[0]
         const result = await scanfile(directory)
-        _.reply('scan-files-completed', result)
-      }
+        _.reply(IPCFileEvents.SCAN_FILES_COMPLETED, result)
+      } else [_.reply(IPCFileEvents.SCAN_FILES_CANCELED)]
     }
   })
 }

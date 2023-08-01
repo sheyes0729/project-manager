@@ -5,8 +5,7 @@
     "electron/main/*", 
     "electron/main/**/*",
     "electron/preload/*",
-    "typings/*",
-    "config/*"
+    "shared/**/*",
   ],
   "compilerOptions": {
     "composite": true,

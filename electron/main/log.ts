@@ -2,6 +2,7 @@ import log from 'electron-log'
 import { app, ipcMain } from 'electron'
 import fs from 'fs'
 import { normalizePath } from './path'
+import { IPCLoggerEvents } from '../../shared/config/constant'
 
 export function initLogger(): void {
   // 设置系统日志目录
@@ -28,7 +29,7 @@ export function initLogger(): void {
 
   log.transports.file.maxSize = 10 * 1024 * 1024 // 10MB
 
-  ipcMain.on('logger', (_, ...args): void => {
+  ipcMain.on(IPCLoggerEvents.LOGGER, (_, ...args): void => {
     let type = 'info'
     let message = ''
     if (args.length > 1) {

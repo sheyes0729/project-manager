@@ -1,16 +1,8 @@
 import { autoUpdater, ProgressInfo } from 'electron-updater'
 import { app, BrowserWindow } from 'electron'
 import { ipcMain } from 'electron'
-
-export enum UpdateMessage {
-  error = 'updateError',
-  checking = 'updateChecking',
-  available = 'updateAvailable',
-  notAvailable = 'updateNotAvailable',
-  cancelled = 'updateCancelled',
-  completed = 'updateCompleted',
-  updating = 'updateUpdating'
-}
+import { UpdateMessage } from '../../shared/typings/update'
+import { IPCUpdateEvents } from '../../shared/config/constant'
 
 export interface UpdateMessageWithStatus {
   status: string
@@ -29,7 +21,7 @@ export function installUpdater(win: BrowserWindow): void {
   // }
 
   const sendMsgToRender = (msg: UpdateMessageWithStatus): void => {
-    win.webContents.send('update-message', msg)
+    win.webContents.send(IPCUpdateEvents.UPDATE_MESSAGE, msg)
   }
 
   // 检查更新出错
@@ -77,22 +69,22 @@ export function installUpdater(win: BrowserWindow): void {
   })
 
   // 检测更新
-  ipcMain.on('check-update', () => {
+  ipcMain.on(IPCUpdateEvents.CHECK_UPDATE, () => {
     autoUpdater.checkForUpdates()
   })
 
   // 检测版本
-  ipcMain.handle('check-version', () => {
+  ipcMain.handle(IPCUpdateEvents.CHECK_VERSION, () => {
     return app.getVersion()
   })
 
   // 开始更新
-  ipcMain.on('update-download', () => {
+  ipcMain.on(IPCUpdateEvents.UPDATE_DOWNLOAD, () => {
     autoUpdater.downloadUpdate()
   })
 
   // 安装更新
-  ipcMain.on('install-update', () => {
+  ipcMain.on(IPCUpdateEvents.INSTALL_UPDATE, () => {
     autoUpdater.quitAndInstall()
   })
 }

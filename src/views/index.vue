@@ -23,6 +23,10 @@
 </route>
 
 <script lang="ts" setup>
+import { ipcRenderer } from '@/utils/ipc'
+import { IPCLoggerEvents, IPCUpdateEvents } from '@shared/config/constant'
+import { UpdateMessage } from '@shared/typings/update'
+
 defineOptions({
   name: 'AppIndex'
 })
@@ -31,37 +35,43 @@ const status = ref('')
 const progress = ref(0)
 
 onMounted(async () => {
-  window.electron.ipcRenderer.send('logger', 'Check Version')
-  window.electron.ipcRenderer.send('check-update')
-  window.electron.ipcRenderer.on('update-message', (_, data) => {
+  ipcRenderer.send(IPCLoggerEvents.LOGGER, 'Check Version')
+  ipcRenderer.send(IPCUpdateEvents.CHECK_UPDATE)
+  ipcRenderer.on(IPCUpdateEvents.UPDATE_MESSAGE, (_, data) => {
     console.log('update message: ', data)
-    if (data.status === 'updateAvailable') {
-      status.value = '有可用更新'
-    } else {
-      status.value = '暂无更新'
-      if (data.status === 'updateUpdating') {
+    switch (data.status) {
+      case UpdateMessage.available:
+        status.value = '有可用更新'
+        break
+
+      case UpdateMessage.notAvailable:
+        status.value = '暂无更新'
+        break
+
+      case UpdateMessage.updating:
         progress.value = data.progress.percent
         console.log('总计大小：', transform2MB(data.progress.total))
         console.log('已下载：', transform2MB(data.progress.transferred))
         console.log('下载速度：', transform2MB(data.progress.bytesPerSecond))
-      }
-      if (data.status === 'updateCompleted') {
+        break
+
+      case UpdateMessage.completed:
         console.log('更新完成')
         progress.value = 100
-      }
+        break
     }
   })
 
-  const version = await window.electron.ipcRenderer.invoke('check-version')
+  const version = await ipcRenderer.invoke(IPCUpdateEvents.CHECK_VERSION)
   console.log('version: ', version)
 })
 
 function update(): void {
-  window.electron.ipcRenderer.send('update-download')
+  ipcRenderer.send(IPCUpdateEvents.UPDATE_DOWNLOAD)
 }
 
 function install(): void {
-  window.electron.ipcRenderer.send('install-update')
+  ipcRenderer.send(IPCUpdateEvents.INSTALL_UPDATE)
 }
 
 function transform2MB(value: number): number {

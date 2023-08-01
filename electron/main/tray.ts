@@ -58,5 +58,5 @@ export const installTray = (icon: Electron.NativeImage, win: BrowserWindow): voi
   ])
 
   tray.setContextMenu(contextMenu)
-  tray.setToolTip('Electron App')
+  tray.setToolTip(app.getName())
 }

@@ -133,6 +133,7 @@ watch(
     align-items: center;
     padding: 0 $padding-large;
     gap: $padding-base;
+
     .title {
       font-size: $font-extra-large;
       font-weight: $font-weight-bolder;

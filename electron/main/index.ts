@@ -8,15 +8,8 @@ import { installTray } from './tray'
 import { installWindow } from './window'
 import { initLogger } from './log'
 import { installUpdater } from './update'
-import { initDB } from './db'
-
-Object.defineProperty(is, 'dev', {
-  value: {
-    get() {
-      return true
-    }
-  }
-})
+import { installDB } from './db'
+import { IPCWindowEvents } from '../../shared/config/constant'
 
 initLogger()
 
@@ -114,7 +107,7 @@ app.whenReady().then(() => {
 
   installEvents()
 
-  initDB()
+  installDB()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -136,7 +129,7 @@ app.on('window-all-closed', () => {
   }
 })
 
-ipcMain.handle('open-child-window', (_, hash) => {
+ipcMain.handle(IPCWindowEvents.OPEN_CHILD_WINDOW, (_, hash) => {
   const childWindow = new BrowserWindow({
     webPreferences: {
       preload

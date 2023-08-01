@@ -36,8 +36,7 @@ export default defineConfig({
         alias: {
           '@': resolve(__dirname, 'src'),
           '~': resolve(__dirname, 'src'),
-          '@config': resolve(__dirname, 'config'),
-          '@typings': resolve(__dirname, 'typings')
+          '@shared': resolve(__dirname, 'shared')
         }
       },
       css: {

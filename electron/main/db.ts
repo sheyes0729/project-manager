@@ -6,8 +6,8 @@ import log from 'electron-log'
 import fs from 'fs'
 import { normalizePath } from './path'
 
-export function initDB() {
-  log.info('Init DB...')
+export function installDB() {
+  log.info('Install DB...')
 
   const fileName = 'db.json'
 
