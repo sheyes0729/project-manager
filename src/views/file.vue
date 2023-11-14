@@ -1,7 +1,7 @@
 <template>
   <Space>
-    <Button type="success" icon="ios-search" :loading="loading" @click="scanfile">开始扫描</Button>
-    <Button type="primary" icon="ios-trash" @click="clearFile">清空</Button>
+    <Button type="primary" icon="ios-search" :loading="loading" @click="scanfile">开始扫描</Button>
+    <Button type="error" icon="ios-trash" @click="clearFile">清空</Button>
     <p>{{ text }}</p>
   </Space>
   <ul class="files-wrapper">
@@ -19,19 +19,33 @@
       </div>
       <div class="file-operation">
         <Space>
-          <Button type="success" @click="openFilePath(file)">打开</Button>
+          <Button type="success" icon="ios-cube-outline">打开项目</Button>
           <Dropdown trigger="hover">
             <Icon type="md-more" size="24" class="operation-icon"></Icon>
             <template #list>
               <DropdownMenu>
-                <DropdownItem>在文件资源管理器中打开</DropdownItem>
-                <DropdownItem>查看详情</DropdownItem>
+                <DropdownItem @click="openFilePath(file)">
+                  <Space>
+                    <Icon type="ios-folder" size="16" />
+                    在文件资源管理器中打开
+                  </Space>
+                </DropdownItem>
+                <DropdownItem
+                  ><Space> <Icon type="ios-book" size="16" />查看详情 </Space></DropdownItem
+                >
+                <DropdownItem @click="handleCopy(file.directory)">
+                  <Space>
+                    <Icon type="ios-copy" size="18" />
+                    复制地址
+                  </Space>
+                </DropdownItem>
               </DropdownMenu>
             </template>
           </Dropdown>
         </Space>
       </div>
     </li>
+    <li v-if="files?.length" class="end-line">到底了</li>
   </ul>
 </template>
 
@@ -46,7 +60,8 @@
 <script lang="ts" setup>
 import type { FileData } from '@shared/typings/file'
 import { ipcRenderer } from '@/utils/ipc'
-import { IPCFileEvents } from '@shared/config/constant'
+import { IPCFileEvents, IpcDBEvents } from '@shared/config/constant'
+import { DropdownItem } from 'view-ui-plus'
 
 const files = ref<FileData[]>()
 
@@ -55,6 +70,11 @@ const text = ref('')
 const loading = ref(false)
 
 const { proxy } = getCurrentInstance()!
+
+onBeforeMount(async () => {
+  const result = await ipcRenderer.invoke(IpcDBEvents.GET_DB, 'file.list', [])
+  files.value = result
+})
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
   console.log('data: ', data)
@@ -65,10 +85,10 @@ ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
   })
   loading.value = false
   files.value = data
-  console.log('data: ', data)
+  ipcRenderer.send(IpcDBEvents.SET_DB, 'file.list', data)
 })
 
-ipcRenderer.on(IPCFileEvents.SCAN_FILES_CANCELED, (_) => {
+ipcRenderer.on(IPCFileEvents.SCAN_FILES_CANCELED, () => {
   proxy?.$Notice?.info({
     title: '提示',
     desc: '取消扫描！'
@@ -87,13 +107,21 @@ function clearFile() {
     title: '提示',
     desc: '文件已清空！'
   })
+  ipcRenderer.send(IpcDBEvents.SET_DB, 'file.list', [])
 }
 
 function openFilePath(file: FileData) {
   ipcRenderer.send(IPCFileEvents.OPEN_FILE_IN_EXPLORER, file.directory)
 }
+
+function handleCopy(value) {
+  proxy?.$Copy({
+    text: value
+  })
+}
 </script>
 <style lang="scss" scoped>
+@import url('https://fonts.joway.io/css/Poppins.css');
 .files-wrapper {
   margin-top: $padding-small;
 }
@@ -117,6 +145,7 @@ function openFilePath(file: FileData) {
   }
 
   .file-name {
+    font-family: 'Poppins', sans-serif;
     font-size: $font-extra-large;
     font-weight: $font-weight-bolder;
   }
@@ -129,6 +158,22 @@ function openFilePath(file: FileData) {
     .operation-icon {
       cursor: pointer;
     }
+  }
+}
+
+.end-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $padding-mini;
+  font-size: $font-small;
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    width: 10vw;
+    height: 1px;
+    background-color: #444;
   }
 }
 </style>

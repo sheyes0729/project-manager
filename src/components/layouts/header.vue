@@ -95,8 +95,8 @@ function toggleTheme() {
     gap: $padding-small;
   }
   .icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
   }
 }

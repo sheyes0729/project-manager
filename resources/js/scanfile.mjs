@@ -32,7 +32,7 @@ function scanDirectory(directory) {
             name: file,
             path: filePath,
             type: fileType,
-            size: dircStats,
+            size: dircStats.size,
             accessTime: dircStats.atime,
             createTime: dircStats.birthtime,
             lastUpdateTime: dircStats.mtime

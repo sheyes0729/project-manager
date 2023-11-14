@@ -4,16 +4,11 @@
       <svg-icon name="logo" :cursor="false" width="40px" height="40px"> </svg-icon>
       <div class="title">PM</div>
     </div>
-    <div ref="menu" class="menu">
+    <div class="menu">
       <div ref="menuItemBg" class="menu-item menu-active-bg" />
-      <div
-        v-for="menu in menuList"
-        :ref="menuItemRef"
-        class="menu-item"
-        @click="onMenuSelected(menu)"
-      >
-        <image-icon class="icon" :link="menu.icon"></image-icon>
-        <div class="label">{{ menu.label }}</div>
+      <div v-for="m in menuList" :ref="menuItemRef" class="menu-item" @click="onMenuSelected(m)">
+        <image-icon class="icon" :link="m.icon"></image-icon>
+        <div class="label">{{ m.label }}</div>
       </div>
     </div>
   </section>
@@ -82,8 +77,6 @@ function onMenuSelected(menu: MenuItem) {
     path: menu.path
   })
 }
-
-const menu = shallowRef<HTMLElement>()
 
 const menuItem = shallowRef<Array<HTMLElement>>([])
 
