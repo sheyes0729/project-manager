@@ -7,9 +7,9 @@
     <div ref="menu" class="menu">
       <div ref="menuItemBg" class="menu-item menu-active-bg" />
       <div
-        class="menu-item"
         v-for="menu in menuList"
         :ref="menuItemRef"
+        class="menu-item"
         @click="onMenuSelected(menu)"
       >
         <image-icon class="icon" :link="menu.icon"></image-icon>

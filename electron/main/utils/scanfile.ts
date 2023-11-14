@@ -6,6 +6,20 @@ import log from 'electron-log'
 import type { FileData } from '../../../shared/typings/file'
 import { normalizePath } from '../path'
 
+const projectTypes = {
+  java: {
+    include: ['pom.xml'],
+    ignore: []
+  },
+  node: {
+    include: ['package.json'],
+    ignore: ['node_modules']
+  },
+  flutter: {
+    include: ['pubspec.yaml']
+  }
+}
+
 const numThreads = os.cpus().length // 线程数
 export async function scanfile(root: string): Promise<FileData[]> {
   return new Promise((resolve) => {
@@ -33,7 +47,8 @@ export async function scanfile(root: string): Promise<FileData[]> {
       workers[i] = new Worker(workerPath, {
         workerData: {
           id: i,
-          subDirectories: threadSubDirectories[i]
+          subDirectories: threadSubDirectories[i],
+          projectTypes
         }
       })
     }

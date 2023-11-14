@@ -2,32 +2,9 @@ import fs from 'fs'
 import { workerData, parentPort } from 'worker_threads'
 import path from 'path'
 
-const projectTypes = {
-  java: {
-    include: ['.java'],
-    ignore: []
-  },
-  node: {
-    include: ['package.json'],
-    ignore: ['node_modules']
-  },
-  flutter: {
-    include: ['pubspec.yaml']
-  }
-}
-
 const ignoreSet = new Set()
 
-Object.entries(projectTypes).forEach(([type, config]) => {
-  if (!config.ignore) return
-  if (typeof config.ignore === 'string') {
-    ignoreSet.add(type)
-  } else {
-    config.ignore.forEach((item) => {
-      ignoreSet.add(item)
-    })
-  }
-})
+let projectTypes = {}
 
 function scanDirectory(directory) {
   try {
@@ -35,7 +12,7 @@ function scanDirectory(directory) {
     if (!filestats.isDirectory()) return
     const files = fs.readdirSync(directory)
     const subDirectories = []
-    for (let key in files) {
+    for (const key in files) {
       const file = files[key]
       if (ignoreSet.has(file)) continue
       const filePath = path.join(directory, file)
@@ -47,17 +24,18 @@ function scanDirectory(directory) {
         // 判断文件类型
         const fileType = getFileType(file)
         if (fileType) {
+          const dircStats = fs.statSync(directory)
           const fileData = {
-            uid: stats.uid,
+            uid: dircStats.uid,
             directory,
             projectName: path.basename(directory),
             name: file,
             path: filePath,
             type: fileType,
-            size: stats.size,
-            accessTime: stats.atime,
-            createTime: stats.birthtime,
-            lastUpdateTime: stats.mtime
+            size: dircStats,
+            accessTime: dircStats.atime,
+            createTime: dircStats.birthtime,
+            lastUpdateTime: dircStats.mtime
           }
           parentPort.postMessage(fileData)
           return
@@ -97,7 +75,19 @@ function getFileType(file) {
   return result
 }
 
-const { id, subDirectories } = workerData
+const { id, subDirectories, projectTypes: types } = workerData
+
+projectTypes = types
+Object.entries(projectTypes).forEach(([type, config]) => {
+  if (!config.ignore) return
+  if (typeof config.ignore === 'string') {
+    ignoreSet.add(type)
+  } else {
+    config.ignore.forEach((item) => {
+      ignoreSet.add(item)
+    })
+  }
+})
 
 subDirectories.forEach((dirctory) => {
   scanDirectory(dirctory)

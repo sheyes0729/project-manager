@@ -6,7 +6,8 @@ import log from 'electron-log'
 import fs from 'fs'
 import { normalizePath } from './path'
 
-export function installDB() {
+let db: LowSync<unknown> | null = null
+export function installDB(): void {
   log.info('Install DB...')
 
   const fileName = 'db.json'
@@ -30,7 +31,7 @@ export function installDB() {
 
   const adaptor = new JSONFileSync(filePath)
 
-  const db = new LowSync(adaptor)
+  db = new LowSync(adaptor)
 
   db.read()
 
@@ -40,22 +41,22 @@ export function installDB() {
 
   // log.debug('theme: ', result('system.theme'))
 
-  function update(key: string, value: any) {
-    db.read()
-    lodash.update(db.data as Object, key, () => value)
-    db.write()
-  }
-
-  function result(key: string) {
-    db.read()
-    return lodash.get(db.data, key)
-  }
-
   ipcMain.on('set-db', (_, key: string, value: any) => {
-    update(key, value)
+    setItem(key, value)
   })
 
   ipcMain.handle('get-db', (_, key: string, fallback?: any) => {
-    return result(key) ?? fallback
+    return getItem(key) ?? fallback
   })
+}
+
+function setItem(key: string, value: any): void {
+  ;(db as LowSync<unknown>).read()
+  lodash.update((db as LowSync<unknown>).data as any, key, () => value)
+  ;(db as LowSync<unknown>).write()
+}
+
+function getItem(key: string): any {
+  ;(db as LowSync<unknown>).read()
+  return lodash.get((db as LowSync<unknown>).data, key)
 }
