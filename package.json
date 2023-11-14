@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "An Electron application with Vue and TypeScript",
   "main": "./out/main/index.js",
-  "author": "azixf<azi0427@163.com>",
-  "homepage": "https://github.com/azixf/electron-app",
+  "author": "azixf<xie0729@yeah.net>",
+  "homepage": "https://gitee.com/xie_fei0729/electron-app",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --fix",
