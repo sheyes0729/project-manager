@@ -59,6 +59,7 @@ export default defineConfig({
               baseRoute: '/'
             }
           ],
+          exclude: ['**/components/*.vue'],
           routeBlockLang: 'json5',
           extendRoute(route) {
             if (route.path === '/') {
