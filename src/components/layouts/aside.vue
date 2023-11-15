@@ -136,7 +136,6 @@ watch(
 }
 
 .menu {
-  -webkit-app-region: no-drag;
   flex: 1;
   overflow: auto;
   &::-webkit-scrollbar {
@@ -146,6 +145,7 @@ watch(
   padding-top: $padding-base;
   padding-left: $padding-base;
   .menu-item {
+    -webkit-app-region: no-drag;
     position: relative;
     display: flex;
     align-items: center;
