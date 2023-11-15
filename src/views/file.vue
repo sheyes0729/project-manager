@@ -4,49 +4,51 @@
     <Button type="error" icon="ios-trash" @click="clearFile">清空</Button>
     <p>{{ text }}</p>
   </Space>
-  <ul class="files-wrapper">
-    <li v-for="f in files" class="file-item">
-      <div class="file-icon"></div>
-      <div>
-        <div class="file-name">{{ f.projectName }}</div>
-        <div class="file-dir">项目路径: {{ f.directory }}</div>
-        <div class="file-ctime">
-          创建时间：{{ proxy?.$Date(f.createTime).format('YYYY-MM-DD HH:mm:ss') }}
+  <div v-bind="containerProps" class="file-wrapper">
+    <div v-bind="wrapperProps">
+      <div v-for="f in list" class="file-item">
+        <div class="file-icon"></div>
+        <div>
+          <div class="file-name">{{ f.data.projectName }}</div>
+          <div class="file-dir">项目路径: {{ f.data.directory }}</div>
+          <div class="file-ctime">
+            创建时间：{{ proxy?.$Date(f.data.createTime).format('YYYY-MM-DD HH:mm:ss') }}
+          </div>
+          <div class="file-utime">
+            最后更新时间：{{ proxy?.$Date(f.data.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss') }}
+          </div>
         </div>
-        <div class="file-utime">
-          最后更新时间：{{ proxy?.$Date(f.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss') }}
+        <div class="file-operation">
+          <Space>
+            <Button type="success" icon="ios-cube-outline">打开项目</Button>
+            <Dropdown trigger="hover">
+              <Icon type="md-more" size="24" class="operation-icon"></Icon>
+              <template #list>
+                <DropdownMenu>
+                  <DropdownItem @click="openFilePath(f.data)">
+                    <Space>
+                      <Icon type="ios-folder" size="16" />
+                      在文件资源管理器中打开
+                    </Space>
+                  </DropdownItem>
+                  <DropdownItem
+                    ><Space> <Icon type="ios-book" size="16" />查看详情 </Space></DropdownItem
+                  >
+                  <DropdownItem @click="handleCopy(f.data.directory)">
+                    <Space>
+                      <Icon type="ios-copy" size="18" />
+                      复制地址
+                    </Space>
+                  </DropdownItem>
+                </DropdownMenu>
+              </template>
+            </Dropdown>
+          </Space>
         </div>
       </div>
-      <div class="file-operation">
-        <Space>
-          <Button type="success" icon="ios-cube-outline">打开项目</Button>
-          <Dropdown trigger="hover">
-            <Icon type="md-more" size="24" class="operation-icon"></Icon>
-            <template #list>
-              <DropdownMenu>
-                <DropdownItem @click="openFilePath(f)">
-                  <Space>
-                    <Icon type="ios-folder" size="16" />
-                    在文件资源管理器中打开
-                  </Space>
-                </DropdownItem>
-                <DropdownItem
-                  ><Space> <Icon type="ios-book" size="16" />查看详情 </Space></DropdownItem
-                >
-                <DropdownItem @click="handleCopy(f.directory)">
-                  <Space>
-                    <Icon type="ios-copy" size="18" />
-                    复制地址
-                  </Space>
-                </DropdownItem>
-              </DropdownMenu>
-            </template>
-          </Dropdown>
-        </Space>
-      </div>
-    </li>
-    <li v-if="files?.length" class="end-line">到底了</li>
-  </ul>
+      <div v-if="files?.length" class="end-line">到底了</div>
+    </div>
+  </div>
 </template>
 
 <route>
@@ -66,13 +68,17 @@ import { useStore } from '@composables/useStore'
 
 const { file, setFile } = useStore()
 
-const files = ref<FileData[]>()
+const files = ref<FileData[]>([])
 
 const text = ref('')
 
 const loading = ref(false)
 
 const { proxy } = getCurrentInstance()!
+
+const { list, containerProps, wrapperProps } = useVirtualList(files, {
+  itemHeight: 118
+})
 
 onBeforeMount(async () => {
   files.value = file.value.list ?? []
@@ -116,7 +122,7 @@ function openFilePath(file: FileData) {
   ipcRenderer.send(IPCFileEvents.OPEN_FILE_IN_EXPLORER, file.directory)
 }
 
-function handleCopy(value) {
+function handleCopy(value: string) {
   proxy?.$Copy({
     text: value
   })
@@ -124,8 +130,9 @@ function handleCopy(value) {
 </script>
 <style lang="scss" scoped>
 @import url('https://fonts.joway.io/css/Poppins.css');
-.files-wrapper {
+.file-wrapper {
   margin-top: $padding-small;
+  height: calc(100% - 54px);
 }
 .file-item {
   @include themeify {
