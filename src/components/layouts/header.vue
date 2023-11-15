@@ -31,11 +31,15 @@
 
 <script lang="ts" setup>
 import { ipcRenderer } from '@/utils/ipc'
-import { IPCWindowEvents, IpcDBEvents } from '@shared/config/constant'
+import { IPCWindowEvents } from '@shared/config/constant'
 import bus from 'vue3-eventbus'
+import { useStore } from '@composables/useStore'
+
 defineOptions({
   name: 'LayoutHeader'
 })
+
+const { system, setSystem } = useStore()
 
 const modal = ref(false)
 
@@ -45,7 +49,7 @@ const remember = ref(false)
 function confirm() {
   ipcRenderer.send(IPCWindowEvents.WINDOW_OPERATION, operation.value)
   if (remember.value) {
-    ipcRenderer.send(IpcDBEvents.SET_DB, 'system.closeBehavior', operation.value)
+    setSystem(operation.value, 'closeBehavior')
   }
 }
 
@@ -55,7 +59,7 @@ function toggleAsideMenu() {
 
 async function operateWindow(type: string) {
   if (type === 'inquire') {
-    const behavior = await ipcRenderer.invoke(IpcDBEvents.GET_DB, 'system.closeBehavior', 'inquire')
+    const behavior = system.value.closeBehavior || 'inquire'
     if (behavior === 'inquire') {
       modal.value = true
       operation.value = 'minify'
@@ -73,7 +77,7 @@ function toggleTheme() {
   const theme = body.getAttribute('data-theme')
   const newTheme = theme === 'light' ? 'dark' : 'light'
   body.setAttribute('data-theme', newTheme)
-  ipcRenderer.send(IpcDBEvents.SET_DB, 'system.theme', newTheme)
+  setSystem(newTheme, 'theme')
 }
 </script>
 

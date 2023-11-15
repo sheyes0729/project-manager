@@ -10,7 +10,7 @@ export interface UpdateMessageWithStatus {
   progress?: ProgressInfo
 }
 
-export function installUpdater(win: BrowserWindow): void {
+export function installUpdaterHanlder(win: BrowserWindow): void {
   // 禁用自动更新
   autoUpdater.autoDownload = false
   autoUpdater.autoInstallOnAppQuit = false

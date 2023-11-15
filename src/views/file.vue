@@ -5,16 +5,16 @@
     <p>{{ text }}</p>
   </Space>
   <ul class="files-wrapper">
-    <li v-for="file in files" class="file-item">
+    <li v-for="f in files" class="file-item">
       <div class="file-icon"></div>
       <div>
-        <div class="file-name">{{ file.projectName }}</div>
-        <div class="file-dir">项目路径: {{ file.directory }}</div>
+        <div class="file-name">{{ f.projectName }}</div>
+        <div class="file-dir">项目路径: {{ f.directory }}</div>
         <div class="file-ctime">
-          创建时间：{{ proxy?.$Date(file.createTime).format('YYYY-MM-DD HH:mm:ss') }}
+          创建时间：{{ proxy?.$Date(f.createTime).format('YYYY-MM-DD HH:mm:ss') }}
         </div>
         <div class="file-utime">
-          最后更新时间：{{ proxy?.$Date(file.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss') }}
+          最后更新时间：{{ proxy?.$Date(f.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss') }}
         </div>
       </div>
       <div class="file-operation">
@@ -24,7 +24,7 @@
             <Icon type="md-more" size="24" class="operation-icon"></Icon>
             <template #list>
               <DropdownMenu>
-                <DropdownItem @click="openFilePath(file)">
+                <DropdownItem @click="openFilePath(f)">
                   <Space>
                     <Icon type="ios-folder" size="16" />
                     在文件资源管理器中打开
@@ -33,7 +33,7 @@
                 <DropdownItem
                   ><Space> <Icon type="ios-book" size="16" />查看详情 </Space></DropdownItem
                 >
-                <DropdownItem @click="handleCopy(file.directory)">
+                <DropdownItem @click="handleCopy(f.directory)">
                   <Space>
                     <Icon type="ios-copy" size="18" />
                     复制地址
@@ -60,8 +60,11 @@
 <script lang="ts" setup>
 import type { FileData } from '@shared/typings/file'
 import { ipcRenderer } from '@/utils/ipc'
-import { IPCFileEvents, IpcDBEvents } from '@shared/config/constant'
+import { IPCFileEvents } from '@shared/config/constant'
 import { DropdownItem } from 'view-ui-plus'
+import { useStore } from '@composables/useStore'
+
+const { file, setFile } = useStore()
 
 const files = ref<FileData[]>()
 
@@ -72,8 +75,7 @@ const loading = ref(false)
 const { proxy } = getCurrentInstance()!
 
 onBeforeMount(async () => {
-  const result = await ipcRenderer.invoke(IpcDBEvents.GET_DB, 'file.list', [])
-  files.value = result
+  files.value = file.value.list ?? []
 })
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
@@ -85,7 +87,7 @@ ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
   })
   loading.value = false
   files.value = data
-  ipcRenderer.send(IpcDBEvents.SET_DB, 'file.list', data)
+  setFile(data, 'list')
 })
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_CANCELED, () => {
@@ -107,7 +109,7 @@ function clearFile() {
     title: '提示',
     desc: '文件已清空！'
   })
-  ipcRenderer.send(IpcDBEvents.SET_DB, 'file.list', [])
+  setFile([], 'list')
 }
 
 function openFilePath(file: FileData) {

@@ -1,7 +1,7 @@
 import { dialog, ipcMain, shell } from 'electron'
 import { scanfile } from './utils/scanfile'
 import { IPCFileEvents } from '../../shared/config/constant'
-export function installFile(): void {
+export function installFileHanler(): void {
   // 通过IDE打开文件夹
   ipcMain.handle(IPCFileEvents.OPEN_FILE_IN_IDE, (_, ...args): string => {
     console.log(IPCFileEvents.OPEN_FILE_IN_IDE, ':', ...args)

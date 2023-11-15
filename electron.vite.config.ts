@@ -36,7 +36,8 @@ export default defineConfig({
         alias: {
           '@': resolve(__dirname, 'src'),
           '~': resolve(__dirname, 'src'),
-          '@shared': resolve(__dirname, 'shared')
+          '@shared': resolve(__dirname, 'shared'),
+          '@composables': resolve(__dirname, 'src/composables')
         }
       },
       css: {
@@ -67,13 +68,14 @@ export default defineConfig({
               }
             }
             return route
-          }
+          },
+          importMode: () => 'async'
         }),
         layouts({
           importMode: () => 'async'
         }),
         autoImport({
-          imports: ['vue', '@vueuse/core', 'pinia', 'vue-router'],
+          imports: ['vue', '@vueuse/core', 'vue-router'],
           dts: resolve(__dirname, 'src/typings/auto-import.d.ts'),
           eslintrc: {
             enabled: false

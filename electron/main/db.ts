@@ -7,7 +7,7 @@ import fs from 'fs'
 import { normalizePath } from './path'
 
 let db: LowSync<unknown> | null = null
-export function installDB(): void {
+export function installDBHandler(): void {
   log.info('Install DB...')
 
   const fileName = 'db.json'
@@ -34,8 +34,6 @@ export function installDB(): void {
   db = new LowSync(adaptor)
 
   db.read()
-
-  log.debug('db data: ', db.data)
 
   // update('system', { theme: 'light' })
 

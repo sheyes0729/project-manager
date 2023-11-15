@@ -1,6 +1,6 @@
 import { Tray, Menu, BrowserWindow, app, MenuItem } from 'electron'
 
-export const installTray = (icon: Electron.NativeImage, win: BrowserWindow): void => {
+export const installTrayHandler = (icon: Electron.NativeImage, win: BrowserWindow): void => {
   const tray = new Tray(icon)
   tray.on('click', () => {
     win.show()
@@ -35,16 +35,7 @@ export const installTray = (icon: Electron.NativeImage, win: BrowserWindow): voi
         app.exit(0)
       }
     },
-    {
-      label: '开机启动',
-      type: 'normal',
-      click: (): void => {
-        app.setLoginItemSettings({
-          openAtLogin: true,
-          path: app.getPath('exe')
-        })
-      }
-    },
+
     {
       type: 'separator'
     },

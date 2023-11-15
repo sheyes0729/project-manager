@@ -32,3 +32,8 @@ export enum IPCWindowEvents {
   WINDOW_OPERATION = 'window-operation',
   OPEN_CHILD_WINDOW = 'open-child-window'
 }
+
+// 系统操作
+export enum IPCSystemEvents {
+  OPEN_APP_ON_START = 'open-app-on-start'
+}

@@ -3,13 +3,14 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import log from 'electron-log'
-import { installFile } from './file'
-import { installTray } from './tray'
-import { installWindow } from './window'
+import { installFileHanler } from './file'
+import { installTrayHandler } from './tray'
+import { installWindowHandler } from './window'
 import { initLogger } from './log'
-import { installUpdater } from './update'
-import { installDB } from './db'
+import { installUpdaterHanlder } from './update'
+import { installDBHandler } from './db'
 import { IPCWindowEvents } from '../../shared/config/constant'
+import { installSystemHanlder } from './system'
 
 initLogger()
 
@@ -61,11 +62,12 @@ function createWindow(): void {
 // 添加事件监听
 function installEvents(): void {
   log.info('Install events')
-  installFile()
-  installUpdater(mainWindow!)
+  installFileHanler()
+  installUpdaterHanlder(mainWindow!)
   const iconFromPath = nativeImage.createFromPath(icon)
-  installTray(iconFromPath, mainWindow!)
-  installWindow(mainWindow!)
+  installTrayHandler(iconFromPath, mainWindow!)
+  installWindowHandler(mainWindow!)
+  installSystemHanlder()
 }
 
 function setSingleInstance(): void {
@@ -107,7 +109,7 @@ app.whenReady().then(() => {
 
   installEvents()
 
-  installDB()
+  installDBHandler()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

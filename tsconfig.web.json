@@ -25,6 +25,9 @@
       "@shared/*": [
         "shared/*"
       ],
+      "@composables/*": [
+        "src/composables/*"
+      ],
     }
   }
 }
