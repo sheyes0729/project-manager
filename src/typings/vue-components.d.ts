@@ -10,6 +10,7 @@ declare module 'vue' {
     Aside: typeof import('./../components/layouts/aside.vue')['default']
     Header: typeof import('./../components/layouts/header.vue')['default']
     ImageIcon: typeof import('./../components/common/ImageIcon.vue')['default']
+    RiveLoading: typeof import('./../components/common/RiveLoading.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../components/common/SvgIcon.vue')['default']

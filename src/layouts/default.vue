@@ -11,12 +11,17 @@ import LayoutAside from '@/components/layouts/aside.vue'
     <aside class="right">
       <layout-header></layout-header>
       <section class="content">
-        <router-view v-slot="{ Component, route }">
-          <keep-alive :max="30">
-            <component :is="Component" v-if="route.meta.cache" />
-          </keep-alive>
-          <component :is="Component" v-if="!route.meta.cache" />
-        </router-view>
+        <Suspense>
+          <router-view v-slot="{ Component, route }">
+            <keep-alive :max="30">
+              <component :is="Component" v-if="route.meta.cache" />
+            </keep-alive>
+            <component :is="Component" v-if="!route.meta.cache" />
+          </router-view>
+          <template #fallback>
+            <RiveLoading />
+          </template>
+        </Suspense>
       </section>
     </aside>
   </main>

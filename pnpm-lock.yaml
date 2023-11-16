@@ -10,6 +10,9 @@ dependencies:
   '@electron-toolkit/utils':
     specifier: ^1.0.2
     version: 1.0.2(electron@24.6.2)
+  '@rive-app/canvas':
+    specifier: ^2.7.3
+    version: 2.7.3
   electron-updater:
     specifier: ^5.3.0
     version: 5.3.0
@@ -1158,6 +1161,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@rive-app/canvas@2.7.3:
+    resolution: {integrity: sha512-b/NeFwUTa243aC68xNZPFDVpg1CPmlBB89q0vi3Fiv6q14/WPua+fVsmG1omx0/8ToGNR2DmmXHdvfVP2YazoA==}
+    dev: false
 
   /@rollup/pluginutils@5.0.2:
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/@rollup/pluginutils/-/pluginutils-5.0.2.tgz}
