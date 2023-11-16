@@ -78,13 +78,14 @@ export default defineConfig({
         autoImport({
           imports: ['vue', '@vueuse/core', 'vue-router'],
           dts: resolve(__dirname, 'src/typings/auto-import.d.ts'),
+          dirs: [resolve(__dirname, 'src/composables')],
           eslintrc: {
             enabled: false
           }
         }),
         vueComponents({
           dts: resolve(__dirname, 'src/typings/vue-components.d.ts'),
-          dirs: [resolve(__dirname, 'src/components/common')]
+          dirs: [resolve(__dirname, 'src/components')]
         }),
         createSvgIconsPlugin({
           iconDirs: [resolve(__dirname, 'src/assets/svg')],

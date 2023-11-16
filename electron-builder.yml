@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: electron-app
+appId: top.sheyes.pm
+productName: Project Manager
 directories:
   buildResources: build
 files:
@@ -43,7 +43,7 @@ mac:
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
 dmg:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: ${productName}-${version}.${ext}
 linux:
   target:
     - AppImage
@@ -52,9 +52,8 @@ linux:
   maintainer: electronjs.org
   category: Utility
 appImage:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: ${productName}-${version}.${ext}
 npmRebuild: false
 publish:
-  - provider: github
-    owner: azixf
-    repo: electron-app
+  - provider: generic
+    url: https://example.com

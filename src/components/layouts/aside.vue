@@ -67,7 +67,6 @@ const menuList: Array<MenuItem> = [
 
 const toggle = ref(false)
 function toggleHandler() {
-  console.log('toggle')
   toggle.value = !toggle.value
   const index = menuList.findIndex((menu: MenuItem) => menu.path === active.value)
   handleBgMove(index)
@@ -170,6 +169,7 @@ watch(
     padding: $padding-small;
     border-radius: $radius-extra-large 0 0 $radius-extra-large;
     cursor: pointer;
+    white-space: nowrap;
     .icon {
       width: 16px;
       height: 16px;

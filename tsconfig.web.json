@@ -14,6 +14,7 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
+    "resolveJsonModule": true,
     "types": [
       "vite-plugin-vue-layouts/client",
       "vite-plugin-pages/client"

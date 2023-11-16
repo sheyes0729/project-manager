@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { IpcDBEvents } from '@shared/config/constant'
+import { IPCSystemEvents, IPCDBEvents } from '@shared/config/constant'
 import { ipcRenderer } from '@/utils/ipc'
 import { useStore } from '@composables/useStore'
 onMounted(async () => {
@@ -14,13 +14,17 @@ onMounted(async () => {
   })
 
   const { setSystem, setFile } = useStore()
-  ipcRenderer.invoke(IpcDBEvents.GET_DB, 'system').then((system) => {
+  ipcRenderer.invoke(IPCDBEvents.GET_DB, 'system').then((system) => {
     setSystem(system)
     document.body.setAttribute('data-theme', system.theme || 'light')
   })
 
-  ipcRenderer.invoke(IpcDBEvents.GET_DB, 'file').then((file) => {
+  ipcRenderer.invoke(IPCDBEvents.GET_DB, 'file').then((file) => {
     setFile(file)
+  })
+
+  ipcRenderer.invoke(IPCSystemEvents.GET_APP_INFO).then((appInfo) => {
+    setSystem(appInfo, 'appInfo')
   })
 })
 </script>

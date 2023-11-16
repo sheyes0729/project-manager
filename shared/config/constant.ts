@@ -1,5 +1,5 @@
 // 数据库操作
-export enum IpcDBEvents {
+export enum IPCDBEvents {
   SET_DB = 'set-db',
   GET_DB = 'get-db'
 }
@@ -35,5 +35,6 @@ export enum IPCWindowEvents {
 
 // 系统操作
 export enum IPCSystemEvents {
-  OPEN_APP_ON_START = 'open-app-on-start'
+  OPEN_APP_ON_START = 'open-app-on-start',
+  GET_APP_INFO = 'get-app-info'
 }
