@@ -37,6 +37,7 @@ const cardStyle = computed(() => ({
 </template>
 
 <style lang="scss" scoped>
+@import url('https://fonts.joway.io/css/Pacifico.css');
 .about-wrapper {
   display: flex;
   flex-direction: column;
@@ -57,6 +58,9 @@ const cardStyle = computed(() => ({
   }
 
   .app-info {
+    h1 {
+      font-family: 'Pacifico', sans-serif;
+    }
     display: flex;
     align-items: flex-end;
     gap: $padding-base;
