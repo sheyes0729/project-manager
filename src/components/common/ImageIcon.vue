@@ -1,5 +1,5 @@
 <template>
-  <img :class="class" :src="imageSrc" :style="imageStyle" :title="title" :alt="alt" />
+  <img :class="props.class" :src="imageSrc" :style="imageStyle" :title="title" :alt="alt" />
 </template>
 
 <script lang="ts" setup>
@@ -36,13 +36,13 @@ const imageStyle = computed(() => {
   if (props.class) {
     return {}
   }
-  return <StyleValue>{
+  return {
     display: 'block',
     objectFit: 'fill',
     cursor: props.cursor ? 'pointer' : 'auto',
     width: props.width,
     height: props.height
-  }
+  } as StyleValue
 })
 
 const imageSrc = computed(() => {

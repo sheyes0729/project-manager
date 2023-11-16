@@ -1,8 +1,10 @@
 <template>
   <section :class="['layout-aside', { toggled: toggle }]">
     <div class="logo">
-      <svg-icon name="logo" :cursor="false" width="40px" height="40px"> </svg-icon>
-      <div class="title">PM</div>
+      <!-- <svg-icon name="logo" :cursor="false" width="40px" height="40px"> </svg-icon>
+      <div class="title">PM</div> -->
+      <img v-if="!toggle" :src="getAssetsFile('logo-with-title.png')" />
+      <img v-else :src="getAssetsFile('logo.png')" />
     </div>
     <div class="menu">
       <div ref="menuItemBg" class="menu-item menu-active-bg" />
@@ -15,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { getAssetsFile } from '@/utils/getAssetsFile'
 import bus from 'vue3-eventbus'
 
 defineOptions({
@@ -31,22 +34,32 @@ const active = ref('dashboard')
 
 const menuList: Array<MenuItem> = [
   {
-    label: 'Dashboard',
+    label: '总览',
     icon: 'menu-dashboard',
     path: 'dashboard'
   },
   {
-    label: 'File',
+    label: '待办',
+    icon: 'menu-todo',
+    path: 'todo'
+  },
+  {
+    label: '文件',
     icon: 'menu-home',
     path: 'file'
   },
   {
-    label: 'Settings',
+    label: 'Node',
+    icon: 'menu-node',
+    path: 'node'
+  },
+  {
+    label: '设置',
     icon: 'menu-settings',
     path: 'settings'
   },
   {
-    label: 'About',
+    label: '关于',
     icon: 'menu-about',
     path: 'about'
   }
@@ -126,6 +139,11 @@ watch(
     align-items: center;
     padding: 0 $padding-large;
     gap: $padding-base;
+
+    img {
+      width: 150px;
+      height: 100px;
+    }
 
     .title {
       font-size: $font-extra-large;
@@ -207,8 +225,9 @@ watch(
 .layout-aside.toggled {
   width: 80px;
   .logo {
-    .title {
-      display: none;
+    img {
+      width: 40px;
+      height: 40px;
     }
   }
   .menu-item {
