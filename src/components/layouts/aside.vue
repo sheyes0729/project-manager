@@ -138,16 +138,13 @@ watch(
     align-items: center;
     padding: 0 $padding-large;
     gap: $padding-base;
+    height: 72px;
+    overflow: hidden;
 
     img {
-      width: 150px;
-      height: 100px;
-    }
-
-    .title {
-      font-size: $font-extra-large;
-      font-weight: $font-weight-bolder;
-      letter-spacing: $padding-mini;
+      width: 257px;
+      height: 167px;
+      margin-left: -35px;
     }
   }
 }
@@ -228,6 +225,7 @@ watch(
     img {
       width: 40px;
       height: 40px;
+      margin: 0;
     }
   }
   .menu-item {
