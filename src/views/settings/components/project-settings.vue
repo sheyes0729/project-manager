@@ -42,7 +42,7 @@ function displayModeChange() {
       <Form-Item label="分组管理">
         <Button type="primary" icon="ios-add" size="small">添加分组</Button>
       </Form-Item>
-      <Form-Item label="展示管理">
+      <Form-Item label="展示方式">
         <RadioGroup v-model="displayMode" @change="displayModeChange">
           <Radio label="list">
             <span>列表</span>

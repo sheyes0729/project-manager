@@ -9,6 +9,8 @@ const startOnLogin = ref(system.value.startOnLogin || 0)
 
 const closeBehavior = ref(system.value.closeBehavior || 'minify')
 
+const updatePolicy = ref(system.value.updatePolicy || 'auto')
+
 function startOnLoginChange() {
   setSystem(startOnLogin.value, 'startOnLogin')
   ipcRenderer.send(IPCSystemEvents.OPEN_APP_ON_START, !!startOnLogin.value)
@@ -16,6 +18,10 @@ function startOnLoginChange() {
 
 function closeBehaviorChange() {
   setSystem(closeBehavior.value, 'closeBehavior')
+}
+
+function updatePolicyChange() {
+  setSystem(updatePolicy.value, 'updatePolicy')
 }
 </script>
 
@@ -43,6 +49,17 @@ function closeBehaviorChange() {
           </Radio>
         </RadioGroup>
       </FormItem>
+
+      <Form-Item label="更新方式">
+        <RadioGroup v-model="updatePolicy" @change="updatePolicyChange">
+          <Radio label="auto">
+            <span>自动更新</span>
+          </Radio>
+          <Radio label="manual">
+            <span>手动更新</span>
+          </Radio>
+        </RadioGroup>
+      </Form-Item>
     </Form>
   </SettingItem>
 </template>

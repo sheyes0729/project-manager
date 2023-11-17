@@ -6,6 +6,7 @@ import { IPCLoggerEvents } from '../../shared/config/constant'
 
 export function initLogger(): void {
   // 设置系统日志目录
+  console.log(app.getPath('logs'))
   const systemLogPath = normalizePath('logs/system')
   if (!fs.existsSync(systemLogPath)) {
     fs.mkdirSync(systemLogPath, { recursive: true })
@@ -29,15 +30,7 @@ export function initLogger(): void {
 
   log.transports.file.maxSize = 10 * 1024 * 1024 // 10MB
 
-  ipcMain.on(IPCLoggerEvents.LOGGER, (_, ...args): void => {
-    let type = 'info'
-    let message = ''
-    if (args.length > 1) {
-      type = args[0]
-      message = args[1]
-    } else {
-      message = args[0]
-    }
+  ipcMain.on(IPCLoggerEvents.LOGGER, (_, message: any, type = 'info'): void => {
     log[type](message)
   })
 }

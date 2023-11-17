@@ -1,10 +1,9 @@
 import { LowSync, JSONFileSync } from '@commonify/lowdb'
-import { ipcMain } from 'electron'
+import { app, ipcMain } from 'electron'
 import path from 'path'
 import lodash from 'lodash'
 import log from 'electron-log'
 import fs from 'fs'
-import { normalizePath } from './path'
 
 let db: LowSync<unknown> | null = null
 export function installDBHandler(): void {
@@ -12,13 +11,10 @@ export function installDBHandler(): void {
 
   const fileName = 'db.json'
 
-  const fileDirectory = normalizePath('data')
+  const fileDirectory = app.getPath('userData')
+  console.log('fileDirectory: ', fileDirectory)
 
   const filePath = path.join(fileDirectory, fileName)
-
-  if (!fs.existsSync(fileDirectory)) {
-    fs.mkdirSync(fileDirectory)
-  }
 
   const defaultData = {
     system: {},
