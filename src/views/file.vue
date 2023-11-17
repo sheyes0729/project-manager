@@ -149,7 +149,7 @@ function handleCopy(value: string) {
   .file-icon {
     width: 64px;
     height: 64px;
-    background-color: #19be6b;
+    background-color: #3491fa;
     border-radius: $radius-mini;
   }
 

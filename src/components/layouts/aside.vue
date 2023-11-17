@@ -1,8 +1,6 @@
 <template>
   <section :class="['layout-aside', { toggled: toggle }]">
     <div class="logo">
-      <!-- <svg-icon name="logo" :cursor="false" width="40px" height="40px"> </svg-icon>
-      <div class="title">PM</div> -->
       <img v-if="!toggle" :src="getAssetsFile('logo-with-title.png')" />
       <img v-else :src="getAssetsFile('logo.png')" />
     </div>
@@ -44,7 +42,7 @@ const menuList: Array<MenuItem> = [
     path: 'todo'
   },
   {
-    label: '文件',
+    label: '项目',
     icon: 'menu-home',
     path: 'file'
   },

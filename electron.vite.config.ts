@@ -47,6 +47,9 @@ export default defineConfig({
               @use "~/assets/css/theme/_themeify.scss" as *;
               @use "~/assets/css/theme/_variables.scss" as *;
             `
+          },
+          less: {
+            javascriptEnabled: true
           }
         }
       },

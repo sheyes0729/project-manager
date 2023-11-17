@@ -7,8 +7,9 @@ import generatedRoutes from 'virtual:generated-pages'
 
 import 'virtual:svg-icons-register'
 
-import 'view-ui-plus/dist/styles/viewuiplus.css'
 import '@/assets/css/styles.scss'
+import 'view-ui-plus/dist/styles/viewuiplus.css'
+import '@/assets/css/viewui-override.less'
 
 const routes = setupLayouts(generatedRoutes)
 

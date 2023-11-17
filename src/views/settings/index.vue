@@ -1,35 +1,7 @@
-<template>
-  <div class="setting-wrapper">
-    <Tabs v-model="activeTab" @click="handleTabChange">
-      <TabPane label="系统配置" name="base"></TabPane>
-      <TabPane label="文件配置" name="scan"></TabPane>
-      <TabPane label="IDE配置" name="ide"></TabPane>
-    </Tabs>
-    <div class="setting-content">
-      <div id="base" style="height: 500px">
-        <SettingItem title="系统配置">
-          <p>开机启动</p>
-          <p>窗口关闭方式</p>
-        </SettingItem>
-      </div>
-      <div id="scan" style="height: 500px">
-        <SettingItem title="文件配置">
-          <p>文件绑定</p>
-          <p>扫描策略：覆盖 / 合并</p>
-          <p>分组管理</p>
-          <p>展示管理</p>
-        </SettingItem>
-      </div>
-      <div id="ide" style="height: 500px">
-        <SettingItem title="IDE配置">
-          <p>添加ide vscode / idea</p>
-        </SettingItem>
-      </div>
-    </div>
-  </div>
-</template>
 <script lang="ts" setup>
-import SettingItem from './components/setting-item.vue'
+import SystemSettings from './components/system-settings.vue'
+import ProjectSettings from './components/project-settings.vue'
+import IdeSettings from './components/ide-settings.vue'
 const activeTab = ref('base')
 
 const { proxy } = getCurrentInstance()!
@@ -42,6 +14,28 @@ function handleTabChange() {
   })
 }
 </script>
+
+<template>
+  <div class="setting-wrapper">
+    <Tabs v-model="activeTab" @click="handleTabChange">
+      <TabPane label="系统配置" name="base"></TabPane>
+      <TabPane label="项目配置" name="scan"></TabPane>
+      <TabPane label="IDE配置" name="ide"></TabPane>
+    </Tabs>
+    <div class="setting-content">
+      <div id="base">
+        <SystemSettings />
+      </div>
+      <div id="scan">
+        <ProjectSettings />
+      </div>
+      <div id="ide">
+        <IdeSettings />
+      </div>
+    </div>
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .setting-wrapper {
   height: 100%;
@@ -52,5 +46,8 @@ function handleTabChange() {
     flex: 1;
     overflow: auto;
   }
+}
+:deep(.ivu-form-item) {
+  margin-bottom: 8px;
 }
 </style>
