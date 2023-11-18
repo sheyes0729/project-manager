@@ -29,7 +29,12 @@
         <template #onswitch-icon> 🌛 </template>
         <template #unswitch-icon> ☀ </template>
       </lay-switch>
-
+      <lay-icon
+        type="layui-icon-top"
+        title="置顶"
+        class="icon"
+        @click="operateWindow('toggleTop')"
+      />
       <lay-icon
         type="layui-icon-subtraction"
         title="最小化"

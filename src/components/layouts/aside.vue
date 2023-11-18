@@ -7,7 +7,8 @@
     <div class="menu">
       <div ref="menuItemBg" class="menu-item menu-active-bg" />
       <div v-for="m in menuList" :ref="menuItemRef" class="menu-item" @click="onMenuSelected(m)">
-        <image-icon class="icon" :link="m.icon"></image-icon>
+        <!-- <image-icon class="icon" :link="m.icon"></image-icon> -->
+        <lay-icon class="icon" :type="m.icon"></lay-icon>
         <div class="label">{{ m.label }}</div>
       </div>
     </div>
@@ -34,32 +35,32 @@ const active = ref('dashboard')
 const menuList: Array<MenuItem> = [
   {
     label: '总览',
-    icon: 'menu-dashboard',
+    icon: 'layui-icon-app',
     path: 'dashboard'
   },
   {
     label: '待办',
-    icon: 'menu-todo',
+    icon: 'layui-icon-date',
     path: 'todo'
   },
   {
     label: '项目',
-    icon: 'menu-home',
+    icon: 'layui-icon-layouts',
     path: 'file'
   },
   {
     label: 'Node',
-    icon: 'menu-node',
+    icon: 'layui-icon-code-circle',
     path: 'node'
   },
   {
     label: '设置',
-    icon: 'menu-settings',
+    icon: 'layui-icon-set',
     path: 'settings'
   },
   {
     label: '关于',
-    icon: 'menu-about',
+    icon: 'layui-icon-about',
     path: 'about'
   }
 ]
@@ -155,8 +156,7 @@ watch(
     cursor: pointer;
     white-space: nowrap;
     .icon {
-      width: 16px;
-      height: 16px;
+      font-size: $font-large;
       margin: 0 $padding-mini;
     }
 

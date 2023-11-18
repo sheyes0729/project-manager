@@ -25,7 +25,7 @@ defineProps<PropsType>()
   --hieght: 24px;
   --width: 260px;
   --start: 24px;
-  --bg: #19be6b;
+  --bg: var(--global-primary-color);
   height: var(--hieght);
   position: relative;
   user-select: none;

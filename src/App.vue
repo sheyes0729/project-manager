@@ -13,7 +13,7 @@ const { system, setSystem, setFile } = useStore()
 const theme = computed(() => (system.value.theme === 'dark' ? 'dark' : 'light'))
 
 const themeVariable = reactive({
-  '--global-primary-color': '#1f965a',
+  '--global-primary-color': '#19be6b',
   '--global-normal-color': '#3491FA',
   '--global-warm-color': '#FF7D00',
   '--global-danger-color': '#F53F3F'
