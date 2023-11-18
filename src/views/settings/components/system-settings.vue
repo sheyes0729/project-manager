@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ipcRenderer } from '@/utils/ipc'
-import SettingItem from './setting-item.vue'
+const SettingItem = defineAsyncComponent(() => import('./setting-item.vue'))
 import { IPCSystemEvents } from '@shared/config/constant'
 
 const { system, setSystem } = useStore()

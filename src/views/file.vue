@@ -56,14 +56,6 @@
   </div>
 </template>
 
-<route>
-  {
-    meta: {
-      cache: true
-    }
-  }
-</route>
-
 <script lang="ts" setup>
 import type { FileData } from '@shared/typings/file'
 import { ipcRenderer } from '@/utils/ipc'
@@ -74,7 +66,7 @@ import dayjs from 'dayjs'
 
 const { file, setFile } = useStore()
 
-const files = ref<FileData[]>([])
+const files = ref<FileData[]>(file.value.list ?? [])
 
 const text = ref('')
 
@@ -82,10 +74,6 @@ const loading = ref(false)
 
 const { list, containerProps, wrapperProps } = useVirtualList(files, {
   itemHeight: 118
-})
-
-onBeforeMount(async () => {
-  files.value = file.value.list ?? []
 })
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
@@ -132,11 +120,7 @@ const source = ref('')
 const { copy } = useClipboard({ source, legacy: true })
 function handleCopy(value: string) {
   copy(value)
-  layer.notifiy({
-    title: '提示！',
-    content: '复制成功！',
-    icon: 1
-  })
+  layer.msg('复制成功！', { time: 1500, icon: 1 })
 }
 </script>
 <style lang="scss" scoped>

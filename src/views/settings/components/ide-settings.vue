@@ -1,46 +1,133 @@
 <script setup lang="ts">
-import SettingItem from './setting-item.vue'
+const SettingItem = defineAsyncComponent(() => import('./setting-item.vue'))
+import { ipcRenderer } from '@/utils/ipc'
+import { IPCFileEvents } from '@shared/config/constant'
+import { IDEPickeResult } from '@shared/typings/file'
+import { ResultStatus } from '@shared/typings/system'
+import { layer } from '@layui/layui-vue'
 
-const defaultEditor = ref(null)
+const { system, setSystem } = useStore()
 
-const cityList = [
-  {
-    label: '重庆',
-    value: 'cq'
-  },
-  {
-    label: '四川',
-    value: 'sc'
-  },
-  {
-    label: '贵州',
-    value: 'gz'
-  },
-  {
-    label: '云南',
-    value: 'yn'
+type IDEItem = Omit<IDEPickeResult, 'status'>
+
+const editorList = ref<IDEItem[]>(system.value.editorList || [])
+
+const addItem = ref<IDEItem | null>(null)
+
+async function openAdd() {
+  addItem.value = {
+    icon: '',
+    path: ''
   }
-]
+  const data: IDEPickeResult = await ipcRenderer.invoke(IPCFileEvents.PICK_IDE_PATH)
+  if (data.status == ResultStatus.REJECTED) {
+    layer.notifiy({
+      title: '提示！',
+      content: '添加失败！',
+      icon: 2
+    })
+  } else {
+    const isExist = editorList.value.some((item) => item.path == data.path)
+    if (isExist) {
+      layer.notifiy({
+        title: '提示！',
+        content: '编辑器已存在！',
+        icon: 2
+      })
+      return
+    }
+    addItem.value!.icon = data.icon
+    addItem.value!.path = data.path
+    editorList.value.push(addItem.value!)
+    addItem.value = null
+    layer.notifiy({
+      title: '提示！',
+      content: '添加成功！',
+      icon: 1
+    })
+  }
+}
+
+function previewIcon(ide: IDEItem) {
+  layer.photos({
+    imageList: [
+      {
+        src: ide.icon,
+        alt: ide.path
+      }
+    ]
+  })
+}
+
+function removeIde(ide: IDEItem) {
+  editorList.value = editorList.value.filter((item) => item.path != ide.path)
+  layer.notifiy({
+    title: '提示！',
+    content: '添加成功！',
+    icon: 1
+  })
+  layer.notifiy({
+    title: '提示！',
+    content: '删除成功！',
+    icon: 1
+  })
+}
+
+watch(
+  editorList,
+  (il) => {
+    setSystem(il, 'editorList')
+  },
+  {
+    deep: true
+  }
+)
+
+const defaultEditor = ref(system.value.defaultEditor)
+
+watch(defaultEditor, (de) => {
+  setSystem(de, 'defaultEditor')
+})
 </script>
 
 <template>
   <SettingItem title="编辑器配置">
     <lay-form label-position="right" label-width="120px" size="sm">
       <lay-form-item label="编辑器管理">
-        <RippleButton type="primary" icon="layui-icon-addition">添加编辑器</RippleButton>
+        <div class="ide-add-container">
+          <lay-space direction="vertical">
+            <div v-for="ide in editorList" class="ide-add-item">
+              <lay-space>
+                <img :src="ide.icon" alt="" width="24" height="24" @click="previewIcon(ide)" />
+                <lay-input v-model="ide.path" disabled />
+                <RippleButton type="danger" size="xs" @click="removeIde(ide)">
+                  <lay-icon type="layui-icon-subtraction"></lay-icon>
+                </RippleButton>
+              </lay-space>
+            </div>
+          </lay-space>
+          <RippleButton type="primary" icon="layui-icon-addition" @click="openAdd"
+            >添加编辑器</RippleButton
+          >
+        </div>
       </lay-form-item>
 
       <lay-form-item label="默认编辑器">
         <lay-space>
-          <lay-select v-model="defaultEditor" style="width: 200px" clearable filterable>
+          <lay-select v-model="defaultEditor" placeholder="选择默认编辑器" allow-clear>
             <lay-select-option
-              v-for="item in cityList"
-              :key="item.value"
-              :value="item.value"
-              :label="item.label"
-            ></lay-select-option>
+              v-for="item in editorList"
+              :key="item.path"
+              :value="item.path"
+              :label="item.path"
+            >
+              <lay-space>
+                <img :src="item.icon" alt="" width="24" height="24" />
+                <span>{{ item.path }}</span>
+              </lay-space>
+            </lay-select-option>
           </lay-select>
-          <lay-tooltip content="未绑定编辑器的项目默认用此打开" trigger="hover">
+          <lay-tooltip content="未绑定编辑器的项目类型默认用此打开" trigger="hover">
             <lay-icon type="layui-icon-help-circle" />
           </lay-tooltip>
         </lay-space>
@@ -48,3 +135,11 @@ const cityList = [
     </lay-form>
   </SettingItem>
 </template>
+
+<style lang="scss" scoped>
+.ide-add-container {
+  display: flex;
+  flex-direction: column;
+  gap: $padding-mini;
+}
+</style>

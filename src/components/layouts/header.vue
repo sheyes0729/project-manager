@@ -48,7 +48,7 @@
         @click="operateWindow('toggleMaxize')"
       />
       <lay-icon
-        type="layui-icon-addition"
+        type="layui-icon-close"
         title="关闭"
         class="icon"
         @click="operateWindow('inquire')"

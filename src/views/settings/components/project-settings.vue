@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SettingItem from './setting-item.vue'
+const SettingItem = defineAsyncComponent(() => import('./setting-item.vue'))
 
 const { system, setSystem } = useStore()
 

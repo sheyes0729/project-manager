@@ -101,15 +101,59 @@ const resolvedList = computed(() => {
   )
 })
 
+async function installNode(row: any) {
+  try {
+    row.loading = true
+    await ipcRenderer.invoke(IPCSystemEvents.NVM_OPERATION, 'install', row.version)
+    initData()
+  } catch (e) {
+    console.log('e: ', e)
+  } finally {
+    row.loading = false
+  }
+}
+
+async function uninstallNode(row: any) {
+  try {
+    row.loading = true
+    await ipcRenderer.invoke(IPCSystemEvents.NVM_OPERATION, 'uninstall', row.version)
+    initData()
+  } catch (e) {
+    console.log('e: ', e)
+  } finally {
+    row.loading = false
+  }
+}
+
+async function useNode(row: any) {
+  try {
+    row.loading = true
+    await ipcRenderer.invoke(IPCSystemEvents.NVM_OPERATION, 'use', row.version)
+    initData()
+  } catch (e) {
+    console.log('e: ', e)
+  } finally {
+    row.loading = false
+  }
+}
+
 function refresh() {
   app?.reload()
 }
 </script>
 
+<route>
+  {
+    meta: {
+      cache: true
+    }
+  }
+</route>
+
 <template>
-  <lay-space direction="vertical">
+  <lay-space v-if="version" direction="vertical">
     <LaySpace>
-      <LayTag type="primary">nvm版本：{{ version }}</LayTag>
+      <LayTag type="primary">NVM版本：{{ version }}</LayTag>
       <LayTag type="normal">当前node版本：{{ current }}</LayTag>
       <RippleButton type="primary" icon="layui-icon-refresh-one" @click="getNvmList(false)"
         >本地更新</RippleButton
@@ -123,24 +167,66 @@ function refresh() {
       even
       size="sm"
       resize
-      default-toolbar
+      :default-toolbar="['filter', 'export']"
       :columns="columns"
       :data-source="resolvedList"
       :loading="loading"
       max-height="calc(100vh - 120px)"
     >
       <template #status="{ row }">
-        <LayTag v-if="'current' == row.status" type="warm" size="sm">{{ row.status }}</LayTag>
-        <LayTag v-if="'installed' == row.status" type="normal" size="sm">{{ row.status }}</LayTag>
-        <LayTag v-if="'available' == row.status" type="danger" size="sm">{{ row.status }}</LayTag>
+        <LayTag v-if="'current' == row.status" type="warm" size="sm" class="letter-capital">{{
+          row.status
+        }}</LayTag>
+        <LayTag v-if="'installed' == row.status" type="normal" size="sm" class="letter-capital">{{
+          row.status
+        }}</LayTag>
+        <LayTag v-if="'available' == row.status" type="danger" size="sm" class="letter-capital">{{
+          row.status
+        }}</LayTag>
       </template>
 
       <template #action="{ row }">
-        <RippleButton v-if="'available' == row.status" type="normal" size="xs">安装</RippleButton>
-        <RippleButton v-else type="primary" size="xs">更多</RippleButton>
+        <RippleButton
+          v-if="'available' == row.status"
+          type="normal"
+          size="sm"
+          :loading="row.loading"
+          icon="layui-icon-addition"
+          @click="installNode(row)"
+          >安装</RippleButton
+        >
+        <lay-space>
+          <RippleButton
+            v-if="'installed' == row.status"
+            type="primary"
+            size="sm"
+            icon="layui-icon-ok"
+            @click="useNode(row)"
+            >使用</RippleButton
+          >
+          <RippleButton
+            v-if="['installed', 'current'].includes(row.status)"
+            type="danger"
+            size="sm"
+            icon="layui-icon-close"
+            @click="uninstallNode(row)"
+            >卸载</RippleButton
+          >
+        </lay-space>
       </template>
     </LayTable>
   </lay-space>
+  <lay-empty v-else description="未安装NVM" style="height: calc(100vh - 100px)">
+    <template #extra>
+      <RippleButton type="primary" :loading="loading" @click="initData"
+        >已安装？刷新试试</RippleButton
+      >
+    </template>
+  </lay-empty>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.letter-capital {
+  text-transform: capitalize;
+}
+</style>

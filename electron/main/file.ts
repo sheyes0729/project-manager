@@ -15,6 +15,7 @@ export function installFileHanler(): void {
     return 'success'
   })
 
+  // 选择ide
   ipcMain.handle(IPCFileEvents.PICK_IDE_PATH, async () => {
     let status: ResultStatus = ResultStatus.PENDING,
       path = '',
@@ -25,8 +26,10 @@ export function installFileHanler(): void {
       })
       if (!canceled) {
         path = filePaths[0]
-        icon = (await app.getFileIcon(path)).toDataURL()
-        status = ResultStatus.RESOLVED
+        if (path.endsWith('.exe')) {
+          icon = (await app.getFileIcon(path)).toDataURL()
+          status = ResultStatus.RESOLVED
+        }
       } else {
         status = ResultStatus.REJECTED
       }
