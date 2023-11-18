@@ -1,15 +1,13 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import ViewUiPlus from 'view-ui-plus'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
-
+import Layui from '@layui/layui-vue'
 import 'virtual:svg-icons-register'
 
+import '@layui/layui-vue/lib/index.css'
 import '@/assets/css/styles.scss'
-import 'view-ui-plus/dist/styles/viewuiplus.css'
-import '@/assets/css/viewui-override.less'
 
 const routes = setupLayouts(generatedRoutes)
 
@@ -19,8 +17,6 @@ const router = createRouter({
 })
 
 const app = createApp(App)
-app.use(ViewUiPlus, {
-  transfer: true
-})
 app.use(router)
+app.use(Layui)
 app.mount('#app')

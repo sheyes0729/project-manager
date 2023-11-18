@@ -63,6 +63,7 @@ defineProps<PropsType>()
     position: relative;
     padding-left: var(--start);
     line-height: var(--hieght);
+    color: #fff;
     z-index: 10;
   }
 }

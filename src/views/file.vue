@@ -1,9 +1,11 @@
 <template>
-  <Space>
-    <Button type="primary" icon="ios-search" :loading="loading" @click="scanfile">开始扫描</Button>
-    <Button type="error" icon="ios-trash" @click="clearFile">清空</Button>
+  <LaySpace>
+    <RippleButton type="primary" :loading="loading" icon="layui-icon-search" @click="scanfile"
+      >开始扫描</RippleButton
+    >
+    <RippleButton type="danger" icon="layui-icon-delete" @click="clearFile">清空</RippleButton>
     <p>{{ text }}</p>
-  </Space>
+  </LaySpace>
   <div v-bind="containerProps" class="file-wrapper">
     <div v-bind="wrapperProps">
       <div v-for="f in list" class="file-item">
@@ -12,38 +14,41 @@
           <div class="file-name">{{ f.data.projectName }}</div>
           <div class="file-dir">项目路径: {{ f.data.directory }}</div>
           <div class="file-ctime">
-            创建时间：{{ proxy?.$Date(f.data.createTime).format('YYYY-MM-DD HH:mm:ss') }}
+            创建时间：{{ dayjs(f.data.createTime).format('YYYY-MM-DD HH:mm:ss') }}
           </div>
           <div class="file-utime">
-            最后更新时间：{{ proxy?.$Date(f.data.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss') }}
+            最后更新时间：{{ dayjs(f.data.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss') }}
           </div>
         </div>
         <div class="file-operation">
-          <Space>
-            <Button type="success" icon="ios-cube-outline">打开项目</Button>
-            <Dropdown trigger="hover">
-              <Icon type="md-more" size="24" class="operation-icon"></Icon>
-              <template #list>
-                <DropdownMenu>
-                  <DropdownItem @click="openFilePath(f.data)">
-                    <Space>
-                      <Icon type="ios-folder" size="16" />
-                      在文件资源管理器中打开
-                    </Space>
-                  </DropdownItem>
-                  <DropdownItem
-                    ><Space> <Icon type="ios-book" size="16" />查看详情 </Space></DropdownItem
-                  >
-                  <DropdownItem @click="handleCopy(f.data.directory)">
-                    <Space>
-                      <Icon type="ios-copy" size="18" />
-                      复制地址
-                    </Space>
-                  </DropdownItem>
-                </DropdownMenu>
+          <LaySpace>
+            <RippleButton type="normal" icon="layui-icon-component">打开项目</RippleButton>
+            <lay-dropdown placement="bottom-end" update-at-scroll content-class="file-drop-content">
+              <lay-icon type="layui-icon-more-vertical" style="cursor: pointer"></lay-icon>
+              <template #content>
+                <lay-dropdown-menu>
+                  <lay-dropdown-menu-item @click="openFilePath(f.data)">
+                    <lay-space>
+                      <lay-icon type="layui-icon-file"></lay-icon>
+                      <span>在文件资源管理器打开</span>
+                    </lay-space>
+                  </lay-dropdown-menu-item>
+                  <lay-dropdown-menu-item @click="handleCopy(f.data.directory)">
+                    <lay-space>
+                      <lay-icon type="layui-icon-note"></lay-icon>
+                      <span> 复制地址 </span>
+                    </lay-space>
+                  </lay-dropdown-menu-item>
+                  <lay-dropdown-menu-item>
+                    <lay-space>
+                      <lay-icon type="layui-icon-show"></lay-icon>
+                      <span> 查看详情 </span>
+                    </lay-space>
+                  </lay-dropdown-menu-item>
+                </lay-dropdown-menu>
               </template>
-            </Dropdown>
-          </Space>
+            </lay-dropdown>
+          </LaySpace>
         </div>
       </div>
       <div v-if="files?.length" class="end-line">到底了</div>
@@ -63,8 +68,9 @@
 import type { FileData } from '@shared/typings/file'
 import { ipcRenderer } from '@/utils/ipc'
 import { IPCFileEvents } from '@shared/config/constant'
-import { DropdownItem } from 'view-ui-plus'
 import { useStore } from '@composables/useStore'
+import { layer } from '@layui/layui-vue'
+import dayjs from 'dayjs'
 
 const { file, setFile } = useStore()
 
@@ -73,8 +79,6 @@ const files = ref<FileData[]>([])
 const text = ref('')
 
 const loading = ref(false)
-
-const { proxy } = getCurrentInstance()!
 
 const { list, containerProps, wrapperProps } = useVirtualList(files, {
   itemHeight: 118
@@ -85,11 +89,11 @@ onBeforeMount(async () => {
 })
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
-  console.log('data: ', data)
   text.value = `扫描完成，共扫描到${data.length}个项目`
-  proxy?.$Notice.success({
+  layer.notifiy({
     title: '扫描完成！',
-    desc: text.value
+    content: text.value,
+    icon: 1
   })
   loading.value = false
   files.value = data
@@ -97,9 +101,10 @@ ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
 })
 
 ipcRenderer.on(IPCFileEvents.SCAN_FILES_CANCELED, () => {
-  proxy?.$Notice?.info({
-    title: '提示',
-    desc: '取消扫描！'
+  layer.notifiy({
+    title: '提示！',
+    content: '取消扫描！',
+    icon: 4
   })
   loading.value = false
 })
@@ -111,9 +116,10 @@ function scanfile() {
 
 function clearFile() {
   files.value = []
-  proxy?.$Notice?.success({
-    title: '提示',
-    desc: '文件已清空！'
+  layer.notifiy({
+    title: '提示！',
+    content: '文件已清空！',
+    icon: 1
   })
   setFile([], 'list')
 }
@@ -122,9 +128,14 @@ function openFilePath(file: FileData) {
   ipcRenderer.send(IPCFileEvents.OPEN_FILE_IN_EXPLORER, file.directory)
 }
 
+const source = ref('')
+const { copy } = useClipboard({ source, legacy: true })
 function handleCopy(value: string) {
-  proxy?.$Copy({
-    text: value
+  copy(value)
+  layer.notifiy({
+    title: '提示！',
+    content: '复制成功！',
+    icon: 1
   })
 }
 </script>
@@ -183,6 +194,13 @@ function handleCopy(value: string) {
     width: 10vw;
     height: 1px;
     background-color: #444;
+  }
+}
+
+.file-drop-content {
+  li {
+    display: flex;
+    justify-content: flex-start;
   }
 }
 </style>

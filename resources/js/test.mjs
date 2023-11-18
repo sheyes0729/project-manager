@@ -1,14 +1,21 @@
 import { exec } from 'child_process'
+import path from 'path'
+console.log(path.basename('D:\\software\\Microsoft VS Code\\Code.exe'))
+console.log(path.dirname('D:\\software\\Microsoft VS Code\\Code.exe'))
 
 // VSCODE
 // const workerProcess = exec('Code.exe E:\\code\\frontend\\sheyes-app', {
 //   cwd: 'D:\\software\\Microsoft VS Code'
 // })
 
-// IDEA
-const workerProcess = exec('idea64.exe E:\\code\\frontend\\sheyes-app', {
-  cwd: 'D:\\java\\ide\\IntelliJ IDEA 2020.1.4\\bin'
+const workerProcess = exec('Code.exe E:\\code\\frontend\\electron\\azi-music-pc', {
+  cwd: 'D:\\software\\Microsoft VS Code'
 })
+
+// IDEA
+// const workerProcess = exec('idea64.exe E:\\code\\frontend\\sheyes-app', {
+//   cwd: 'D:\\java\\ide\\IntelliJ IDEA 2020.1.4\\bin'
+// })
 
 // 打印正常的后台可执行程序输出
 workerProcess.stdout.on('data', function (data) {

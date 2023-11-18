@@ -1,6 +1,8 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import { IPCWindowEvents } from '../../shared/config/constant'
+import log from 'electron-log'
 export const installWindowHandler = (win: BrowserWindow): void => {
+  log.info('install window handler...')
   // 窗口操作相关
   ipcMain.on(IPCWindowEvents.WINDOW_OPERATION, (_, ...args) => {
     const type = args[0]

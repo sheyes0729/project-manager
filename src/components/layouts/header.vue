@@ -1,7 +1,15 @@
 <template>
   <header class="layout-header">
     <div class="menu-icon">
-      <image-icon link="menu" class="icon" @click="toggleAsideMenu" />
+      <lay-space size="md">
+        <image-icon link="menu" class="icon" @click="toggleAsideMenu" />
+        <lay-icon
+          type="layui-icon-refresh-three"
+          size="16px"
+          style="cursor: pointer"
+          @click="reloadPage"
+        />
+      </lay-space>
     </div>
     <div class="system-icon">
       <image-icon link="theme" title="主题" class="icon" @click="toggleTheme" />
@@ -43,6 +51,11 @@ function toggleTheme() {
   const newTheme = theme === 'light' ? 'dark' : 'light'
   body.setAttribute('data-theme', newTheme)
   setSystem(newTheme, 'theme')
+}
+
+const app = inject('app') as any
+function reloadPage() {
+  app?.reload()
 }
 </script>
 

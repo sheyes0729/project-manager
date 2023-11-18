@@ -3,7 +3,7 @@ import { app, BrowserWindow } from 'electron'
 import { ipcMain } from 'electron'
 import { UpdateMessage } from '../../shared/typings/update'
 import { IPCUpdateEvents } from '../../shared/config/constant'
-
+import log from 'electron-log'
 export interface UpdateMessageWithStatus {
   status: string
   message?: string
@@ -11,6 +11,7 @@ export interface UpdateMessageWithStatus {
 }
 
 export function installUpdaterHanlder(win: BrowserWindow): void {
+  log.info('install update handler...')
   // 禁用自动更新
   autoUpdater.autoDownload = false
   autoUpdater.autoInstallOnAppQuit = false

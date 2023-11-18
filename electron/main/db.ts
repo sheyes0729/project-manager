@@ -12,7 +12,6 @@ export function installDBHandler(): void {
   const fileName = 'db.json'
 
   const fileDirectory = app.getPath('userData')
-  console.log('fileDirectory: ', fileDirectory)
 
   const filePath = path.join(fileDirectory, fileName)
 

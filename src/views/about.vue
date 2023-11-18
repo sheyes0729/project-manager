@@ -30,7 +30,7 @@ const cardStyle = computed(() => ({
     <div class="app-desc">{{ pkg.description }}</div>
 
     <div class="copy-right">
-      <span>Copyright © 2023-present </span>
+      <span>Copyright ©2023-present </span>
       <span>{{ pkg.author }}</span>
     </div>
   </div>

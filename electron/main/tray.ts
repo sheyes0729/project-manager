@@ -1,6 +1,7 @@
 import { Tray, Menu, BrowserWindow, app, MenuItem } from 'electron'
-
+import log from 'electron-log'
 export const installTrayHandler = (icon: Electron.NativeImage, win: BrowserWindow): void => {
+  log.info('install tray handler...')
   const tray = new Tray(icon)
   tray.on('click', () => {
     win.show()

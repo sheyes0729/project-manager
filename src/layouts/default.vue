@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import LayoutHeader from '@/components/layouts/header.vue'
 import LayoutAside from '@/components/layouts/aside.vue'
+
+const routeAlive = ref(true)
+
+function reload() {
+  routeAlive.value = false
+  nextTick(() => {
+    routeAlive.value = true
+  })
+}
+
+provide('app', {
+  reload
+})
 </script>
 
 <template>
@@ -12,7 +25,7 @@ import LayoutAside from '@/components/layouts/aside.vue'
       <layout-header></layout-header>
       <section class="content">
         <Suspense>
-          <router-view v-slot="{ Component, route }">
+          <router-view v-if="routeAlive" v-slot="{ Component, route }">
             <keep-alive :max="30">
               <component :is="Component" v-if="route.meta.cache" />
             </keep-alive>
@@ -54,6 +67,7 @@ import LayoutAside from '@/components/layouts/aside.vue'
 
 .right {
   flex: 1;
+  width: 100%;
   height: 100%;
   padding-left: $padding-base;
   display: flex;
@@ -63,6 +77,7 @@ import LayoutAside from '@/components/layouts/aside.vue'
   .content {
     -webkit-app-region: no-drag;
     height: calc(100% - 24px - 2 * $padding-small);
+    width: 100%;
     padding-right: $padding-small;
     overflow: auto;
   }

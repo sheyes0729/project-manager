@@ -1,16 +1,13 @@
 <template>
-  <h1>AppIndex</h1>
-  <Button type="primary" @click="$router.push('/about')">go about</Button>
-  <Space direction="vertical">
-    <Tag color="primary">
+  <RippleButton type="primary" @click="$router.push('/about')">go about</RippleButton>
+  <LaySpace direction="vertical">
+    <LayTag type="primary">
       {{ status }}
-    </Tag>
-    <Button @click="update">更新</Button>
-    <Circle :percent="progress">
-      <span style="font-size: 24px">{{ progress }}%</span>
-    </Circle>
-    <Button type="success" @click="install">立即更新</Button>
-  </Space>
+    </LayTag>
+    <RippleButton @click="update">更新</RippleButton>
+    <lay-progress :percent="progress" circle show-text :text="progress + ''"> </lay-progress>
+    <RippleButton type="normal" @click="install">立即更新</RippleButton>
+  </LaySpace>
 </template>
 
 <route>

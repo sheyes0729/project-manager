@@ -36,5 +36,6 @@ export enum IPCWindowEvents {
 // 系统操作
 export enum IPCSystemEvents {
   OPEN_APP_ON_START = 'open-app-on-start',
-  GET_APP_INFO = 'get-app-info'
+  GET_APP_INFO = 'get-app-info',
+  NVM_OPERATION = 'nvm-operation'
 }

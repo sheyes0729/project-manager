@@ -25,23 +25,26 @@ const cityList = [
 
 <template>
   <SettingItem title="编辑器配置">
-    <Form label-position="right" :label-width="120">
-      <Form-item label="编辑器管理">
-        <Button type="primary" size="small">添加编辑器</Button>
-      </Form-item>
+    <lay-form label-position="right" label-width="120px" size="sm">
+      <lay-form-item label="编辑器管理">
+        <RippleButton type="primary" icon="layui-icon-addition">添加编辑器</RippleButton>
+      </lay-form-item>
 
-      <Form-item label="默认编辑器">
-        <Space>
-          <Select v-model="defaultEditor" style="width: 200px" clearable filterable>
-            <Option v-for="item in cityList" :key="item.value" :value="item.value">{{
-              item.label
-            }}</Option>
-          </Select>
-          <Tooltip content="未绑定编辑器的项目默认用此打开">
-            <Icon type="ios-alert" />
-          </Tooltip>
-        </Space>
-      </Form-item>
-    </Form>
+      <lay-form-item label="默认编辑器">
+        <lay-space>
+          <lay-select v-model="defaultEditor" style="width: 200px" clearable filterable>
+            <lay-select-option
+              v-for="item in cityList"
+              :key="item.value"
+              :value="item.value"
+              :label="item.label"
+            ></lay-select-option>
+          </lay-select>
+          <lay-tooltip content="未绑定编辑器的项目默认用此打开" trigger="hover">
+            <lay-icon type="layui-icon-help-circle" />
+          </lay-tooltip>
+        </lay-space>
+      </lay-form-item>
+    </lay-form>
   </SettingItem>
 </template>

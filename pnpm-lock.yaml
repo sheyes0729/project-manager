@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@commonify/lowdb':
     specifier: ^3.0.0
@@ -27,6 +31,9 @@ devDependencies:
   '@electron/notarize':
     specifier: ^1.2.3
     version: 1.2.3
+  '@layui/layui-vue':
+    specifier: ^2.11.5
+    version: 2.11.5(vue@3.3.4)
   '@rushstack/eslint-patch':
     specifier: ^1.3.2
     version: 1.3.2
@@ -48,6 +55,9 @@ devDependencies:
   '@vueuse/core':
     specifier: ^10.2.1
     version: 10.2.1(vue@3.3.4)
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
   electron:
     specifier: ^24.6.2
     version: 24.6.2
@@ -75,6 +85,9 @@ devDependencies:
   prettier:
     specifier: ^2.8.8
     version: 2.8.8
+  qalendar:
+    specifier: ^3.5.1
+    version: 3.5.1(vue@3.3.4)
   rimraf:
     specifier: ^5.0.1
     version: 5.0.1
@@ -347,6 +360,15 @@ packages:
       - supports-color
     dev: true
 
+  /@babel/types@7.21.0:
+    resolution: {integrity: sha512-uR7NWq2VNFnDi7EYqiRz2Jv/VQIu38tu64Zy8TX2nQFQ6etJ9V/Rr2msW8BS132mum2rL645qpDrLtAJtVpuow==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/helper-string-parser': 7.22.5
+      '@babel/helper-validator-identifier': 7.22.5
+      to-fast-properties: 2.0.0
+    dev: true
+
   /@babel/types@7.22.5:
     resolution: {integrity: sha512-zo3MIHGOkPOfoRXitsgHLjEXmlDaD/5KU1Uzuc9GNiZPhSqVxVRtxuPaSBZDsYZ9qV88AjtMtWW7ww98loJ9KA==}
     engines: {node: '>=6.9.0'}
@@ -367,6 +389,11 @@ packages:
     resolution: {integrity: sha512-3W0LmYb84EU82Ky18M+D0tB33W66ccoC/Ot/8mm3uBQFuaTpiWaoxntQGBTL3+bIpV4e77ks53IE3sy9BRFBxA==}
     engines: {node: ^14.13.1 || >=16.0.0}
     dev: false
+
+  /@ctrl/tinycolor@3.6.1:
+    resolution: {integrity: sha512-SITSV6aIXsuVNV3f3O0f2n/cgyEDWoSqtZMYiAmcsYHydcKrOz3gUxB/iXd/Qf08+IZX4KpgNbvUdMBmWz+kcA==}
+    engines: {node: '>=10'}
+    dev: true
 
   /@develar/schema-utils@2.6.5:
     resolution: {integrity: sha512-0cp4PsWQ/9avqTVMCtZ+GirikIA36ikvjtHweU4/j8yLtgObI0+JUPhYFScgwlteveGB1rt3Cm8UhN04XayDig==, tarball: https://registry.npm.taobao.org/@develar/schema-utils/-/schema-utils-2.6.5.tgz}
@@ -677,6 +704,46 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+  /@fortawesome/fontawesome-common-types@6.4.2:
+    resolution: {integrity: sha512-1DgP7f+XQIJbLFCTX1V2QnxVmpLdKdzzo2k8EmvDOePfchaIGQ9eCHj2up3/jNEbZuBqel5OxiaOJf37TWauRA==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dev: true
+
+  /@fortawesome/fontawesome-svg-core@6.4.2:
+    resolution: {integrity: sha512-gjYDSKv3TrM2sLTOKBc5rH9ckje8Wrwgx1CxAPbN5N3Fm4prfi7NsJVWd1jklp7i5uSCVwhZS5qlhMXqLrpAIg==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.4.2
+    dev: true
+
+  /@fortawesome/free-regular-svg-icons@6.4.2:
+    resolution: {integrity: sha512-0+sIUWnkgTVVXVAPQmW4vxb9ZTHv0WstOa3rBx9iPxrrrDH6bNLsDYuwXF9b6fGm+iR7DKQvQshUH/FJm3ed9Q==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.4.2
+    dev: true
+
+  /@fortawesome/free-solid-svg-icons@6.4.2:
+    resolution: {integrity: sha512-sYwXurXUEQS32fZz9hVCUUv/xu49PEJEyUOsA51l6PU/qVgfbTb2glsTEaJngVVT8VqBATRIdh7XVgV1JF1LkA==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.4.2
+    dev: true
+
+  /@fortawesome/vue-fontawesome@3.0.5(@fortawesome/fontawesome-svg-core@6.4.2)(vue@3.3.4):
+    resolution: {integrity: sha512-isZZ4+utQH9qg9cWxWYHQ9GwI3r5FeO7GnmzKYV+gbjxcptQhh+F99iZXi1Y9AvFUEgy8kRpAdvDlbb3drWFrw==}
+    peerDependencies:
+      '@fortawesome/fontawesome-svg-core': ~1 || ~6
+      vue: '>= 3.0.0 < 4'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.4.2
+      vue: 3.3.4
+    dev: true
+
   /@humanwhocodes/config-array@0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==, tarball: https://registry.npm.taobao.org/@humanwhocodes/config-array/-/config-array-0.11.10.tgz}
     engines: {node: '>=10.10.0'}
@@ -695,6 +762,62 @@ packages:
 
   /@humanwhocodes/object-schema@1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==, tarball: https://registry.npm.taobao.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz}
+    dev: true
+
+  /@intlify/core-base@9.1.10:
+    resolution: {integrity: sha512-So9CNUavB/IsZ+zBmk2Cv6McQp6vc2wbGi1S0XQmJ8Vz+UFcNn9MFXAe9gY67PreIHrbLsLxDD0cwo1qsxM1Nw==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@intlify/devtools-if': 9.1.10
+      '@intlify/message-compiler': 9.1.10
+      '@intlify/message-resolver': 9.1.10
+      '@intlify/runtime': 9.1.10
+      '@intlify/shared': 9.1.10
+      '@intlify/vue-devtools': 9.1.10
+    dev: true
+
+  /@intlify/devtools-if@9.1.10:
+    resolution: {integrity: sha512-SHaKoYu6sog3+Q8js1y3oXLywuogbH1sKuc7NSYkN3GElvXSBaMoCzW+we0ZSFqj/6c7vTNLg9nQ6rxhKqYwnQ==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@intlify/shared': 9.1.10
+    dev: true
+
+  /@intlify/message-compiler@9.1.10:
+    resolution: {integrity: sha512-+JiJpXff/XTb0EadYwdxOyRTB0hXNd4n1HaJ/a4yuV960uRmPXaklJsedW0LNdcptd/hYUZtCkI7Lc9J5C1gxg==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@intlify/message-resolver': 9.1.10
+      '@intlify/shared': 9.1.10
+      source-map: 0.6.1
+    dev: true
+
+  /@intlify/message-resolver@9.1.10:
+    resolution: {integrity: sha512-5YixMG/M05m0cn9+gOzd4EZQTFRUu8RGhzxJbR1DWN21x/Z3bJ8QpDYj6hC4FwBj5uKsRfKpJQ3Xqg98KWoA+w==}
+    engines: {node: '>= 10'}
+    dev: true
+
+  /@intlify/runtime@9.1.10:
+    resolution: {integrity: sha512-7QsuByNzpe3Gfmhwq6hzgXcMPpxz8Zxb/XFI6s9lQdPLPe5Lgw4U1ovRPZTOs6Y2hwitR3j/HD8BJNGWpJnOFA==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@intlify/message-compiler': 9.1.10
+      '@intlify/message-resolver': 9.1.10
+      '@intlify/shared': 9.1.10
+    dev: true
+
+  /@intlify/shared@9.1.10:
+    resolution: {integrity: sha512-Om54xJeo1Vw+K1+wHYyXngE8cAbrxZHpWjYzMR9wCkqbhGtRV5VLhVc214Ze2YatPrWlS2WSMOWXR8JktX/IgA==}
+    engines: {node: '>= 10'}
+    dev: true
+
+  /@intlify/vue-devtools@9.1.10:
+    resolution: {integrity: sha512-5l3qYARVbkWAkagLu1XbDUWRJSL8br1Dj60wgMaKB0+HswVsrR6LloYZTg7ozyvM621V6+zsmwzbQxbVQyrytQ==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@intlify/message-resolver': 9.1.10
+      '@intlify/runtime': 9.1.10
+      '@intlify/shared': 9.1.10
     dev: true
 
   /@isaacs/cliui@8.0.2:
@@ -1103,6 +1226,13 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: true
 
+  /@jridgewell/source-map@0.3.5:
+    resolution: {integrity: sha512-UTYAUj/wviwdsMfzoSJspJxbkH5o1snzwX0//0ENX1u/55kkZZkcTZP6u9bwKGkv+dkk9at4m1Cpt0uY80kcpQ==}
+    dependencies:
+      '@jridgewell/gen-mapping': 0.3.3
+      '@jridgewell/trace-mapping': 0.3.18
+    dev: true
+
   /@jridgewell/sourcemap-codec@1.4.14:
     resolution: {integrity: sha512-XPSJHWmi394fuUuzDnGz1wiKqWfo1yXecHQMRf2l6hztTO+nPru658AyDngaBe7isIxEkRsPR3FZh+s7iVa4Uw==}
     dev: true
@@ -1116,6 +1246,40 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
+  /@layui/icons-vue@1.1.0:
+    resolution: {integrity: sha512-ndc53qyUZSslUkO8ZHeBMh6i4gSTtAUqsPpKQZWML0JH6E/X3LIySe6LATeqEMmD7wWSnHJ+WBVGO4ij85Dk1g==}
+    dev: true
+
+  /@layui/layer-vue@2.1.1:
+    resolution: {integrity: sha512-lk9UoDQmLvtqrgdK+zeizp8KZy8pQfzX7dzHhAv+Qc74L1WC2jipb2hpYmaksiKX1lihy0D9eWWycMbnRn7V9A==}
+    dependencies:
+      '@layui/icons-vue': 1.1.0
+    dev: true
+
+  /@layui/layui-vue@2.11.5(vue@3.3.4):
+    resolution: {integrity: sha512-KZ5xrOm+B27yrEMWSuIGPLgLxUjISWuq0ecU4BcwrasCjEklfLS9UZBQp3peRWRsD6PGXP/cet1qQiD0AnUCJg==}
+    dependencies:
+      '@babel/types': 7.21.0
+      '@ctrl/tinycolor': 3.6.1
+      '@layui/icons-vue': 1.1.0
+      '@layui/layer-vue': 2.1.1
+      '@rollup/plugin-terser': 0.4.3
+      '@types/qrcode': 1.5.0
+      '@umijs/ssr-darkreader': 4.9.45
+      '@vueuse/core': 8.7.3(vue@3.3.4)
+      async-validator: 4.2.5
+      cropperjs: 1.6.1
+      dayjs: 1.11.10
+      evtd: 0.2.4
+      jsbarcode: 3.11.5
+      qrcode: 1.5.0
+      vue-i18n: 9.1.10(vue@3.3.4)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - rollup
+      - vue
     dev: true
 
   /@malept/cross-spawn-promise@1.1.1:
@@ -1168,6 +1332,20 @@ packages:
   /@rive-app/canvas@2.7.3:
     resolution: {integrity: sha512-b/NeFwUTa243aC68xNZPFDVpg1CPmlBB89q0vi3Fiv6q14/WPua+fVsmG1omx0/8ToGNR2DmmXHdvfVP2YazoA==}
     dev: false
+
+  /@rollup/plugin-terser@0.4.3:
+    resolution: {integrity: sha512-EF0oejTMtkyhrkwCdg0HJ0IpkcaVg1MMSf2olHb2Jp+1mnLM04OhjpJWGma4HobiDTF0WCyViWuvadyE9ch2XA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.x || ^3.x
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      serialize-javascript: 6.0.1
+      smob: 1.4.1
+      terser: 5.24.0
+    dev: true
 
   /@rollup/pluginutils@5.0.2:
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==, tarball: https://registry.npm.taobao.org/@rollup/pluginutils/-/pluginutils-5.0.2.tgz}
@@ -1262,6 +1440,7 @@ packages:
 
   /@types/minimatch@5.1.2:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==, tarball: https://registry.npm.taobao.org/@types/minimatch/-/minimatch-5.1.2.tgz}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -1284,6 +1463,12 @@ packages:
       xmlbuilder: 15.1.1
     dev: true
     optional: true
+
+  /@types/qrcode@1.5.0:
+    resolution: {integrity: sha512-x5ilHXRxUPIMfjtM+1vf/GPTRWZ81nqscursm5gMznJeK9M0YnZ1c3bEvRLQ0zSSgedLx1J6MGL231ObQGGhaA==}
+    dependencies:
+      '@types/node': 18.16.19
+    dev: true
 
   /@types/responselike@1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==, tarball: https://registry.npm.taobao.org/@types/responselike/-/responselike-1.0.0.tgz}
@@ -1454,6 +1639,10 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.1
+    dev: true
+
+  /@umijs/ssr-darkreader@4.9.45:
+    resolution: {integrity: sha512-XlcwzSYQ/SRZpHdwIyMDS4FOGX5kP4U/2g2mykyn/iPQTK4xTiQAyBu6UnnDnn7d5P8s7Atzh1C7H0ETNOypJg==}
     dev: true
 
   /@vitejs/plugin-vue@4.2.3(vite@4.4.2)(vue@3.3.4):
@@ -1645,8 +1834,29 @@ packages:
       - vue
     dev: true
 
+  /@vueuse/core@8.7.3(vue@3.3.4):
+    resolution: {integrity: sha512-jpBnyG9b4wXgk0Dz3I71lfhD0o53t1tZR+NoAQ+17zJy7MP/VDfGIkq8GcqpDwmptLCmGiGVipkPbWmDGMic8Q==}
+    peerDependencies:
+      '@vue/composition-api': ^1.1.0
+      vue: ^2.6.0 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      vue:
+        optional: true
+    dependencies:
+      '@vueuse/metadata': 8.7.3
+      '@vueuse/shared': 8.7.3(vue@3.3.4)
+      vue: 3.3.4
+      vue-demi: 0.14.5(vue@3.3.4)
+    dev: true
+
   /@vueuse/metadata@10.2.1:
     resolution: {integrity: sha512-3Gt68mY/i6bQvFqx7cuGBzrCCQu17OBaGWS5JdwISpMsHnMKKjC2FeB5OAfMcCQ0oINfADP3i9A4PPRo0peHdQ==, tarball: https://registry.npm.taobao.org/@vueuse/metadata/-/metadata-10.2.1.tgz}
+    dev: true
+
+  /@vueuse/metadata@8.7.3:
+    resolution: {integrity: sha512-spf9kgCsBEFbQb90I6SIqAWh1yP5T1JoJGj+/04+VTMIHXKzn3iecmHUalg8QEOCPNtnFQGNEw5OLg0L39eizg==}
     dev: true
 
   /@vueuse/shared@10.2.1(vue@3.3.4):
@@ -1656,6 +1866,21 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: true
+
+  /@vueuse/shared@8.7.3(vue@3.3.4):
+    resolution: {integrity: sha512-PMc/h6cEakJ4+5VuNUGi7RnbA6CkLvtG2230x8w3zYJpW1P6Qphh9+dFFvHn7TX+RlaicF5ND0RX1NxWmAoW7w==}
+    peerDependencies:
+      '@vue/composition-api': ^1.1.0
+      vue: ^2.6.0 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      vue:
+        optional: true
+    dependencies:
+      vue: 3.3.4
+      vue-demi: 0.14.5(vue@3.3.4)
     dev: true
 
   /@xmldom/xmldom@0.8.10:
@@ -1893,6 +2118,10 @@ packages:
     resolution: {integrity: sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==, tarball: https://registry.npm.taobao.org/async-validator/-/async-validator-3.5.2.tgz}
     dev: true
 
+  /async-validator@4.2.5:
+    resolution: {integrity: sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==}
+    dev: true
+
   /async@3.2.4:
     resolution: {integrity: sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==, tarball: https://registry.npm.taobao.org/async/-/async-3.2.4.tgz}
     dev: true
@@ -1986,6 +2215,7 @@ packages:
 
   /boolean@3.2.0:
     resolution: {integrity: sha512-d0II/GO9uf9lfUHH2BQsjxzRJZBdsjgsBiW4BvhWk/3qoKwQFjIDVN19PfX8F2D/r9PCMTtLWjYVCFrpeYUzsw==, tarball: https://registry.npm.taobao.org/boolean/-/boolean-3.2.0.tgz}
+    requiresBuild: true
     optional: true
 
   /brace-expansion@1.1.11:
@@ -2266,6 +2496,14 @@ packages:
       wrap-ansi: 2.1.0
     dev: true
 
+  /cliui@6.0.0:
+    resolution: {integrity: sha512-t6wbgtoCXvAzst7QgXxJYqPt0usEfbgQdftEPbLL/cvv6HPE5VgvqCuAIDR0NgU52ds6rFwqrgakNLrHEjCbrQ==}
+    dependencies:
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      wrap-ansi: 6.2.0
+    dev: true
+
   /cliui@8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==, tarball: https://registry.npm.taobao.org/cliui/-/cliui-8.0.1.tgz}
     engines: {node: '>=12'}
@@ -2331,6 +2569,10 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
+    dev: true
+
+  /commander@2.20.3:
+    resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
 
   /commander@2.9.0:
@@ -2421,6 +2663,10 @@ packages:
     dev: true
     optional: true
 
+  /cropperjs@1.6.1:
+    resolution: {integrity: sha512-F4wsi+XkDHCOMrHMYjrTEE4QBOrsHHN5/2VsVAaRq8P7E5z7xQpT75S+f/9WikmBEailas3+yo+6zPIomW+NOA==}
+    dev: true
+
   /cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==, tarball: https://registry.npm.taobao.org/cross-spawn/-/cross-spawn-7.0.3.tgz}
     engines: {node: '>= 8'}
@@ -2498,6 +2744,7 @@ packages:
 
   /debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    requiresBuild: true
     peerDependencies:
       supports-color: '*'
     peerDependenciesMeta:
@@ -2621,7 +2868,12 @@ packages:
 
   /detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==, tarball: https://registry.npm.taobao.org/detect-node/-/detect-node-2.1.0.tgz}
+    requiresBuild: true
     optional: true
+
+  /dijkstrajs@1.0.3:
+    resolution: {integrity: sha512-qiSlmBq9+BCdCA/L46dw8Uy93mloxsPSbwnm5yrKn2vMPiy8KyAskTF6zuV/j5BMsmOGZDPs7KjU+mjb670kfA==}
+    dev: true
 
   /dir-compare@2.4.0:
     resolution: {integrity: sha512-l9hmu8x/rjVC9Z2zmGzkhOEowZvW7pmYws5CWHutg8u1JgvsKWMx7Q/UODeu4djLZ4FgW5besw5yvMQnBHzuCA==, tarball: https://registry.npm.taobao.org/dir-compare/-/dir-compare-2.4.0.tgz}
@@ -2904,6 +3156,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /encode-utf8@1.0.3:
+    resolution: {integrity: sha512-ucAnuBEhUK4boH2HjVYG5Q2mQyPorvv0u/ocS+zhdw0S8AlHYY+GOFhP1Gio5z4icpP2ivFSvhtFjQi8+T9ppw==}
+    dev: true
+
   /end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==, tarball: https://registry.npm.taobao.org/end-of-stream/-/end-of-stream-1.4.4.tgz}
     dependencies:
@@ -2952,6 +3208,7 @@ packages:
 
   /es6-error@4.1.1:
     resolution: {integrity: sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==, tarball: https://registry.npm.taobao.org/es6-error/-/es6-error-4.1.1.tgz}
+    requiresBuild: true
     optional: true
 
   /es6-promise@4.2.8:
@@ -3180,6 +3437,10 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /evtd@0.2.4:
+    resolution: {integrity: sha512-qaeGN5bx63s/AXgQo8gj6fBkxge+OoLddLniox5qtLAEY5HSnuSlISXVPxnSae1dWblvTh4/HoMIB+mbMsvZzw==}
+    dev: true
+
   /exif-parser@0.1.12:
     resolution: {integrity: sha512-c2bQfLNbMzLPmzQuOr8fy0csy84WmwnER81W88DzTp9CYNPJ6yzOj2EZAh9pywYpqHnshVLHQJ8WzldAyfY+Iw==, tarball: https://registry.npm.taobao.org/exif-parser/-/exif-parser-0.1.12.tgz}
     dev: true
@@ -3366,6 +3627,14 @@ packages:
     dependencies:
       path-exists: 2.1.0
       pinkie-promise: 2.0.1
+    dev: true
+
+  /find-up@4.1.0:
+    resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
+    engines: {node: '>=8'}
+    dependencies:
+      locate-path: 5.0.0
+      path-exists: 4.0.0
     dev: true
 
   /find-up@5.0.0:
@@ -3614,6 +3883,7 @@ packages:
   /globalthis@1.0.3:
     resolution: {integrity: sha512-sFdI5LyBiNTHjRd7cGPWapiHWMOXKyuBNX/cWJ3NfzrZQVa8GI/8cofCl74AOVqq9W5kNmguTIzJ/1s2gyI9wA==, tarball: https://registry.npm.taobao.org/globalthis/-/globalthis-1.0.3.tgz}
     engines: {node: '>= 0.4'}
+    requiresBuild: true
     dependencies:
       define-properties: 1.2.0
     optional: true
@@ -4305,6 +4575,11 @@ packages:
     dependencies:
       argparse: 2.0.1
 
+  /jsbarcode@3.11.5:
+    resolution: {integrity: sha512-zv3KsH51zD00I/LrFzFSM6dst7rDn0vIMzaiZFL7qusTjPZiPtxg3zxetp0RR7obmjTw4f6NyGgbdkBCgZUIrA==}
+    hasBin: true
+    dev: true
+
   /jsbn@0.1.1:
     resolution: {integrity: sha512-UVU9dibq2JcFWxQPA6KCqj5O42VOmAY3zQUfEKxU0KpTGXwNoCjkX1e13eHNvw/xPynt6pU0rZ1htjWTNTSXsg==, tarball: https://registry.npm.taobao.org/jsbn/-/jsbn-0.1.1.tgz}
     dev: true
@@ -4513,6 +4788,13 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
+  /locate-path@5.0.0:
+    resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
+    engines: {node: '>=8'}
+    dependencies:
+      p-locate: 4.1.0
+    dev: true
+
   /locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==, tarball: https://registry.npm.taobao.org/locate-path/-/locate-path-6.0.0.tgz}
     engines: {node: '>=10'}
@@ -4596,6 +4878,7 @@ packages:
   /matcher@3.0.0:
     resolution: {integrity: sha512-OkeDaAZ/bQCxeFAozM55PKcKU0yJMPGifLwV4Qgjitu+5MoAfSQN4lsLJeXZ1b8w0x+/Emda6MZgXS1jvsapng==, tarball: https://registry.npm.taobao.org/matcher/-/matcher-3.0.0.tgz}
     engines: {node: '>=10'}
+    requiresBuild: true
     dependencies:
       escape-string-regexp: 4.0.0
     optional: true
@@ -4964,11 +5247,25 @@ packages:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==, tarball: https://registry.npm.taobao.org/p-cancelable/-/p-cancelable-2.1.1.tgz}
     engines: {node: '>=8'}
 
+  /p-limit@2.3.0:
+    resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
+    engines: {node: '>=6'}
+    dependencies:
+      p-try: 2.2.0
+    dev: true
+
   /p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==, tarball: https://registry.npm.taobao.org/p-limit/-/p-limit-3.1.0.tgz}
     engines: {node: '>=10'}
     dependencies:
       yocto-queue: 0.1.0
+    dev: true
+
+  /p-locate@4.1.0:
+    resolution: {integrity: sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==}
+    engines: {node: '>=8'}
+    dependencies:
+      p-limit: 2.3.0
     dev: true
 
   /p-locate@5.0.0:
@@ -4983,6 +5280,11 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       aggregate-error: 3.1.0
+    dev: true
+
+  /p-try@2.2.0:
+    resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
+    engines: {node: '>=6'}
     dev: true
 
   /pako@1.0.11:
@@ -5100,6 +5402,10 @@ packages:
   /pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==, tarball: https://registry.npm.taobao.org/pend/-/pend-1.2.0.tgz}
 
+  /perfect-scrollbar@1.5.5:
+    resolution: {integrity: sha512-dzalfutyP3e/FOpdlhVryN4AJ5XDVauVWxybSkLZmakFE2sS3y3pc4JnSprw8tGmHvkaG5Edr5T7LBTZ+WWU2g==}
+    dev: true
+
   /performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==, tarball: https://registry.npm.taobao.org/performance-now/-/performance-now-2.1.0.tgz}
     dev: true
@@ -5144,6 +5450,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5190,6 +5497,11 @@ packages:
   /pngjs@3.4.0:
     resolution: {integrity: sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==, tarball: https://registry.npm.taobao.org/pngjs/-/pngjs-3.4.0.tgz}
     engines: {node: '>=4.0.0'}
+    dev: true
+
+  /pngjs@5.0.0:
+    resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
+    engines: {node: '>=10.13.0'}
     dev: true
 
   /pngjs@6.0.0:
@@ -5314,6 +5626,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5330,6 +5643,30 @@ packages:
   /punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==, tarball: https://registry.npm.taobao.org/punycode/-/punycode-2.3.0.tgz}
     engines: {node: '>=6'}
+    dev: true
+
+  /qalendar@3.5.1(vue@3.3.4):
+    resolution: {integrity: sha512-HsfcH7bU1ZjYwsID4qES9rcMKPBN+mc6j9egOv/8cLGSqsn2q4oEO6jnLYU0cl8fQcWWqtGS/PCIq7IbLRpgLw==}
+    engines: {node: '>=16.0.0'}
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.4.2
+      '@fortawesome/free-regular-svg-icons': 6.4.2
+      '@fortawesome/free-solid-svg-icons': 6.4.2
+      '@fortawesome/vue-fontawesome': 3.0.5(@fortawesome/fontawesome-svg-core@6.4.2)(vue@3.3.4)
+      perfect-scrollbar: 1.5.5
+    transitivePeerDependencies:
+      - vue
+    dev: true
+
+  /qrcode@1.5.0:
+    resolution: {integrity: sha512-9MgRpgVc+/+47dFvQeD6U2s0Z92EsKzcHogtum4QB+UNd025WOJSHvn/hjk9xmzj7Stj95CyUAs31mrjxliEsQ==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dependencies:
+      dijkstrajs: 1.0.3
+      encode-utf8: 1.0.3
+      pngjs: 5.0.0
+      yargs: 15.4.1
     dev: true
 
   /qs@6.5.3:
@@ -5352,6 +5689,12 @@ packages:
   /quick-lru@5.1.1:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==, tarball: https://registry.npm.taobao.org/quick-lru/-/quick-lru-5.1.1.tgz}
     engines: {node: '>=10'}
+
+  /randombytes@2.1.0:
+    resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
+    dependencies:
+      safe-buffer: 5.1.2
+    dev: true
 
   /read-config-file@6.2.0:
     resolution: {integrity: sha512-gx7Pgr5I56JtYz+WuqEbQHj/xWo+5Vwua2jhb1VwM4Wid5PqYmZ4i00ZB0YEGIfkVBsCv9UrjgyqCiQfS/Oosg==, tarball: https://registry.npm.taobao.org/read-config-file/-/read-config-file-6.2.0.tgz}
@@ -5488,6 +5831,10 @@ packages:
     resolution: {integrity: sha512-IqSUtOVP4ksd1C/ej5zeEh/BIP2ajqpn8c5x+q99gvcIG/Qf0cud5raVnE/Dwd0ua9TXYDoDc0RE5hBSdz22Ug==, tarball: https://registry.npm.taobao.org/require-main-filename/-/require-main-filename-1.0.1.tgz}
     dev: true
 
+  /require-main-filename@2.0.0:
+    resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
+    dev: true
+
   /resolve-alpn@1.2.1:
     resolution: {integrity: sha512-0a1F4l73/ZFZOakJnQ3FvkJ2+gSTQWz/r2KE5OdDY0TxPm5h4GkqkWWfM47T7HsbnOtcJVEF4epCVy6u7Q3K+g==, tarball: https://registry.npm.taobao.org/resolve-alpn/-/resolve-alpn-1.2.1.tgz}
 
@@ -5543,6 +5890,7 @@ packages:
   /roarr@2.15.4:
     resolution: {integrity: sha512-CHhPh+UNHD2GTXNYhPWLnU8ONHdI+5DI+4EYIAOaiD63rHeYlZvyh8P+in5999TTSFgUYuKUAjzRI4mdh/p+2A==, tarball: https://registry.npm.taobao.org/roarr/-/roarr-2.15.4.tgz}
     engines: {node: '>=8.0'}
+    requiresBuild: true
     dependencies:
       boolean: 3.2.0
       detect-node: 2.1.0
@@ -5616,6 +5964,7 @@ packages:
 
   /semver-compare@1.0.0:
     resolution: {integrity: sha512-YM3/ITh2MJ5MtzaM429anh+x2jiLVjqILF4m4oyQB18W7Ggea7BfqdH/wGMK7dDiMghv/6WG7znWMwUDzJiXow==, tarball: https://registry.npm.taobao.org/semver-compare/-/semver-compare-1.0.0.tgz}
+    requiresBuild: true
     optional: true
 
   /semver@5.7.2:
@@ -5642,9 +5991,16 @@ packages:
   /serialize-error@7.0.1:
     resolution: {integrity: sha512-8I8TjW5KMOKsZQTvoxjuSIa7foAwPWGOts+6o7sgjz41/qMD9VQHEDxi6PBvK2l0MXUmqZyNpUK+T2tQaaElvw==, tarball: https://registry.npm.taobao.org/serialize-error/-/serialize-error-7.0.1.tgz}
     engines: {node: '>=10'}
+    requiresBuild: true
     dependencies:
       type-fest: 0.13.1
     optional: true
+
+  /serialize-javascript@6.0.1:
+    resolution: {integrity: sha512-owoXEFjWRllis8/M1Q+Cw5k8ZH40e3zhp/ovX+Xr/vi1qj6QesbyXXViFbpNvWvPNAD62SutwEXavefrLJWj7w==}
+    dependencies:
+      randombytes: 2.1.0
+    dev: true
 
   /set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==, tarball: https://registry.npm.taobao.org/set-blocking/-/set-blocking-2.0.0.tgz}
@@ -5718,6 +6074,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /smob@1.4.1:
+    resolution: {integrity: sha512-9LK+E7Hv5R9u4g4C3p+jjLstaLe11MDsL21UpYaCNmapvMkYhqCV4A/f/3gyH8QjMyh6l68q9xC85vihY9ahMQ==}
+    dev: true
 
   /snapdragon-node@2.1.1:
     resolution: {integrity: sha512-O27l4xaMYt/RSQ5TR3vpWCAB5Kb/czIcqUFOM/C4fYcLnbZUc1PkjTAMjof2pBWaSTwOUd6qUHcFGVGj7aIwnw==}
@@ -5820,6 +6180,7 @@ packages:
 
   /sprintf-js@1.1.2:
     resolution: {integrity: sha512-VE0SOVEHCk7Qc8ulkWw3ntAzXuqf7S2lvwQaDLRnUeIEaKNQJzV6BwmLKhOqT61aGhfUMrXeaBk+oDGCzvhcug==, tarball: https://registry.npm.taobao.org/sprintf-js/-/sprintf-js-1.1.2.tgz}
+    requiresBuild: true
     optional: true
 
   /sshpk@1.17.0:
@@ -6051,6 +6412,17 @@ packages:
       fs-extra: 10.1.0
     dev: true
 
+  /terser@5.24.0:
+    resolution: {integrity: sha512-ZpGR4Hy3+wBEzVEnHvstMvqpD/nABNelQn/z2r0fjVWGQsN3bpOLzQlqDxmb4CDZnXq5lpjnQ+mHQLAOpfM5iw==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      '@jridgewell/source-map': 0.3.5
+      acorn: 8.10.0
+      commander: 2.20.3
+      source-map-support: 0.5.21
+    dev: true
+
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==, tarball: https://registry.npm.taobao.org/text-table/-/text-table-0.2.0.tgz}
     dev: true
@@ -6180,6 +6552,7 @@ packages:
   /type-fest@0.13.1:
     resolution: {integrity: sha512-34R7HTnG0XIJcBSn5XhDd7nNFPRcXYRZrBB2O2jdKqYODldSzBAqzsWoZYYvduky73toYS/ESqxPvkDf/F0XMg==, tarball: https://registry.npm.taobao.org/type-fest/-/type-fest-0.13.1.tgz}
     engines: {node: '>=10'}
+    requiresBuild: true
     optional: true
 
   /type-fest@0.20.2:
@@ -6549,6 +6922,19 @@ packages:
       - supports-color
     dev: true
 
+  /vue-i18n@9.1.10(vue@3.3.4):
+    resolution: {integrity: sha512-jpr7gV5KPk4n+sSPdpZT8Qx3XzTcNDWffRlHV/cT2NUyEf+sEgTTmLvnBAibjOFJ0zsUyZlVTAWH5DDnYep+1g==}
+    engines: {node: '>= 10'}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      '@intlify/core-base': 9.1.10
+      '@intlify/shared': 9.1.10
+      '@intlify/vue-devtools': 9.1.10
+      '@vue/devtools-api': 6.5.0
+      vue: 3.3.4
+    dev: true
+
   /vue-router@4.2.4(vue@3.3.4):
     resolution: {integrity: sha512-9PISkmaCO02OzPVOMq2w82ilty6+xJmQrarYZDkjZBfl4RvYAlt4PKnEX21oW4KTtWfa9OuO/b3qk1Od3AEdCQ==}
     peerDependencies:
@@ -6625,6 +7011,10 @@ packages:
     resolution: {integrity: sha512-F6+WgncZi/mJDrammbTuHe1q0R5hOXv/mBaiNA2TCNT/LTHusX0V+CJnj9XT8ki5ln2UZyyddDgHfCzyrOH7MQ==, tarball: https://registry.npm.taobao.org/which-module/-/which-module-1.0.0.tgz}
     dev: true
 
+  /which-module@2.0.1:
+    resolution: {integrity: sha512-iBdZ57RDvnOR9AGBhML2vFZf7h8vmBjhoaZqODJBFWHVtKkDmKuHai3cx5PgVMrX5YDNp27AofYbAwctSS+vhQ==}
+    dev: true
+
   /which-typed-array@1.1.11:
     resolution: {integrity: sha512-qe9UWWpkeG5yzZ0tNYxDmd7vo58HDBc39mZ0xWWpolAGADdFOzkfamWLDxkOWcvHQKVmdTyQdLD4NOfjLWTKew==}
     engines: {node: '>= 0.4'}
@@ -6657,6 +7047,15 @@ packages:
     dependencies:
       string-width: 1.0.2
       strip-ansi: 3.0.1
+    dev: true
+
+  /wrap-ansi@6.2.0:
+    resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
+    engines: {node: '>=8'}
+    dependencies:
+      ansi-styles: 4.3.0
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
     dev: true
 
   /wrap-ansi@7.0.0:
@@ -6726,6 +7125,10 @@ packages:
     resolution: {integrity: sha512-uGZHXkHnhF0XeeAPgnKfPv1bgKAYyVvmNL1xlKsPYZPaIHxGti2hHqvOCQv71XMsLxu1QjergkqogUnms5D3YQ==, tarball: https://registry.npm.taobao.org/y18n/-/y18n-3.2.2.tgz}
     dev: true
 
+  /y18n@4.0.3:
+    resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}
+    dev: true
+
   /y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==, tarball: https://registry.npm.taobao.org/y18n/-/y18n-5.0.8.tgz}
     engines: {node: '>=10'}
@@ -6743,6 +7146,14 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
+  /yargs-parser@18.1.3:
+    resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}
+    engines: {node: '>=6'}
+    dependencies:
+      camelcase: 5.0.0
+      decamelize: 1.2.0
+    dev: true
+
   /yargs-parser@21.1.1:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==, tarball: https://registry.npm.taobao.org/yargs-parser/-/yargs-parser-21.1.1.tgz}
     engines: {node: '>=12'}
@@ -6752,6 +7163,23 @@ packages:
     resolution: {integrity: sha512-+QQWqC2xeL0N5/TE+TY6OGEqyNRM+g2/r712PDNYgiCdXYCApXf1vzfmDSLBxfGRwV+moTq/V8FnMI24JCm2Yg==, tarball: https://registry.npm.taobao.org/yargs-parser/-/yargs-parser-4.2.1.tgz}
     dependencies:
       camelcase: 3.0.0
+    dev: true
+
+  /yargs@15.4.1:
+    resolution: {integrity: sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==}
+    engines: {node: '>=8'}
+    dependencies:
+      cliui: 6.0.0
+      decamelize: 1.2.0
+      find-up: 4.1.0
+      get-caller-file: 2.0.5
+      require-directory: 2.1.1
+      require-main-filename: 2.0.0
+      set-blocking: 2.0.0
+      string-width: 4.2.3
+      which-module: 2.0.1
+      y18n: 4.0.3
+      yargs-parser: 18.1.3
     dev: true
 
   /yargs@17.7.2:

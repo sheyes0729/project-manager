@@ -7,3 +7,9 @@ export interface AppInfo {
   appMetrics: ProcessMetric[] // 应用进程信息
   gpuInfo: unknown // GPU信息
 }
+
+export enum ResultStatus {
+  RESOLVED, // 成功
+  REJECTED, // 失败
+  PENDING // 进行中
+}
