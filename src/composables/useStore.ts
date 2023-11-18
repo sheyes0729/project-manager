@@ -7,9 +7,9 @@ import { set, cloneDeep } from 'lodash'
  * @returns
  */
 export const useStore = createGlobalState(() => {
-  const system = shallowRef<Record<string, any>>({})
+  const system = ref<Record<string, any>>({})
 
-  const file = shallowRef<Record<string, any>>({})
+  const file = ref<Record<string, any>>({})
 
   function setSystem(data: any, key?: string) {
     if (key) {
@@ -29,10 +29,18 @@ export const useStore = createGlobalState(() => {
     ipcRenderer.send(IPCDBEvents.SET_DB, 'file', cloneDeep(file.value))
   }
 
+  const collapsed = ref(false)
+
+  function toggleCollapsed() {
+    collapsed.value = !collapsed.value
+  }
+
   return {
     system,
     setSystem,
     file,
-    setFile
+    setFile,
+    collapsed,
+    toggleCollapsed
   }
 })

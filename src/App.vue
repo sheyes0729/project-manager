@@ -10,7 +10,7 @@ import { ipcRenderer } from '@/utils/ipc'
 
 const { system, setSystem, setFile } = useStore()
 
-const theme = computed(() => (system.value.theme === 'dark' ? 'dark' : ''))
+const theme = computed(() => (system.value.theme === 'dark' ? 'dark' : 'light'))
 
 const themeVariable = reactive({
   '--global-primary-color': '#1f965a',
@@ -20,9 +20,10 @@ const themeVariable = reactive({
 })
 
 onMounted(async () => {
-  ipcRenderer.invoke(IPCDBEvents.GET_DB, 'system').then((system) => {
-    setSystem(system)
-    document.body.setAttribute('data-theme', system.theme || 'light')
+  ipcRenderer.invoke(IPCDBEvents.GET_DB, 'system').then((sys) => {
+    sys.theme = sys.theme || 'light'
+    setSystem(sys)
+    document.body.setAttribute('data-theme', sys.theme)
   })
 
   ipcRenderer.invoke(IPCDBEvents.GET_DB, 'file').then((file) => {

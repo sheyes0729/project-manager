@@ -11,7 +11,8 @@ const closeBehavior = ref(system.value.closeBehavior || 'minify')
 
 const updatePolicy = ref(system.value.updatePolicy || 'auto')
 
-function startOnLoginChange() {
+function startOnLoginChange(current: boolean) {
+  startOnLogin.value = current
   setSystem(startOnLogin.value, 'startOnLogin')
   ipcRenderer.send(IPCSystemEvents.OPEN_APP_ON_START, startOnLogin.value)
 }

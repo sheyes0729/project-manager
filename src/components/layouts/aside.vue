@@ -1,7 +1,7 @@
 <template>
-  <section :class="['layout-aside', { toggled: toggle }]">
+  <section :class="['layout-aside', { toggled: collapsed }]">
     <div class="logo">
-      <img v-if="!toggle" :src="getAssetsFile('logo-with-title.png')" />
+      <img v-if="!collapsed" :src="getAssetsFile('logo-with-title.png')" />
       <img v-else :src="getAssetsFile('logo.png')" />
     </div>
     <div class="menu">
@@ -16,11 +16,12 @@
 
 <script setup lang="ts">
 import { getAssetsFile } from '@/utils/getAssetsFile'
-import bus from 'vue3-eventbus'
 
 defineOptions({
   name: 'LayoutAside'
 })
+
+const { collapsed } = useStore()
 
 interface MenuItem {
   label: string
@@ -63,21 +64,9 @@ const menuList: Array<MenuItem> = [
   }
 ]
 
-const toggle = ref(false)
-function toggleHandler() {
-  toggle.value = !toggle.value
+watch(collapsed, () => {
   const index = menuList.findIndex((menu: MenuItem) => menu.path === active.value)
   handleBgMove(index)
-}
-
-onMounted(() => {
-  watchEffect((onInvalid) => {
-    bus.on('toggle-menu', toggleHandler)
-
-    onInvalid(() => {
-      bus.off('toggle-menu', toggleHandler)
-    })
-  })
 })
 
 const router = useRouter()

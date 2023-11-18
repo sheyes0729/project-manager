@@ -2,21 +2,52 @@
   <header class="layout-header">
     <div class="menu-icon">
       <lay-space size="md">
-        <image-icon link="menu" class="icon" @click="toggleAsideMenu" />
+        <lay-icon
+          v-if="!collapsed"
+          style="cursor: pointer; font-size: 18px"
+          title="收起"
+          type="layui-icon-shrink-right"
+          @click="toggleCollapsed"
+        />
+        <lay-icon
+          v-else
+          type="layui-icon-spread-left"
+          title="展开"
+          style="cursor: pointer; font-size: 18px"
+          @click="toggleCollapsed"
+        />
         <lay-icon
           type="layui-icon-refresh-three"
-          size="16px"
-          style="cursor: pointer"
+          title="刷新"
+          style="cursor: pointer; font-size: 18px"
           @click="reloadPage"
         />
       </lay-space>
     </div>
     <div class="system-icon">
-      <image-icon link="theme" title="主题" class="icon" @click="toggleTheme" />
-      <image-icon link="top" title="置顶" class="icon" @click="operateWindow('toggleTop')" />
-      <image-icon link="minus" title="最小化" class="icon" @click="operateWindow('minify')" />
-      <image-icon link="zoom" title="缩放" class="icon" @click="operateWindow('toggleMaxize')" />
-      <image-icon link="close" title="关闭" class="icon" @click="operateWindow('inquire')" />
+      <lay-switch v-model="dark" @change="toggleTheme">
+        <template #onswitch-icon> 🌛 </template>
+        <template #unswitch-icon> ☀ </template>
+      </lay-switch>
+
+      <lay-icon
+        type="layui-icon-subtraction"
+        title="最小化"
+        class="icon"
+        @click="operateWindow('minify')"
+      />
+      <lay-icon
+        type="layui-icon-screen-full"
+        title="缩放"
+        class="icon"
+        @click="operateWindow('toggleMaxize')"
+      />
+      <lay-icon
+        type="layui-icon-addition"
+        title="关闭"
+        class="icon"
+        @click="operateWindow('inquire')"
+      />
     </div>
   </header>
 </template>
@@ -24,17 +55,13 @@
 <script lang="ts" setup>
 import { ipcRenderer } from '@/utils/ipc'
 import { IPCWindowEvents } from '@shared/config/constant'
-import bus from 'vue3-eventbus'
 
 defineOptions({
   name: 'LayoutHeader'
 })
 
-const { system, setSystem } = useStore()
-
-function toggleAsideMenu() {
-  bus.emit('toggle-menu')
-}
+const { collapsed, toggleCollapsed, system, setSystem } = useStore()
+const dark = ref(system.value.theme === 'dark')
 
 async function operateWindow(type: string) {
   if (type === 'inquire') {
@@ -45,11 +72,10 @@ async function operateWindow(type: string) {
   }
 }
 
-function toggleTheme() {
-  const body = document.body
-  const theme = body.getAttribute('data-theme')
-  const newTheme = theme === 'light' ? 'dark' : 'light'
-  body.setAttribute('data-theme', newTheme)
+function toggleTheme(current: boolean) {
+  dark.value = current
+  const newTheme = dark.value ? 'dark' : 'light'
+  document.body.setAttribute('data-theme', newTheme)
   setSystem(newTheme, 'theme')
 }
 
@@ -74,11 +100,14 @@ function reloadPage() {
   .system-icon {
     -webkit-app-region: no-drag;
     display: flex;
-    gap: $padding-small;
+    align-items: center;
+    gap: $padding-base;
   }
   .icon {
     width: 16px;
     height: 16px;
+    font-size: $font-large;
+    font-weight: $font-weight-bold;
     cursor: pointer;
   }
 }

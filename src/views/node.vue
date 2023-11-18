@@ -117,7 +117,7 @@ function refresh() {
       <RippleButton type="normal" icon="layui-icon-refresh" @click="getNvmList"
         >远程更新</RippleButton
       >
-      <RippleButton type="warm" icon="layui-icon-refresh" @click="refresh">刷新</RippleButton>
+      <RippleButton type="warm" icon="layui-icon-refresh" @click="refresh">全局刷新</RippleButton>
     </LaySpace>
     <LayTable
       even

@@ -7,6 +7,7 @@ export enum IPCDBEvents {
 // 文件操作
 export enum IPCFileEvents {
   OPEN_FILE_IN_IDE = 'open-file-in-ide',
+  PICK_IDE_PATH = 'pick-ide-path',
   OPEN_FILE_IN_EXPLORER = 'open-file-in-explorer',
   SCAN_FILES_IN_DIRECTORY = 'scan-files-in-directory',
   SCAN_FILES_COMPLETED = 'scan-files-completed',

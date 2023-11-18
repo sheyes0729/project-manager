@@ -1,9 +1,11 @@
-import { dialog, ipcMain, shell } from 'electron'
+import { app, dialog, ipcMain, shell } from 'electron'
 import { scanfile } from './utils/scanfile'
 import { IPCFileEvents } from '../../shared/config/constant'
 import log from 'electron-log'
 import { exec } from 'child_process'
 import path from 'path'
+import { ResultStatus } from '../../shared/typings/system'
+import { IDEPickeResult } from '../../shared/typings/file'
 
 export function installFileHanler(): void {
   log.info('install file handler...')
@@ -11,6 +13,31 @@ export function installFileHanler(): void {
   ipcMain.handle(IPCFileEvents.OPEN_FILE_IN_IDE, (_, idePath: string, filePath: string) => {
     exec(`${path.basename(idePath)} ${filePath}`, { cwd: path.dirname(idePath) })
     return 'success'
+  })
+
+  ipcMain.handle(IPCFileEvents.PICK_IDE_PATH, async () => {
+    let status: ResultStatus = ResultStatus.PENDING,
+      path = '',
+      icon = ''
+    try {
+      const { canceled, filePaths } = await dialog.showOpenDialog({
+        properties: ['openFile']
+      })
+      if (!canceled) {
+        path = filePaths[0]
+        icon = (await app.getFileIcon(path)).toDataURL()
+        status = ResultStatus.RESOLVED
+      } else {
+        status = ResultStatus.REJECTED
+      }
+    } catch (e) {
+      log.error('picke ide path error: ', e)
+    }
+    return <IDEPickeResult>{
+      path,
+      status,
+      icon
+    }
   })
 
   // 扫描文件
