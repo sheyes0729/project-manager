@@ -50,8 +50,8 @@ function updatePolicyChange(current: string) {
 
       <lay-form-item label="更新方式">
         <lay-radio-group v-model="updatePolicy" @change="updatePolicyChange">
-          <lay-radio value="auto"> 自动更新 </lay-radio>
-          <lay-radio value="manual"> 手动更新 </lay-radio>
+          <lay-radio value="auto"> 自动获取更新 </lay-radio>
+          <lay-radio value="manual"> 手动获取更新 </lay-radio>
         </lay-radio-group>
       </lay-form-item>
     </lay-form>
