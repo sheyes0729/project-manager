@@ -2,10 +2,10 @@
   "name": "project-manager",
   "productName": "Project Manager",
   "version": "1.0.0",
-  "description": "An Electron application with Vue and TypeScript",
+  "description": "一个基于 Electron + Vue3 + Typescript 开发的项目管理器，主要包括项目扫描、IDE 绑定、Node 版本管理、TodoList 等功能",
   "main": "./out/main/index.js",
-  "author": "sheyes<xie0729@yeah.net>",
-  "homepage": "https://gitee.com/xie_fei0729/electron-app",
+  "author": "sheyes0729<sheyes0729@163.com>",
+  "homepage": "https://github.com/sheyes0729/project-manager",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --fix",

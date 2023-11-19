@@ -113,5 +113,10 @@ function transform2MB(value: number): number {
     align-items: flex-end;
     gap: $padding-base;
   }
+
+  .app-desc {
+    width: 50%;
+    text-align: center;
+  }
 }
 </style>

@@ -58,7 +58,7 @@ provide('app', {
 
 .left {
   height: calc(100vh - 2 * $padding-small);
-  border-radius: $radius-small;
+  border-radius: 0 $radius-small $radius-small 0;
   padding: $padding-small 0;
   @include themeify {
     background-color: themed('color-bg-aside');
