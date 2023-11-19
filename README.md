@@ -55,6 +55,28 @@
 - 关于
   <img src="./.README/preview-about.png" alt="关于" />
 
+## 🎉 启动
+
+```sh
+  # 克隆项目
+  $ git clone https://github.com/sheyes0729/project-manager.git
+
+  # 安装依赖
+  $ pnpm i
+
+  # 启动项目
+  $ pnpm dev
+
+  # 生成项目图标
+  $ pnpm create:icons
+
+  # 代码样式
+  $ pnpm lint
+
+  # 项目打包
+  $ pnpm build:win32
+```
+
 ## 🤔️ 常见问题
 
 ### **Q：使用.exe文件安装时安装失败**
