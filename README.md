@@ -14,10 +14,6 @@
   <img src="https://img.shields.io/badge/npm-v8.19.1-green" alt="npm" />
 </p>
 
-<p align="center">
-  <img src="https://github.com/sheyes0729/project-manager/graphs/participation?h=28&type=sparkline&w=155" alt="github participation" />
-</p>
-
 ## 🐦 简介
 
 > `Project Manager`，一个基于 Electron + Vue3 + Typescript 开发的PC端项目管理器，主要包括项目扫描、IDE绑定、Node版本管理、TodoList等功能，目前仅支持Windows

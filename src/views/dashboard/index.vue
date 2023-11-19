@@ -38,11 +38,12 @@ defineOptions({
   height: 100%;
   padding: $padding-mini;
   display: grid;
-  grid-template: repeat(5, 1fr) / repeat(2, 1fr);
+  grid-template: repeat(5, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr));
   gap: $padding-mini;
 
   > div {
     border-radius: $radius-mini;
+    width: 100%;
     // overflow: auto;
     &:hover {
       @include themeify {
