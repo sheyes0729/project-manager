@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import LayoutHeader from '@/components/layouts/header.vue'
-import LayoutAside from '@/components/layouts/aside.vue'
+const LayoutHeader = defineAsyncComponent(() => import('@/components/layouts/header.vue'))
+const LayoutAside = defineAsyncComponent(() => import('@/components/layouts/aside.vue'))
+
+const { cacheList } = useCache()
 
 const routeAlive = ref(true)
 
@@ -25,11 +27,10 @@ provide('app', {
       <layout-header></layout-header>
       <section class="content">
         <Suspense>
-          <router-view v-if="routeAlive" v-slot="{ Component, route }">
-            <keep-alive :max="30">
-              <component :is="Component" v-if="route.meta.cache" />
+          <router-view v-if="routeAlive" v-slot="{ Component }">
+            <keep-alive :max="30" :include="cacheList">
+              <component :is="Component" />
             </keep-alive>
-            <component :is="Component" v-if="!route.meta.cache" />
           </router-view>
           <template #fallback>
             <RiveLoading />

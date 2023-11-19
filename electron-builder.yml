@@ -57,3 +57,4 @@ npmRebuild: false
 publish:
   - provider: generic
     url: https://example.com
+    updaterCacheDirName: electron-app-updater

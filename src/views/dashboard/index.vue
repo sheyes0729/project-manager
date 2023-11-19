@@ -1,9 +1,22 @@
+<route>
+  {
+    meta: {
+      cache: "DashboardRoute"
+    }
+  }
+</route>
+
 <script lang="ts" setup>
 const TodoList = defineAsyncComponent(() => import('./components/TodoList.vue'))
 const Calendar = defineAsyncComponent(() => import('./components/Calendar.vue'))
 const HotList = defineAsyncComponent(() => import('./components/HotList.vue'))
 const MinuteNews = defineAsyncComponent(() => import('./components/MinuteNews.vue'))
+
+defineOptions({
+  name: 'DashboardRoute'
+})
 </script>
+
 <template>
   <section class="dashboard-wrapper">
     <div class="to-do-list">
@@ -30,6 +43,7 @@ const MinuteNews = defineAsyncComponent(() => import('./components/MinuteNews.vu
 
   > div {
     border-radius: $radius-mini;
+    // overflow: auto;
     &:hover {
       @include themeify {
         filter: drop-shadow(0px 0px 10px themed('color-shadow'));

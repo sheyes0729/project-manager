@@ -50,7 +50,7 @@ async function openAdd() {
 
 function previewIcon(ide: IDEItem) {
   layer.photos({
-    imageList: [
+    imgList: [
       {
         src: ide.icon,
         alt: ide.path

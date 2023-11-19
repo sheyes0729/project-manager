@@ -1,6 +1,18 @@
+<route>
+  {
+    meta: {
+      cache: "NodeRoute"
+    }
+  }
+</route>
+
 <script lang="ts" setup>
 import { ipcRenderer } from '@/utils/ipc'
 import { IPCSystemEvents } from '@shared/config/constant'
+
+defineOptions({
+  name: 'NodeRoute'
+})
 
 const version = ref('')
 
@@ -141,14 +153,6 @@ function refresh() {
   app?.reload()
 }
 </script>
-
-<route>
-  {
-    meta: {
-      cache: true
-    }
-  }
-</route>
 
 <template>
   <lay-space v-if="version" direction="vertical">

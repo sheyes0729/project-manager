@@ -1,7 +1,12 @@
 <script lang="ts" setup></script>
 
 <template>
-  <h1>minute-news</h1>
+  <img src="https://api.52vmy.cn/api/wl/60s" />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+img {
+  width: 100%;
+  border-radius: $radius-mini;
+}
+</style>

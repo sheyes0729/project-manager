@@ -76,30 +76,30 @@ const { list, containerProps, wrapperProps } = useVirtualList(files, {
   itemHeight: 118
 })
 
-ipcRenderer.on(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
-  text.value = `扫描完成，共扫描到${data.length}个项目`
-  layer.notifiy({
-    title: '扫描完成！',
-    content: text.value,
-    icon: 1
-  })
-  loading.value = false
-  files.value = data
-  setFile(data, 'list')
-})
-
-ipcRenderer.on(IPCFileEvents.SCAN_FILES_CANCELED, () => {
-  layer.notifiy({
-    title: '提示！',
-    content: '取消扫描！',
-    icon: 4
-  })
-  loading.value = false
-})
-
 function scanfile() {
   loading.value = true
   ipcRenderer.send(IPCFileEvents.SCAN_FILES_IN_DIRECTORY)
+
+  ipcRenderer.once(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
+    text.value = `扫描完成，共扫描到${data.length}个项目`
+    layer.notifiy({
+      title: '扫描完成！',
+      content: text.value,
+      icon: 1
+    })
+    loading.value = false
+    files.value = data
+    setFile(data, 'list')
+  })
+
+  ipcRenderer.once(IPCFileEvents.SCAN_FILES_CANCELED, () => {
+    layer.notifiy({
+      title: '提示！',
+      content: '取消扫描！',
+      icon: 4
+    })
+    loading.value = false
+  })
 }
 
 function clearFile() {
