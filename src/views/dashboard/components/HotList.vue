@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { ElTabs, ElTabPane } from 'element-plus'
-import 'element-plus/es/components/tabs/style/css'
-import 'element-plus/es/components/tab-pane/style/css'
 import { ipcRenderer } from '@/utils/ipc'
 import { IPCSystemEvents } from '@shared/config/constant'
 
