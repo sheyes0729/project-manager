@@ -62,19 +62,31 @@ function previewIcon(ide: IDEItem) {
 }
 
 function removeIde(ide: IDEItem) {
-  editorList.value = editorList.value.filter((item) => item.path != ide.path)
-  if (defaultEditor.value == ide.path) {
-    defaultEditor.value = ''
-  }
-  layer.notifiy({
-    title: '提示！',
-    content: '添加成功！',
-    icon: 1
-  })
-  layer.notifiy({
-    title: '提示！',
-    content: '删除成功！',
-    icon: 1
+  layer.confirm('确定删除选中项？', {
+    title: '确认删除',
+    btn: [
+      {
+        text: '确定',
+        callback: (id) => {
+          editorList.value = editorList.value.filter((item) => item.path != ide.path)
+          if (defaultEditor.value == ide.path) {
+            defaultEditor.value = ''
+          }
+          layer.notifiy({
+            title: '提示！',
+            content: '删除成功！',
+            icon: 1
+          })
+          layer.close(id)
+        }
+      },
+      {
+        text: '取消',
+        callback: (id) => {
+          layer.close(id)
+        }
+      }
+    ]
   })
 }
 
@@ -97,22 +109,18 @@ watch(defaultEditor, (de) => {
   <SettingItem title="编辑器配置">
     <lay-form label-position="right" label-width="120px" size="sm">
       <lay-form-item label="编辑器管理">
-        <div class="ide-add-container">
-          <lay-space direction="vertical">
-            <div v-for="ide in editorList" class="ide-add-item">
-              <lay-space>
-                <img :src="ide.icon" alt="" width="24" height="24" @click="previewIcon(ide)" />
-                <lay-input v-model="ide.path" disabled />
-                <RippleButton type="danger" size="xs" @click="removeIde(ide)">
-                  <lay-icon type="layui-icon-subtraction"></lay-icon>
-                </RippleButton>
-              </lay-space>
-            </div>
+        <lay-space direction="vertical">
+          <lay-space v-for="ide in editorList" :key="ide.path">
+            <img :src="ide.icon" alt="" width="24" height="24" @click="previewIcon(ide)" />
+            <lay-input v-model="ide.path" disabled />
+            <RippleButton type="danger" size="xs" @click="removeIde(ide)">
+              <lay-icon type="layui-icon-subtraction"></lay-icon>
+            </RippleButton>
           </lay-space>
           <RippleButton type="primary" icon="layui-icon-addition" @click="openAdd"
             >添加编辑器</RippleButton
           >
-        </div>
+        </lay-space>
       </lay-form-item>
 
       <lay-form-item label="默认编辑器">
@@ -138,11 +146,3 @@ watch(defaultEditor, (de) => {
     </lay-form>
   </SettingItem>
 </template>
-
-<style lang="scss" scoped>
-.ide-add-container {
-  display: flex;
-  flex-direction: column;
-  gap: $padding-mini;
-}
-</style>
