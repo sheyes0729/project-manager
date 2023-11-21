@@ -31,7 +31,7 @@ const tabList = [
   }
 ]
 
-const cacheSet = new Map<string, any>()
+const cacheMap = new Map<string, any>()
 const activeTab = ref('zhihu')
 const list = ref<any[]>([])
 const loading = ref(false)
@@ -43,14 +43,15 @@ function handleTabChange() {
 async function fetchData(refresh = false) {
   try {
     loading.value = true
-    if (!refresh && cacheSet.has(activeTab.value)) {
-      list.value = cacheSet.get(activeTab.value)
+    if (!refresh && cacheMap.has(activeTab.value)) {
+      list.value = cacheMap.get(activeTab.value)
     } else {
       const res = await fetch(
         `https://www.zhiyanx.cn/api/hotlist/index.php?type=${activeTab.value}`
       )
       const data = await res.json()
       list.value = data.data
+      cacheMap.set(activeTab.value, data.data)
     }
   } catch (e) {
     console.log('fetch error: ', e)

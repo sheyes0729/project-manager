@@ -1,3 +1,88 @@
+<script lang="ts" setup>
+import type { FileData } from '@shared/typings/file'
+import { ipcRenderer } from '@/utils/ipc'
+import { IPCFileEvents } from '@shared/config/constant'
+import { useStore } from '@composables/useStore'
+import { layer } from '@layui/layui-vue'
+import dayjs from 'dayjs'
+
+const { file, setFile } = useStore()
+
+const files = ref<FileData[]>(file.value.list ?? [])
+
+const text = ref('')
+
+const loading = ref(false)
+
+const { list, containerProps, wrapperProps } = useVirtualList(files, {
+  itemHeight: 118
+})
+
+function scanfile() {
+  loading.value = true
+  ipcRenderer.send(IPCFileEvents.SCAN_FILES_IN_DIRECTORY)
+
+  ipcRenderer.once(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
+    text.value = `扫描完成，共扫描到${data.length}个项目`
+    layer.notifiy({
+      title: '扫描完成！',
+      content: text.value,
+      icon: 1
+    })
+    loading.value = false
+    files.value = data
+    setFile(data, 'list')
+  })
+
+  ipcRenderer.once(IPCFileEvents.SCAN_FILES_CANCELED, () => {
+    layer.notifiy({
+      title: '提示！',
+      content: '取消扫描！',
+      icon: 4
+    })
+    loading.value = false
+  })
+}
+
+function clearFile() {
+  layer.confirm('确认清空所有项目？', {
+    title: '提示！',
+    btn: [
+      {
+        text: '确定',
+        callback: (id) => {
+          files.value = []
+          layer.notifiy({
+            title: '提示！',
+            content: '文件已清空！',
+            icon: 1
+          })
+          setFile([], 'list')
+          layer.close(id)
+        }
+      },
+      {
+        text: '取消',
+        callback: (id) => {
+          layer.close(id)
+        }
+      }
+    ]
+  })
+}
+
+function openFilePath(file: FileData) {
+  ipcRenderer.send(IPCFileEvents.OPEN_FILE_IN_EXPLORER, file.directory)
+}
+
+const source = ref('')
+const { copy } = useClipboard({ source, legacy: true })
+function handleCopy(value: string) {
+  copy(value)
+  layer.msg('复制成功！', { time: 1500, icon: 1 })
+}
+</script>
+
 <template>
   <LaySpace>
     <RippleButton type="primary" :loading="loading" icon="layui-icon-search" @click="scanfile"
@@ -56,73 +141,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import type { FileData } from '@shared/typings/file'
-import { ipcRenderer } from '@/utils/ipc'
-import { IPCFileEvents } from '@shared/config/constant'
-import { useStore } from '@composables/useStore'
-import { layer } from '@layui/layui-vue'
-import dayjs from 'dayjs'
-
-const { file, setFile } = useStore()
-
-const files = ref<FileData[]>(file.value.list ?? [])
-
-const text = ref('')
-
-const loading = ref(false)
-
-const { list, containerProps, wrapperProps } = useVirtualList(files, {
-  itemHeight: 118
-})
-
-function scanfile() {
-  loading.value = true
-  ipcRenderer.send(IPCFileEvents.SCAN_FILES_IN_DIRECTORY)
-
-  ipcRenderer.once(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
-    text.value = `扫描完成，共扫描到${data.length}个项目`
-    layer.notifiy({
-      title: '扫描完成！',
-      content: text.value,
-      icon: 1
-    })
-    loading.value = false
-    files.value = data
-    setFile(data, 'list')
-  })
-
-  ipcRenderer.once(IPCFileEvents.SCAN_FILES_CANCELED, () => {
-    layer.notifiy({
-      title: '提示！',
-      content: '取消扫描！',
-      icon: 4
-    })
-    loading.value = false
-  })
-}
-
-function clearFile() {
-  files.value = []
-  layer.notifiy({
-    title: '提示！',
-    content: '文件已清空！',
-    icon: 1
-  })
-  setFile([], 'list')
-}
-
-function openFilePath(file: FileData) {
-  ipcRenderer.send(IPCFileEvents.OPEN_FILE_IN_EXPLORER, file.directory)
-}
-
-const source = ref('')
-const { copy } = useClipboard({ source, legacy: true })
-function handleCopy(value: string) {
-  copy(value)
-  layer.msg('复制成功！', { time: 1500, icon: 1 })
-}
-</script>
 <style lang="scss" scoped>
 @import url('https://fonts.joway.io/css/Poppins.css');
 .file-wrapper {
