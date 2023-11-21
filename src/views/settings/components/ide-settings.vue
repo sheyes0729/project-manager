@@ -14,6 +14,8 @@ const editorList = ref<IDEItem[]>(system.value.editorList || [])
 
 const addItem = ref<IDEItem | null>(null)
 
+const defaultEditor = ref(system.value.defaultEditor)
+
 async function openAdd() {
   addItem.value = {
     icon: '',
@@ -61,6 +63,9 @@ function previewIcon(ide: IDEItem) {
 
 function removeIde(ide: IDEItem) {
   editorList.value = editorList.value.filter((item) => item.path != ide.path)
+  if (defaultEditor.value == ide.path) {
+    defaultEditor.value = ''
+  }
   layer.notifiy({
     title: '提示！',
     content: '添加成功！',
@@ -82,8 +87,6 @@ watch(
     deep: true
   }
 )
-
-const defaultEditor = ref(system.value.defaultEditor)
 
 watch(defaultEditor, (de) => {
   setSystem(de, 'defaultEditor')
