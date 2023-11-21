@@ -38,5 +38,6 @@ export enum IPCWindowEvents {
 export enum IPCSystemEvents {
   OPEN_APP_ON_START = 'open-app-on-start',
   GET_APP_INFO = 'get-app-info',
-  NVM_OPERATION = 'nvm-operation'
+  NVM_OPERATION = 'nvm-operation',
+  OPEN_URL_EXTERNAL = 'open-url-external'
 }

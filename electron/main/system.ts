@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron'
+import { app, ipcMain, shell } from 'electron'
 import { IPCSystemEvents } from '../../shared/config/constant'
 import { AppInfo, ResultStatus } from '../../shared/typings/system'
 import log from 'electron-log'
@@ -47,5 +47,10 @@ export const installSystemHanlder = () => {
       status: ResultStatus.RESOLVED,
       data: stdout
     }
+  })
+
+  // 打开链接
+  ipcMain.on(IPCSystemEvents.OPEN_URL_EXTERNAL, (_, url: string) => {
+    shell.openExternal(url)
   })
 }
