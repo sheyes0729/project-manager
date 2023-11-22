@@ -2,6 +2,7 @@
 const SystemSettings = defineAsyncComponent(() => import('./components/system-settings.vue'))
 const ProjectSettings = defineAsyncComponent(() => import('./components/project-settings.vue'))
 const IdeSettings = defineAsyncComponent(() => import('./components/ide-settings.vue'))
+const TodoSettings = defineAsyncComponent(() => import('./components/todo-settings.vue'))
 </script>
 
 <template>
@@ -14,6 +15,9 @@ const IdeSettings = defineAsyncComponent(() => import('./components/ide-settings
     </div>
     <div id="ide">
       <IdeSettings />
+    </div>
+    <div id="todo">
+      <TodoSettings />
     </div>
   </div>
 </template>

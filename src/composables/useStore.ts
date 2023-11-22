@@ -11,6 +11,8 @@ export const useStore = createGlobalState(() => {
 
   const file = ref<Record<string, any>>({})
 
+  const todo = ref<Record<string, any>>({})
+
   function setSystem(data: any, key?: string) {
     if (key) {
       set(system.value, key, data)
@@ -29,6 +31,15 @@ export const useStore = createGlobalState(() => {
     ipcRenderer.send(IPCDBEvents.SET_DB, 'file', cloneDeep(file.value))
   }
 
+  function setTodo(data: any, key?: string) {
+    if (key) {
+      set(todo.value, key, data)
+    } else {
+      todo.value = data
+    }
+    ipcRenderer.send(IPCDBEvents.SET_DB, 'todo', cloneDeep(todo.value))
+  }
+
   const collapsed = ref(false)
 
   function toggleCollapsed() {
@@ -41,6 +52,8 @@ export const useStore = createGlobalState(() => {
     file,
     setFile,
     collapsed,
-    toggleCollapsed
+    toggleCollapsed,
+    todo,
+    setTodo
   }
 })

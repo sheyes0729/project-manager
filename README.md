@@ -30,13 +30,15 @@
 - [x] 项目扫描
 - [x] IDE 绑定
 - [x] 暗黑主题
-- [x] Node 版本管理
+- [x] NVM Node 版本管理
+- [ ] 项目独立Node版本管理
 - [ ] TodoList
 - [ ] 项目类型配置
 - [x] 开机启动
 - [x] 在线更新
 - [ ] 项目分组
 - [ ] 自定义主题
+- [ ] 自定义壁纸功能
 
 ······
 
@@ -83,7 +85,7 @@
 > 安装时选择安装方式为`为所有用户安装`
 
 ## 📄 License
-[![BSD-3-Clause License](https://img.shields.io/badge/license-BSD--3--Clause-green)](https://github.com/AmosHuKe/project-manager/blob/main/LICENSE)  
+[![BSD-3-Clause License](https://img.shields.io/badge/license-BSD--3--Clause-green)](https://github.com/sheyes0729/project-manager/blob/main/LICENSE)  
 Open sourced under the BSD-3-Clause license.  
 根据 BSD-3-Clause 许可证开源。  
 © AmosHuKe

@@ -17,7 +17,8 @@ export function installDBHandler(): void {
 
   const defaultData = {
     system: {},
-    file: {}
+    file: {},
+    todo: {}
   }
 
   if (!fs.existsSync(filePath)) {

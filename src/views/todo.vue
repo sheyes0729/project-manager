@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { Qalendar } from 'qalendar'
-import 'qalendar/dist/style.css'
+import { Qalendar } from '@/plugins/qalendar/qalendar.es'
+import '@/plugins/qalendar/style.css'
+import { cloneDeep } from 'lodash'
 import { customAlphabet } from 'nanoid'
 
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 12)
@@ -23,19 +24,19 @@ const config = reactive({
   // Takes any valid locale that the browser understands. However, not all locales have been thorougly tested in Qalendar
   // If no locale is set, the preferred browser locale will be used
   locale: 'zh-CN',
-  style: {
-    // When adding a custom font, please also set the fallback(s) yourself
-    fontFamily: `'Poppins', sans-serif`
-  },
+  // style: {
+  //   // When adding a custom font, please also set the fallback(s) yourself
+  //   fontFamily: `'Poppins', sans-serif`
+  // },
   // if not set, the mode defaults to 'week'. The three available options are 'month', 'week' and 'day'
   // Please note, that only day and month modes are available for the calendar in mobile-sized wrappers (~700px wide or less, depending on your root font-size)
   defaultMode: 'month',
   // The silent flag can be added, to disable the development warnings. This will also bring a slight performance boost
-  isSilent: true,
+  // isSilent: true,
   showCurrentTime: true // Display a line indicating the current time
 })
 
-const events = reactive([
+const events = ref([
   {
     title: 'Meeting with Dora',
     with: 'Albert Einstein',
@@ -79,7 +80,25 @@ const events = reactive([
 const { system } = useStore()
 const theme = computed(() => system.value.theme)
 
+const title = ref('')
 const dialogVisible = ref(false)
+
+interface TodoItem {
+  id: string
+  title: string
+  with?: string
+  topic?: string
+  time: { start: string; end: string }
+  location?: string
+  colorSchema?: string
+  color?: string
+  description?: string
+  isEditable: boolean
+}
+
+interface TodoForm extends Omit<TodoItem, 'time'> {
+  time: any[]
+}
 
 function defaultForm() {
   return {
@@ -87,43 +106,57 @@ function defaultForm() {
     title: '',
     with: '',
     topic: '',
-    time: { start: null, end: null },
+    time: [],
     description: '',
     location: '',
-    color: '',
-    colorSchema: ''
-  }
+    colorSchema: '',
+    isEditable: true
+  } as TodoForm
 }
 
-const form = ref(defaultForm())
+const form = ref<TodoForm>(defaultForm())
+
+const rules = ref({
+  title: {
+    required: true,
+    message: '标题不能为空'
+  }
+})
 
 function handleClickEvent(data) {
   console.log('click: ', data)
 }
 
-function handleEditEvent(data) {
-  console.log('edit: ', data)
+function handleEditEvent(id: string) {
+  console.log('edit: ', id)
+  title.value = '编辑待办'
+  const todoItem = events.value.find((item) => item.id === id)
+  form.value = Object.assign(cloneDeep(todoItem)!, {
+    time: [todoItem!.time.start, todoItem!.time.end]
+  })
   dialogVisible.value = true
 }
 
-function handleDeleteEvent(...args) {
-  console.log('delete: ', ...args)
+function handleDeleteEvent(id: string) {
+  console.log('delete: ', id)
 }
 
-function handleDatetimeClick(...args) {
-  console.log('handleDatetimeClick: ', ...args)
+function handleDatetimeClick(datetime: string) {
+  title.value = '新增待办'
+  const todoForm = defaultForm()
+  form.value = Object.assign(todoForm, { time: [datetime, datetime] })
+  dialogVisible.value = true
 }
 
-function handleDateClick(...args) {
-  console.log('handleDateClick: ', ...args)
+function handleDateClick(date: string) {
+  title.value = '新增待办'
+  const todoForm = defaultForm()
+  form.value = Object.assign(todoForm, { time: [`${date} 00:00:00`, `${date} 00:00:00`] })
+  dialogVisible.value = true
 }
 
 function handleDragedEvent(...args) {
   console.log('handleDragedEvent: ', ...args)
-}
-
-function handleIntervalClick(...args) {
-  console.log('handleIntervalClick: ', ...args)
 }
 </script>
 <template>
@@ -137,11 +170,11 @@ function handleIntervalClick(...args) {
       @datetime-was-clicked="handleDatetimeClick"
       @date-was-clicked="handleDateClick"
       @event-was-dragged="handleDragedEvent"
-      @interval-was-clicked="handleIntervalClick"
     />
-    <el-dialog v-model="dialogVisible" title="待办" width="45%" append-to-body>
-      <lay-form :model="form">
-        <lay-form-item label="id">
+
+    <el-dialog v-model="dialogVisible" :title="title" top="5vh" width="45%" append-to-body>
+      <lay-form :model="form" :rules="rules">
+        <lay-form-item label="id" prop="id" required>
           <lay-input v-model="form.id" disabled />
         </lay-form-item>
         <lay-form-item label="标题" prop="title">
@@ -151,16 +184,22 @@ function handleIntervalClick(...args) {
           <lay-input v-model="form.topic" />
         </lay-form-item>
         <lay-form-item label="时间" prop="time">
-          <lay-input />
+          <lay-date-picker
+            v-model="form.time"
+            range
+            type="datetime"
+            :placeholder="['开始日期', '结束日期']"
+            style="width: 100%"
+          ></lay-date-picker>
         </lay-form-item>
         <lay-form-item label="详情" prop="description">
-          <lay-input v-model="form.description" />
+          <lay-textarea v-model="form.description" placeholder="输入待办详情" />
         </lay-form-item>
-        <lay-form-item label="标签">
-          <lay-input v-model="form.color" />
+        <lay-form-item label="标签" prop="colorSchema">
+          <lay-select v-model="form.colorSchema" placeholder="选择标签"></lay-select>
         </lay-form-item>
-        <lay-form-item label="地点">
-          <lay-input v-model="form.location" />
+        <lay-form-item label="地点" prop="location">
+          <lay-input v-model="form.location" placeholder="输入地点" />
         </lay-form-item>
       </lay-form>
       <template #footer>
@@ -175,5 +214,10 @@ function handleIntervalClick(...args) {
 <style lang="scss" scoped>
 .todo-wrapper {
   height: 100%;
+  :deep(.calendar-root-wrapper .calendar-root) {
+    @include themeify {
+      background-color: themed('color-bg-aside');
+    }
+  }
 }
 </style>
