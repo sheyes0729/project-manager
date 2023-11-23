@@ -20,7 +20,8 @@ const config = reactive({
   },
   locale: 'zh-CN',
   style: {
-    fontFamily: `'Poppins', sans-serif`
+    fontFamily: `'Poppins', sans-serif`,
+    colorSchemes: {}
   },
   defaultMode: 'month',
   showCurrentTime: true
@@ -29,6 +30,25 @@ const config = reactive({
 const { system, todo, setTodo } = useStore()
 const events = ref<TodoItem[]>(todo.value.list || [])
 const theme = computed(() => system.value.theme)
+const schemeList = computed(() => todo.value.tagList || [])
+
+watch(
+  schemeList,
+  (sl) => {
+    const schemes = {}
+    sl.forEach((item) => {
+      schemes[item.title] = {
+        color: item.color,
+        backgroundColor: item.backgroundColor
+      }
+    })
+    config.style.colorSchemes = schemes
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 
 const title = ref('')
 const dialogVisible = ref(false)
@@ -130,7 +150,7 @@ function confirm() {
         }
       }
     }
-    if (!isEdit.value) {
+    if (isEdit.value) {
       const index = events.value.findIndex((item) => item.id === form.value.id)
       events.value.splice(index, 1, event)
       layer.notifiy({
@@ -146,6 +166,7 @@ function confirm() {
         icon: 1
       })
     }
+    refresh()
     dialogVisible.value = false
   })
 }
@@ -159,10 +180,18 @@ watch(
     deep: true
   }
 )
+const isShow = ref(true)
+function refresh() {
+  isShow.value = false
+  nextTick(() => {
+    isShow.value = true
+  })
+}
 </script>
 <template>
   <div class="todo-wrapper" :style="{ colorScheme: theme }">
     <Qalendar
+      v-if="isShow"
       :config="config"
       :events="events"
       @edit-event="handleEditEvent"
@@ -193,7 +222,14 @@ watch(
           <lay-textarea v-model="form.description" placeholder="输入待办详情" />
         </lay-form-item>
         <lay-form-item label="标签" prop="colorScheme">
-          <lay-select v-model="form.colorScheme" placeholder="选择标签"></lay-select>
+          <lay-select v-model="form.colorScheme" placeholder="选择标签">
+            <lay-select-option
+              v-for="item in schemeList"
+              :key="item.title"
+              :label="item.title"
+              :value="item.title"
+            ></lay-select-option>
+          </lay-select>
         </lay-form-item>
         <lay-form-item label="地点" prop="location">
           <lay-input v-model="form.location" placeholder="输入地点" />
