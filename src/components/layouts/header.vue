@@ -25,10 +25,8 @@
       </lay-space>
     </div>
     <div class="system-icon">
-      <lay-switch v-model="dark" @change="toggleTheme">
-        <template #onswitch-icon> 🌛 </template>
-        <template #unswitch-icon> ☀ </template>
-      </lay-switch>
+      <switch-theme />
+
       <lay-icon
         type="layui-icon-top"
         title="置顶"
@@ -65,8 +63,7 @@ defineOptions({
   name: 'LayoutHeader'
 })
 
-const { collapsed, toggleCollapsed, system, setSystem } = useStore()
-const dark = ref(system.value.theme === 'dark')
+const { collapsed, toggleCollapsed, system } = useStore()
 
 async function operateWindow(type: string) {
   if (type === 'inquire') {
@@ -75,13 +72,6 @@ async function operateWindow(type: string) {
   } else {
     ipcRenderer.send(IPCWindowEvents.WINDOW_OPERATION, type)
   }
-}
-
-function toggleTheme(current: boolean) {
-  dark.value = current
-  const newTheme = dark.value ? 'dark' : 'light'
-  document.body.setAttribute('data-theme', newTheme)
-  setSystem(newTheme, 'theme')
 }
 
 const app = inject('app') as any
