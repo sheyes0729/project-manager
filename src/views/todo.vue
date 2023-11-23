@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { Qalendar } from '@/plugins/qalendar/qalendar.es'
 import '@/plugins/qalendar/style.css'
-import { LayForm } from '@layui/layui-vue'
+import { LayForm, layer } from '@layui/layui-vue'
+import dayjs from 'dayjs'
 import { cloneDeep } from 'lodash'
 import { customAlphabet } from 'nanoid'
 
@@ -25,47 +26,8 @@ const config = reactive({
   showCurrentTime: true
 })
 
-const { system } = useStore()
-const events = ref([
-  {
-    title: 'Meeting with Dora',
-    with: 'Albert Einstein',
-    time: { start: '2023-11-18 04:52', end: '2023-11-21 05:37' },
-    color: 'green',
-    isEditable: true,
-    id: 'de471c78cb5c',
-    description:
-      "Think of me as Yoda. Only instead of being little and green, I wear suites and I'm awesome."
-  },
-  {
-    title: 'Advanced algebra',
-    with: 'Pheobe Buffay',
-    time: { start: '2023-11-12 20:05', end: '2023-11-16 21:35' },
-    colorScheme: 'sports',
-    isEditable: true,
-    id: '6d3c0980a5cf',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!'
-  },
-  {
-    title: 'Break',
-    with: 'Marshall Eriksen',
-    time: { start: '2023-11-10 22:10', end: '2023-11-12 22:55' },
-    colorScheme: 'meetings',
-    isEditable: true,
-    id: '9f1b209982f1',
-    location: 'Zoom'
-  },
-  {
-    title: 'Break',
-    with: 'Marshall Eriksen',
-    time: { start: '2023-11-21 22:10', end: '2023-11-21 22:55' },
-    colorScheme: 'meetings',
-    isEditable: true,
-    id: '9f1b209982f1',
-    location: 'Zoom'
-  }
-])
+const { system, todo, setTodo } = useStore()
+const events = ref<TodoItem[]>(todo.value.list || [])
 const theme = computed(() => system.value.theme)
 
 const title = ref('')
@@ -80,7 +42,7 @@ interface TodoItem {
   topic?: string
   time: { start: string; end: string }
   location?: string
-  colorSchema?: string
+  colorScheme?: string
   color?: string
   description?: string
   isEditable: boolean
@@ -99,7 +61,7 @@ function defaultForm() {
     time: [],
     description: '',
     location: '',
-    colorSchema: '',
+    colorScheme: '',
     isEditable: true
   } as TodoForm
 }
@@ -130,14 +92,21 @@ function handleEditEvent(id: string) {
 }
 
 function handleDeleteEvent(id: string) {
-  console.log('delete: ', id)
+  events.value = events.value.filter((item) => item.id !== id)
+  layer.notifiy({
+    title: '提示！',
+    content: '删除成功！',
+    icon: 1
+  })
 }
 
 function handleDatetimeClick(datetime: string) {
   isEdit.value = false
   title.value = '新增待办'
   const todoForm = defaultForm()
-  form.value = Object.assign(todoForm, { time: [datetime, datetime] })
+  form.value = Object.assign(todoForm, {
+    time: [dayjs(datetime).format('YYYY-MM-DD HH:mm'), dayjs(datetime).format('YYYY-MM-DD HH:mm')]
+  })
   dialogVisible.value = true
 }
 
@@ -145,15 +114,51 @@ function handleDateClick(date: string) {
   isEdit.value = false
   title.value = '新增待办'
   const todoForm = defaultForm()
-  form.value = Object.assign(todoForm, { time: [`${date} 00:00:00`, `${date} 00:00:00`] })
+  form.value = Object.assign(todoForm, { time: [`${date} 00:00`, `${date} 00:00`] })
   dialogVisible.value = true
 }
 
 function confirm() {
-  formRef.value?.validate((isValidate, _, errors) => {
-    console.log(isValidate, errors)
+  formRef.value?.validate((isValidate) => {
+    if (!isValidate) return
+    const event = {
+      ...form.value,
+      ...{
+        time: {
+          start: form.value.time[0],
+          end: form.value.time[1]
+        }
+      }
+    }
+    if (!isEdit.value) {
+      const index = events.value.findIndex((item) => item.id === form.value.id)
+      events.value.splice(index, 1, event)
+      layer.notifiy({
+        title: '提示！',
+        content: '修改成功！',
+        icon: 1
+      })
+    } else {
+      events.value.unshift(event)
+      layer.notifiy({
+        title: '提示！',
+        content: '新增成功！',
+        icon: 1
+      })
+    }
+    dialogVisible.value = false
   })
 }
+
+watch(
+  events,
+  (et) => {
+    setTodo(et, 'list')
+  },
+  {
+    deep: true
+  }
+)
 </script>
 <template>
   <div class="todo-wrapper" :style="{ colorScheme: theme }">
@@ -168,20 +173,18 @@ function confirm() {
 
     <el-dialog v-model="dialogVisible" :title="title" top="5vh" width="45%" append-to-body>
       <lay-form ref="formRef" :model="form" :rules="rules">
-        <!-- <lay-form-item label="id" prop="id" required>
-          <lay-input v-model="form.id" disabled />
-        </lay-form-item> -->
         <lay-form-item label="标题" prop="title" required>
           <lay-input v-model="form.title" />
         </lay-form-item>
         <lay-form-item label="主题" prop="topic">
-          <lay-input v-model="form.topic" />
+          <lay-input v-model="form.topic" placeholder="输入主题" />
         </lay-form-item>
         <lay-form-item label="时间" prop="time" required>
           <lay-date-picker
             v-model="form.time"
             range
             type="datetime"
+            format="YYYY-MM-DD HH:mm"
             :placeholder="['开始日期', '结束日期']"
             style="width: 100%"
           ></lay-date-picker>
@@ -189,8 +192,8 @@ function confirm() {
         <lay-form-item label="详情" prop="description">
           <lay-textarea v-model="form.description" placeholder="输入待办详情" />
         </lay-form-item>
-        <lay-form-item label="标签" prop="colorSchema">
-          <lay-select v-model="form.colorSchema" placeholder="选择标签"></lay-select>
+        <lay-form-item label="标签" prop="colorScheme">
+          <lay-select v-model="form.colorScheme" placeholder="选择标签"></lay-select>
         </lay-form-item>
         <lay-form-item label="地点" prop="location">
           <lay-input v-model="form.location" placeholder="输入地点" />

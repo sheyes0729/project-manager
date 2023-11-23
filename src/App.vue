@@ -8,7 +8,7 @@
 import { IPCSystemEvents, IPCDBEvents } from '@shared/config/constant'
 import { ipcRenderer } from '@/utils/ipc'
 
-const { system, setSystem, setFile } = useStore()
+const { system, setSystem, setFile, setTodo } = useStore()
 
 const theme = computed(() => (system.value.theme === 'dark' ? 'dark' : 'light'))
 
@@ -28,6 +28,10 @@ onMounted(async () => {
 
   ipcRenderer.invoke(IPCDBEvents.GET_DB, 'file').then((file) => {
     setFile(file)
+  })
+
+  ipcRenderer.invoke(IPCDBEvents.GET_DB, 'todo').then((todo) => {
+    setTodo(todo)
   })
 
   ipcRenderer.invoke(IPCSystemEvents.GET_APP_INFO).then((appInfo) => {
