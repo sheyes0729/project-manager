@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import { layer } from '@layui/layui-vue'
+import { layer, LayForm } from '@layui/layui-vue'
+import { nanoid } from 'nanoid'
 
 const SettingItem = defineAsyncComponent(() => import('./setting-item.vue'))
 
 const { system, setSystem, file } = useStore()
 
-const defaultForm = {
-  title: '',
-  include: '',
-  exclude: '',
-  ide: '',
-  icon: ''
+function defaultForm() {
+  return {
+    id: nanoid(),
+    title: '',
+    include: '',
+    exclude: '',
+    ide: ''
+  }
 }
 
-const form = ref(defaultForm)
+const form = ref(defaultForm())
+const formRef = shallowRef<InstanceType<typeof LayForm>>()
+const groupFormRef = shallowRef<InstanceType<typeof LayForm>>()
 
 const typeList = ref(system.value.typeList || [])
 
@@ -47,6 +52,8 @@ const scanCategory = ref(system.value.scanCategory || 'cover')
 
 const displayMode = ref(system.value.displayMode || 'list')
 
+const isEditCategory = ref(false)
+
 function scanCategoryChange(current: string) {
   scanCategory.value = current
   setSystem(scanCategory.value, 'scanCategory')
@@ -59,29 +66,44 @@ function displayModeChange(current: string) {
 
 const dialogVisible = ref(false)
 function addCategory() {
-  form.value = defaultForm
+  isEditCategory.value = false
+  form.value = defaultForm()
   dialogVisible.value = true
 }
 
 function confirmAdd() {
-  if (typeList.value.find((item) => item.title === form.value.title)) {
-    layer.notifiy({
-      title: '提示！',
-      content: '名称已存在！',
-      icon: 2
-    })
-    return
-  }
-  layer.notifiy({
-    title: '提示！',
-    content: '添加成功！',
-    icon: 1
+  formRef.value?.validate((isValidate) => {
+    if (!isValidate) return
+    if (!isEditCategory.value) {
+      if (typeList.value.find((item) => item.title === form.value.title)) {
+        layer.notifiy({
+          title: '提示！',
+          content: '名称已存在！',
+          icon: 2
+        })
+        return
+      }
+      layer.notifiy({
+        title: '提示！',
+        content: '添加成功！',
+        icon: 1
+      })
+      typeList.value.unshift(form.value)
+    } else {
+      const index = typeList.value.findIndex((item) => item.id === form.value.id)
+      typeList.value.splice(index, 1, form.value)
+      layer.notifiy({
+        title: '提示！',
+        content: '修改成功！',
+        icon: 1
+      })
+    }
+    dialogVisible.value = false
   })
-  typeList.value.unshift(form.value)
-  dialogVisible.value = false
 }
 
 function editCategory(title: string) {
+  isEditCategory.value = true
   form.value = typeList.value.find((item) => item.title === title)
   dialogVisible.value = true
 }
@@ -112,37 +134,59 @@ function removeCategory(title: string) {
   })
 }
 
-const defaultGroupForm = {
-  title: '',
-  files: []
+const isEditGroup = ref(false)
+
+function defaultGroupForm() {
+  return {
+    id: nanoid(),
+    title: '',
+    files: []
+  }
 }
-const groupForm = ref(defaultGroupForm)
+const groupForm = ref(defaultGroupForm())
 const groupVisible = ref(false)
 
 function addGroup() {
-  groupForm.value = defaultGroupForm
+  isEditGroup.value = false
+  groupForm.value = defaultGroupForm()
   groupVisible.value = true
 }
 
 function confirmAddGroup() {
-  if (groupList.value.find((item) => item.title === groupForm.value.title)) {
-    layer.notifiy({
-      title: '提示！',
-      content: '名称已存在！',
-      icon: 2
+  if (
+    groupFormRef.value?.validate((isValidate) => {
+      if (!isValidate) return
+      if (!isEditGroup.value) {
+        if (groupList.value.find((item) => item.title === groupForm.value.title)) {
+          layer.notifiy({
+            title: '提示！',
+            content: '名称已存在！',
+            icon: 2
+          })
+          return
+        }
+        layer.notifiy({
+          title: '提示！',
+          content: '添加成功！',
+          icon: 1
+        })
+        groupList.value.unshift(groupForm.value)
+      } else {
+        const index = groupList.value.findIndex((item) => item.id === groupForm.value.id)
+        groupList.value.splice(index, 1, groupForm.value)
+        layer.notifiy({
+          title: '提示！',
+          content: '修改成功！',
+          icon: 1
+        })
+      }
     })
-    return
-  }
-  layer.notifiy({
-    title: '提示！',
-    content: '添加成功！',
-    icon: 1
-  })
-  groupList.value.unshift(groupForm.value)
-  groupVisible.value = false
+  )
+    groupVisible.value = false
 }
 
 function editGroup(title: string) {
+  isEditGroup.value = true
   groupForm.value = groupList.value.find((item) => item.title === title)
   groupVisible.value = true
 }
@@ -224,21 +268,17 @@ function removeGroup(title: string) {
     </lay-form>
   </SettingItem>
   <el-dialog v-model="dialogVisible" title="项目类型">
-    <lay-form :model="form">
-      <lay-form-item label="名称">
+    <lay-form ref="formRef" :model="form">
+      <lay-form-item label="名称" prop="title" required>
         <lay-input v-model="form.title" placeholder="输入类型名称" />
       </lay-form-item>
 
-      <lay-form-item label="包括">
+      <lay-form-item label="包括" prop="include" required>
         <lay-input v-model="form.include" placeholder="多个文件用空格隔开" />
       </lay-form-item>
 
       <lay-form-item label="排除">
         <lay-input v-model="form.exclude" placeholder="多个文件用空格隔开" />
-      </lay-form-item>
-
-      <lay-form-item label="图标">
-        <lay-icon-picker v-model="form.icon" />
       </lay-form-item>
 
       <lay-form-item label="绑定编辑器">
@@ -266,8 +306,8 @@ function removeGroup(title: string) {
   </el-dialog>
 
   <el-dialog v-model="groupVisible" title="项目分组">
-    <lay-form :model="groupForm" label-position="right">
-      <lay-form-item label="分组名称">
+    <lay-form ref="groupFormRef" :model="groupForm" label-position="right">
+      <lay-form-item label="分组名称" prop="title" required>
         <lay-input v-model="groupForm.title" />
       </lay-form-item>
     </lay-form>

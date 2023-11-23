@@ -6,22 +6,25 @@ import log from 'electron-log'
 import type { FileData } from '../../../shared/typings/file'
 import { normalizePath } from '../path'
 
-const projectTypes = {
-  java: {
-    include: ['pom.xml'],
-    ignore: []
-  },
-  node: {
-    include: ['package.json'],
-    ignore: ['node_modules']
-  },
-  flutter: {
-    include: ['pubspec.yaml']
-  }
-}
+// const projectTypes = {
+//   java: {
+//     include: ['pom.xml'],
+//     ignore: []
+//   },
+//   node: {
+//     include: ['package.json'],
+//     ignore: ['node_modules']
+//   },
+//   flutter: {
+//     include: ['pubspec.yaml']
+//   }
+// }
 
 const numThreads = os.cpus().length // 线程数
-export async function scanfile(root: string): Promise<FileData[]> {
+export async function scanfile(
+  root: string,
+  projectTypes: Record<string, any>
+): Promise<FileData[]> {
   return new Promise((resolve) => {
     const computerRootDirectory = root // 要扫描的电脑根目录
     // 将根目录分割成多个子目录

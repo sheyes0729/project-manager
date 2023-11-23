@@ -2,7 +2,7 @@ import fs from 'fs'
 import { workerData, parentPort } from 'worker_threads'
 import path from 'path'
 
-const ignoreSet = new Set()
+const excludeSet = new Set()
 
 let projectTypes = {}
 
@@ -14,7 +14,7 @@ function scanDirectory(directory) {
     const subDirectories = []
     for (const key in files) {
       const file = files[key]
-      if (ignoreSet.has(file)) continue
+      if (excludeSet.has(file)) continue
       const filePath = path.join(directory, file)
       const stats = fs.statSync(filePath)
 
@@ -75,16 +75,16 @@ function getFileType(file) {
   return result
 }
 
-const { id, subDirectories, projectTypes: types } = workerData
+const { subDirectories, projectTypes: types } = workerData
 
 projectTypes = types
 Object.entries(projectTypes).forEach(([type, config]) => {
-  if (!config.ignore) return
-  if (typeof config.ignore === 'string') {
-    ignoreSet.add(type)
+  if (!config.exclude) return
+  if (typeof config.exclude === 'string') {
+    excludeSet.add(type)
   } else {
-    config.ignore.forEach((item) => {
-      ignoreSet.add(item)
+    config.exclude.forEach((item) => {
+      excludeSet.add(item)
     })
   }
 })

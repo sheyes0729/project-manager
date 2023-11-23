@@ -6,9 +6,15 @@ import { useStore } from '@composables/useStore'
 import { layer } from '@layui/layui-vue'
 import dayjs from 'dayjs'
 
-const { file, setFile } = useStore()
+const { file, setFile, system } = useStore()
 
 const files = ref<FileData[]>(file.value.list ?? [])
+
+const typeList = computed(() => system.value.typeList || [])
+
+const editorList = computed(() => system.value.editorList || [])
+
+const defaultEditor = computed(() => system.value.defaultEditor)
 
 const text = ref('')
 
@@ -19,6 +25,12 @@ const { list, containerProps, wrapperProps } = useVirtualList(files, {
 })
 
 function scanfile() {
+  if (!typeList.value.length) {
+    layer.confirm('请先配置项目类型！', {
+      title: '提示！'
+    })
+    return
+  }
   loading.value = true
   ipcRenderer.send(IPCFileEvents.SCAN_FILES_IN_DIRECTORY)
 
@@ -81,6 +93,28 @@ function handleCopy(value: string) {
   copy(value)
   layer.msg('复制成功！', { time: 1500, icon: 1 })
 }
+
+function openFileInIde(data: FileData) {
+  console.log('data: ', data, typeList.value)
+  const type = typeList.value.find((item) => item.title.toUpperCase() === data.type.toUpperCase())
+  const ide = type.ide || defaultEditor.value
+  if (!ide) {
+    layer.confirm('请先绑定编辑器或设置默认编辑器！')
+    return
+  }
+  ipcRenderer.invoke(IPCFileEvents.OPEN_FILE_IN_IDE, ide, data.directory)
+}
+
+const fileIcon = computed(() => {
+  return function (type: string): string {
+    const ty = typeList.value.find((item) => item.title.toUpperCase() === type.toUpperCase())
+    if (!ty?.ide) return ''
+    const editor = editorList.value.find((item) => item.path === ty.ide)
+    console.log(editor, editorList.value)
+    if (!editor) return ''
+    return editor.icon
+  }
+})
 </script>
 
 <template>
@@ -94,7 +128,10 @@ function handleCopy(value: string) {
   <div v-bind="containerProps" class="file-wrapper">
     <div v-bind="wrapperProps">
       <div v-for="f in list" class="file-item">
-        <div class="file-icon"></div>
+        <div class="file-icon">
+          <img v-if="fileIcon(f.data.type)" :src="fileIcon(f.data.type)" alt="" />
+          <div v-else class="icon-text">{{ f.data.type.slice(0, 2).toUpperCase() }}</div>
+        </div>
         <div>
           <div class="file-name">{{ f.data.projectName }}</div>
           <div class="file-dir">项目路径: {{ f.data.directory }}</div>
@@ -107,7 +144,9 @@ function handleCopy(value: string) {
         </div>
         <div class="file-operation">
           <LaySpace>
-            <RippleButton type="normal" icon="layui-icon-component">打开项目</RippleButton>
+            <RippleButton type="normal" icon="layui-icon-component" @click="openFileInIde(f.data)"
+              >打开项目</RippleButton
+            >
             <lay-dropdown placement="bottom-end" update-at-scroll content-class="file-drop-content">
               <lay-icon type="layui-icon-more-vertical" style="cursor: pointer"></lay-icon>
               <template #content>
@@ -162,8 +201,22 @@ function handleCopy(value: string) {
   .file-icon {
     width: 64px;
     height: 64px;
+    display: grid;
+    place-content: center;
     background-color: #3491fa;
+    &:has(img) {
+      background-color: transparent;
+    }
     border-radius: $radius-mini;
+    img {
+      width: 48px;
+    }
+    .icon-text {
+      font-family: 'Poppins', sans-serif;
+      font-size: $font-large;
+      font-weight: $font-weight-bold;
+      letter-spacing: $padding-mini;
+    }
   }
 
   .file-name {
