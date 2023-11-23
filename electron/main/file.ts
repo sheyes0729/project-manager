@@ -44,33 +44,30 @@ export function installFileHanler(): void {
   })
 
   // 扫描文件
-  ipcMain.on(
-    IPCFileEvents.SCAN_FILES_IN_DIRECTORY,
-    async (_, dir: string, typeList: any[]): Promise<void> => {
-      const projectTypes = {}
-      typeList.forEach((item) => {
-        projectTypes[item.title] = {
-          include: item.include.split(' '),
-          exclude: item.exclude?.split(' ')
-        }
+  ipcMain.on(IPCFileEvents.SCAN_FILES_IN_DIRECTORY, async (_, typeList: any[], dir?: string) => {
+    const projectTypes = {}
+    typeList.forEach((item) => {
+      projectTypes[item.title] = {
+        include: item.include.split(' '),
+        exclude: item.exclude?.split(' ')
+      }
+    })
+    if (dir) {
+      const result = await scanfile(dir, projectTypes)
+      _.reply(IPCFileEvents.SCAN_FILES_COMPLETED, result)
+    } else {
+      const { canceled, filePaths } = await dialog.showOpenDialog({
+        properties: ['openDirectory']
       })
-      if (dir) {
-        const result = await scanfile(dir, projectTypes)
+      if (!canceled) {
+        const directory = filePaths[0]
+        const result = await scanfile(directory, projectTypes)
         _.reply(IPCFileEvents.SCAN_FILES_COMPLETED, result)
       } else {
-        const { canceled, filePaths } = await dialog.showOpenDialog({
-          properties: ['openDirectory']
-        })
-        if (!canceled) {
-          const directory = filePaths[0]
-          const result = await scanfile(directory, projectTypes)
-          _.reply(IPCFileEvents.SCAN_FILES_COMPLETED, result)
-        } else {
-          _.reply(IPCFileEvents.SCAN_FILES_CANCELED)
-        }
+        _.reply(IPCFileEvents.SCAN_FILES_CANCELED)
       }
     }
-  )
+  })
 
   // 在文件资源管理器打开文件
   ipcMain.on(IPCFileEvents.OPEN_FILE_IN_EXPLORER, (_, dir: string) => {

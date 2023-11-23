@@ -109,7 +109,6 @@ const form = ref<TodoForm>(defaultForm())
 const rules = ref({
   time: {
     validator(_, value: any, callback: any) {
-      console.log('validator: ', value)
       if (!value || value.length == 0 || !value[0] || !value[1]) {
         callback(new Error('时间不能为空'))
         return
@@ -169,9 +168,9 @@ function confirm() {
 
     <el-dialog v-model="dialogVisible" :title="title" top="5vh" width="45%" append-to-body>
       <lay-form ref="formRef" :model="form" :rules="rules">
-        <lay-form-item label="id" prop="id" required>
+        <!-- <lay-form-item label="id" prop="id" required>
           <lay-input v-model="form.id" disabled />
-        </lay-form-item>
+        </lay-form-item> -->
         <lay-form-item label="标题" prop="title" required>
           <lay-input v-model="form.title" />
         </lay-form-item>

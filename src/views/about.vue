@@ -47,13 +47,13 @@ function checkUpdate() {
   })
 }
 
-function update(): void {
-  ipcRenderer.send(IPCUpdateEvents.UPDATE_DOWNLOAD)
-}
+// function update(): void {
+//   ipcRenderer.send(IPCUpdateEvents.UPDATE_DOWNLOAD)
+// }
 
-function install(): void {
-  ipcRenderer.send(IPCUpdateEvents.INSTALL_UPDATE)
-}
+// function install(): void {
+//   ipcRenderer.send(IPCUpdateEvents.INSTALL_UPDATE)
+// }
 
 function transform2MB(value: number): number {
   return Math.ceil(value / 1024 / 1024)

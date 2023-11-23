@@ -13,8 +13,8 @@ asarUnpack:
   - resources/**
 afterSign: build/notarize.js
 win:
-  executableName: electron-app
-  requestedExecutionLevel: highestAvailable
+  executableName: project-manager
+  # requestedExecutionLevel: highestAvailable
   icon: './icons/icon.ico'
   target:
     - nsis
@@ -57,4 +57,4 @@ npmRebuild: false
 publish:
   - provider: generic
     url: https://example.com
-    updaterCacheDirName: electron-app-updater
+    updaterCacheDirName: project-manager-updater

@@ -32,7 +32,10 @@ function scanfile() {
     return
   }
   loading.value = true
-  ipcRenderer.send(IPCFileEvents.SCAN_FILES_IN_DIRECTORY)
+  ipcRenderer.send(
+    IPCFileEvents.SCAN_FILES_IN_DIRECTORY,
+    JSON.parse(JSON.stringify(typeList.value))
+  )
 
   ipcRenderer.once(IPCFileEvents.SCAN_FILES_COMPLETED, (_, data: FileData[]) => {
     text.value = `扫描完成，共扫描到${data.length}个项目`
@@ -95,7 +98,6 @@ function handleCopy(value: string) {
 }
 
 function openFileInIde(data: FileData) {
-  console.log('data: ', data, typeList.value)
   const type = typeList.value.find((item) => item.title.toUpperCase() === data.type.toUpperCase())
   const ide = type.ide || defaultEditor.value
   if (!ide) {
@@ -105,16 +107,30 @@ function openFileInIde(data: FileData) {
   ipcRenderer.invoke(IPCFileEvents.OPEN_FILE_IN_IDE, ide, data.directory)
 }
 
+const iconMap = new Map<string, string>()
 const fileIcon = computed(() => {
   return function (type: string): string {
+    if (iconMap.has(type)) return iconMap.get(type)!
+    let icon = ''
     const ty = typeList.value.find((item) => item.title.toUpperCase() === type.toUpperCase())
-    if (!ty?.ide) return ''
-    const editor = editorList.value.find((item) => item.path === ty.ide)
-    console.log(editor, editorList.value)
-    if (!editor) return ''
-    return editor.icon
+    if (ty?.ide) {
+      const editor = editorList.value.find((item) => item.path === ty.ide)
+      if (editor) {
+        icon = editor.icon
+      }
+    }
+    iconMap.set(type, icon)
+    return icon
   }
 })
+
+function viewDetail(file: FileData) {
+  console.log('file: ', file)
+
+  layer.confirm('暂不支持！', {
+    title: '提示！'
+  })
+}
 </script>
 
 <template>
@@ -163,7 +179,7 @@ const fileIcon = computed(() => {
                       <span> 复制地址 </span>
                     </lay-space>
                   </lay-dropdown-menu-item>
-                  <lay-dropdown-menu-item>
+                  <lay-dropdown-menu-item @click="viewDetail(f.data)">
                     <lay-space>
                       <lay-icon type="layui-icon-show"></lay-icon>
                       <span> 查看详情 </span>
