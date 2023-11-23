@@ -23,25 +23,15 @@ function getBgColor(scheme: string) {
   bgMap.set(scheme, bg)
   return bg
 }
-
-const isShow = ref(true)
-
-function refresh() {
-  isShow.value = false
-  nextTick(() => {
-    isShow.value = true
-  })
-}
 </script>
 
 <template>
   <div class="todo-list-wrapper">
     <header class="todo-list-header">
       <div>今日待办</div>
-      <lay-icon type="layui-icon-refresh" @click="refresh" />
     </header>
 
-    <ul v-if="isShow" class="todo-list-content">
+    <ul class="todo-list-content">
       <li v-for="td in todoList">
         <div
           class="marker"
