@@ -95,20 +95,18 @@ onBeforeMount(() => {
       <lay-icon type="layui-icon-refresh" class="icon" @click="fetchData(true)" />
     </header>
 
-    <div class="hl-content">
-      <el-tabs v-model="activeTab" @tab-change="handleTabChange">
-        <el-tab-pane
-          v-for="item in tabList"
-          :key="item.name"
-          :label="item.label"
-          :name="item.name"
-        ></el-tab-pane>
-      </el-tabs>
+    <el-tabs v-model="activeTab" @tab-change="handleTabChange">
+      <el-tab-pane
+        v-for="item in tabList"
+        :key="item.name"
+        :label="item.label"
+        :name="item.name"
+      ></el-tab-pane>
+    </el-tabs>
 
-      <lay-loading :loading="loading">
-        <ReuseTemplate />
-      </lay-loading>
-    </div>
+    <lay-loading :loading="loading">
+      <ReuseTemplate />
+    </lay-loading>
   </div>
 </template>
 
@@ -117,6 +115,8 @@ onBeforeMount(() => {
   height: 100%;
   --el-color-primary: var(--global-primary-color);
   padding: $padding-mini;
+  display: flex;
+  flex-direction: column;
   .hl-header {
     display: flex;
     justify-content: space-between;
@@ -129,41 +129,36 @@ onBeforeMount(() => {
     }
   }
 
-  .hl-content {
-    height: 100%;
-    width: 100%;
+  :deep(.layui-loading) {
+    flex: 1;
+    overflow-y: auto;
+  }
 
-    .hot-content {
-      height: 100%;
+  .hot-content {
+    .hot-item {
+      display: flex;
       width: 100%;
-      overflow-y: auto;
-      height: 38vh;
+      padding: $padding-mini 0;
 
-      .hot-item {
-        display: flex;
-        width: 100%;
-        padding: $padding-mini 0;
+      .hot-index {
+        padding-left: $padding-base;
+        width: 60px;
+        font-size: $font-large;
+      }
 
-        .hot-index {
-          padding-left: $padding-base;
-          width: 60px;
-          font-size: $font-large;
+      .hot-title {
+        flex: 1;
+        font-size: $font-small;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
         }
+      }
 
-        .hot-title {
-          flex: 1;
-          font-size: $font-small;
-          cursor: pointer;
-          &:hover {
-            text-decoration: underline;
-          }
-        }
-
-        .hot-number {
-          width: 60px;
-          text-align: end;
-          font-size: $font-base;
-        }
+      .hot-number {
+        width: 60px;
+        text-align: end;
+        font-size: $font-base;
       }
     }
   }

@@ -203,10 +203,13 @@ function refresh() {
     <el-dialog v-model="dialogVisible" :title="title" top="5vh" width="45%" append-to-body>
       <lay-form ref="formRef" :model="form" :rules="rules">
         <lay-form-item label="标题" prop="title" required>
-          <lay-input v-model="form.title" />
+          <lay-input v-model="form.title" placeholder="输入待办标题" />
         </lay-form-item>
         <lay-form-item label="主题" prop="topic">
-          <lay-input v-model="form.topic" placeholder="输入主题" />
+          <lay-input v-model="form.topic" placeholder="输入待办主题" />
+        </lay-form-item>
+        <lay-form-item label="涉及人员" prop="with">
+          <lay-input v-model="form.with" placeholder="输入涉及人员" />
         </lay-form-item>
         <lay-form-item label="时间" prop="time" required>
           <lay-date-picker
