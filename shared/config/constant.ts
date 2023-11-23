@@ -11,7 +11,8 @@ export enum IPCFileEvents {
   OPEN_FILE_IN_EXPLORER = 'open-file-in-explorer',
   SCAN_FILES_IN_DIRECTORY = 'scan-files-in-directory',
   SCAN_FILES_COMPLETED = 'scan-files-completed',
-  SCAN_FILES_CANCELED = 'scan-files-canceled'
+  SCAN_FILES_CANCELED = 'scan-files-canceled',
+  OPEN_SETTINGS_FILE = 'open-settings-file'
 }
 
 // 日志打印

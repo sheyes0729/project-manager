@@ -15,6 +15,12 @@ export function installFileHanler(): void {
     return 'success'
   })
 
+  // 打开配置文件
+  ipcMain.on(IPCFileEvents.OPEN_SETTINGS_FILE, () => {
+    const dir = path.resolve(app.getPath('userData'), 'db.json')
+    shell.openPath(dir)
+  })
+
   // 选择ide
   ipcMain.handle(IPCFileEvents.PICK_IDE_PATH, async () => {
     let status: ResultStatus = ResultStatus.PENDING,
