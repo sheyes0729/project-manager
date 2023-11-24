@@ -28,9 +28,9 @@ const config = reactive({
 })
 
 const { system, todo, setTodo } = useStore()
-const events = ref<TodoItem[]>(todo.value.list || [])
+const events = ref<TodoItem[]>(todo.value?.list || [])
 const theme = computed(() => system.value.theme)
-const schemeList = computed(() => todo.value.tagList || [])
+const schemeList = computed(() => todo.value?.tagList || [])
 
 watch(
   schemeList,
