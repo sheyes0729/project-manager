@@ -52,6 +52,7 @@
     "eslint": "^8.44.0",
     "eslint-plugin-vue": "^9.15.1",
     "less": "^4.2.0",
+    "lunar-typescript": "^1.6.13",
     "nanoid": "^5.0.3",
     "prettier": "^2.8.8",
     "rimraf": "^5.0.1",

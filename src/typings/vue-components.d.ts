@@ -8,8 +8,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Aside: typeof import('./../components/layouts/aside.vue')['default']
+    Calendar: typeof import('./../components/common/Calendar.vue')['default']
     Header: typeof import('./../components/layouts/header.vue')['default']
     ImageIcon: typeof import('./../components/common/ImageIcon.vue')['default']
+    LunarCalendar: typeof import('./../components/common/LunarCalendar.vue')['default']
     RippleButton: typeof import('./../components/common/RippleButton.vue')['default']
     RiveLoading: typeof import('./../components/common/RiveLoading.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
