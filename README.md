@@ -33,7 +33,7 @@
 - [x] NVM Node 版本管理
 - [ ] 项目独立 Node 版本管理
 - [x] TodoList
-- [x] Todo标签管理
+- [x] Todo 标签管理
 - [x] 项目类型配置
 - [ ] 项目扫描策略
 - [ ] 项目分组
@@ -45,10 +45,11 @@
 ······
 
 ## 🖼️ APP 截图
+
 - 明亮模式
   <img src="./.README/preview-light.png" alt="light" />
 - 总览
-
+  <img src="./.README/preview-overview.png" alt="总览" />
 - 待办
   <img src="./.README/preview-todo.png" alt="待办" />
 
@@ -79,7 +80,7 @@
   # 生成项目图标
   $ pnpm create:icons
 
-  # 代码样式
+  # 代码样式格式化
   $ pnpm lint
 
   # 项目打包
