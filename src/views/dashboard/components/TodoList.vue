@@ -6,7 +6,7 @@ const { todo } = useStore()
 const today = dayjs().format('YYYY-MM-DD')
 
 const todoList = computed(() => {
-  return (todo.value.list ?? []).filter((td) => {
+  return (todo.value?.list ?? []).filter((td) => {
     return (
       dayjs(td.time.start).format('YYYY-MM-DD') === today ||
       dayjs(td.time.end).format('YYYY-MM-DD') === today

@@ -12,7 +12,7 @@ interface Tag {
 }
 
 const { todo, setTodo } = useStore()
-const tagList = ref<Tag[]>(todo.value.tagList || [])
+const tagList = ref<Tag[]>(todo.value?.tagList || [])
 const visible = ref(false)
 const title = ref('')
 const form = ref<Tag>(defaultForm())
