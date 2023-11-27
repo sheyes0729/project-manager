@@ -174,6 +174,7 @@ function confirm() {
 watch(
   events,
   (et) => {
+    console.log(et)
     setTodo(et, 'list')
   },
   {

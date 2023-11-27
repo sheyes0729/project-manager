@@ -31,7 +31,7 @@ onMounted(async () => {
   })
 
   ipcRenderer.invoke(IPCDBEvents.GET_DB, 'todo').then((todo) => {
-    setTodo(todo)
+    setTodo(todo ?? {})
   })
 
   ipcRenderer.invoke(IPCSystemEvents.GET_APP_INFO).then((appInfo) => {

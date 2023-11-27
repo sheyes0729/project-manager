@@ -83,7 +83,7 @@ const state = reactive({
   day: now.getDate(),
   nextFestivalDay: 0,
   nextFestival: '',
-  nextOffWork: '0',
+  nextOffWork: [0, 0],
   nextWeekday: 0,
   nextSalaryDay: 0
 })
@@ -116,33 +116,52 @@ function getSalaryDay() {
 }
 
 function getWeekDay() {
-  console.log(now.getDay())
   if (moyu.value.weekDay.includes(now.getDay())) {
     state.nextWeekday = 0
   } else {
     const arr = moyu.value.weekDay.map((v: number) => (v == 0 ? 7 : v))
-    state.nextWeekday = Math.min(arr) - now.getDay()
+    state.nextWeekday = Math.min(...arr) - now.getDay()
   }
 }
 
-// TODO: 完成离下班时间计算
+let frameworkKey: number | null = null
 function getOffWork() {
   if (state.nextWeekday) {
-    state.nextOffWork = ''
+    state.nextOffWork = []
+    const allMinutes = dayjs(
+      dayjs(`${state.year}/${state.month + 1}/${state.day} ${moyu.value.offWork}`)
+    ).diff(new Date(), 'minutes')
+    if (allMinutes <= 0) {
+      state.nextOffWork = [0, 0]
+    } else {
+      const hours = Math.floor(allMinutes / 60)
+      const minutes = allMinutes % 60
+      state.nextOffWork = [hours, minutes]
+    }
   } else {
-    state.nextOffWork = ''
+    state.nextOffWork = []
   }
+  frameworkKey = requestAnimationFrame(getOffWork)
 }
 
 function initData() {
   getSalaryDay()
   getWeekDay()
+  if (frameworkKey) {
+    cancelAnimationFrame(frameworkKey)
+    frameworkKey = null
+  }
   getOffWork()
 }
 
 onMounted(() => {
   getNextFestival()
   initData()
+})
+
+onBeforeMount(() => {
+  frameworkKey && cancelAnimationFrame(frameworkKey)
+  frameworkKey = null
 })
 </script>
 
@@ -163,7 +182,9 @@ onMounted(() => {
       <div class="moyu-wrapper">
         <div>
           <p>
-            离下班还有<u><i>00</i> 小时<i>50</i> 分钟</u>
+            离下班还有<u
+              ><i>{{ state.nextOffWork[0] }}</i> 小时<i>{{ state.nextOffWork[1] }}</i> 分钟</u
+            >
           </p>
           <span @click="setOffWork">立即设置>></span>
         </div>
