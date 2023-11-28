@@ -24,6 +24,16 @@ const { list, containerProps, wrapperProps } = useVirtualList(files, {
   itemHeight: 118
 })
 
+watch(
+  files,
+  (data) => {
+    setFile(data, 'list')
+  },
+  {
+    deep: true
+  }
+)
+
 function scanfile() {
   if (!typeList.value.length) {
     layer.confirm('请先配置项目类型！', {
@@ -46,7 +56,6 @@ function scanfile() {
     })
     loading.value = false
     files.value = data
-    setFile(data, 'list')
   })
 
   ipcRenderer.once(IPCFileEvents.SCAN_FILES_CANCELED, () => {
@@ -72,7 +81,6 @@ function clearFile() {
             content: '文件已清空！',
             icon: 1
           })
-          setFile([], 'list')
           layer.close(id)
         }
       },
@@ -87,6 +95,7 @@ function clearFile() {
 }
 
 function openFilePath(file: FileData) {
+  pinFileToFirst(file)
   ipcRenderer.send(IPCFileEvents.OPEN_FILE_IN_EXPLORER, file.directory)
 }
 
@@ -104,6 +113,7 @@ function openFileInIde(data: FileData) {
     layer.confirm('请先绑定编辑器或设置默认编辑器！')
     return
   }
+  pinFileToFirst(data)
   ipcRenderer.invoke(IPCFileEvents.OPEN_FILE_IN_IDE, ide, data.directory)
 }
 
@@ -125,11 +135,20 @@ const fileIcon = computed(() => {
 })
 
 function viewDetail(file: FileData) {
-  console.log('file: ', file)
+  console.log('file:', file)
 
   layer.confirm('暂不支持！', {
     title: '提示！'
   })
+}
+
+function pinFileToFirst(file: FileData) {
+  const idx = files.value.findIndex((fi) => fi.directory === file.directory)
+  if (idx === 0) return
+  const arr = files.value.slice()
+  arr.splice(idx, 1)
+  arr.unshift(file)
+  files.value = arr
 }
 </script>
 
