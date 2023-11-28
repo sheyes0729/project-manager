@@ -98,4 +98,4 @@
 [![BSD-3-Clause License](https://img.shields.io/badge/license-BSD--3--Clause-green)](https://github.com/sheyes0729/project-manager/blob/main/LICENSE)  
 Open sourced under the BSD-3-Clause license.  
 根据 BSD-3-Clause 许可证开源。  
-© AmosHuKe
+© sheyes0729

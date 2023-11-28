@@ -55,6 +55,6 @@ appImage:
   artifactName: ${productName}-${version}.${ext}
 npmRebuild: false
 publish:
-  - provider: generic
-    url: https://example.com
-    updaterCacheDirName: project-manager-updater
+  - provider: github
+    owner: sheyes0729
+    repo: project-manager
