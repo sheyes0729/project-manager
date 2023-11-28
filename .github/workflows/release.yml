@@ -16,6 +16,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      # 步骤2，使用pnpm
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       # 步骤2，使用node环境
       - name: Use Node.js
         uses: actions/setup-node@v3
