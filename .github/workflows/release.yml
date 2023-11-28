@@ -1,0 +1,48 @@
+name: release
+
+# 当提交tag时触发
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      # 步骤1，检出仓库代码
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      # 步骤2，使用node环境
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+      # 步骤3，执行npm install命令，安装依赖
+      - name: Generate Changelog
+        uses: npx changelogithub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      # 步骤3，执行npm install命令，安装依赖
+      - name: Install dependencies
+        run: npm install
+      # 步骤4，执行打包命令
+      - name: build win
+        run: npm run build:win32
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      # 步骤5，发布release
+      - name: release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.exe
+            dist/*.exe.blockmap
+            dist/latest.yml
+            draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
