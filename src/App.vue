@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { IPCSystemEvents, IPCDBEvents, IPCUpdateEvents } from '@shared/config/constant'
+import { IPCDBEvents, IPCUpdateEvents } from '@shared/config/constant'
 import { ipcRenderer } from '@/utils/ipc'
 import { UpdateMessage } from '@shared/typings/update'
 import { layer } from '@layui/layui-vue'
@@ -98,10 +98,6 @@ onMounted(async () => {
 
   ipcRenderer.invoke(IPCDBEvents.GET_DB, 'todo').then((todo) => {
     setTodo(todo ?? {})
-  })
-
-  ipcRenderer.invoke(IPCSystemEvents.GET_APP_INFO).then((appInfo) => {
-    setSystem(appInfo, 'appInfo')
   })
 })
 </script>
