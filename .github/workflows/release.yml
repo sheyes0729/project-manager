@@ -21,15 +21,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: 'npm'
-      # 步骤3，执行npm install命令，安装依赖
+          cache: 'pnpm'
+      # 步骤3，生成changelog
       - name: Generate Changelog
         run: npx changelogithub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      # 步骤3，安装pnpm
-      - name: Install pnpm
-        run: npm i -g pnpm
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       # 步骤3，安装依赖
