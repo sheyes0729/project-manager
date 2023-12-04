@@ -20,7 +20,29 @@ const text = ref('')
 
 const loading = ref(false)
 
-const { list, containerProps, wrapperProps } = useVirtualList(files, {
+const input = ref('')
+const datetime = ref([])
+
+const filteredList = computed(() => {
+  let temp = files.value.slice()
+  if (input.value) {
+    temp = temp.filter(
+      (file) => file.directory.includes(input.value) || file.projectName.includes(input.value)
+    )
+  }
+
+  if (datetime.value.length) {
+    temp = temp.filter(
+      (file) =>
+        dayjs(file.createTime).isAfter(datetime.value[0]) &&
+        dayjs(file.createTime).isBefore(datetime.value[1])
+    )
+  }
+
+  return temp
+})
+
+const { list, containerProps, wrapperProps } = useVirtualList(filteredList, {
   itemHeight: 118
 })
 
@@ -154,11 +176,26 @@ function pinFileToFirst(file: FileData) {
 
 <template>
   <LaySpace>
-    <RippleButton type="primary" :loading="loading" icon="layui-icon-search" @click="scanfile"
+    <RippleButton type="primary" :loading="loading" icon="layui-icon-util" @click="scanfile"
       >开始扫描</RippleButton
     >
     <RippleButton type="danger" icon="layui-icon-delete" @click="clearFile">清空</RippleButton>
     <p>{{ text }}</p>
+    <lay-input
+      v-model="input"
+      prefix-icon="layui-icon-search"
+      placeholder="输入名称/路径搜索项目"
+      size="sm"
+      allow-clear
+    />
+    <lay-date-picker
+      v-model="datetime"
+      allow-clear
+      range
+      size="sm"
+      type="datetime"
+      :placeholder="['开始', '结束']"
+    />
   </LaySpace>
   <div v-bind="containerProps" class="file-wrapper">
     <div v-bind="wrapperProps">
@@ -217,6 +254,7 @@ function pinFileToFirst(file: FileData) {
 
 <style lang="scss" scoped>
 @import url('https://fonts.joway.io/css/Poppins.css');
+
 .file-wrapper {
   margin-top: $padding-small;
   height: calc(100% - 54px);
